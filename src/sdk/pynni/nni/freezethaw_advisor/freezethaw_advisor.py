@@ -29,7 +29,6 @@ from nni.msg_dispatcher_base import MsgDispatcherBase
 from nni.utils import NodeType, OptimizeMode, extract_scalar_reward
 
 from .target_space import TargetSpace
-from .predictor import Predictor
 
 logger = logging.getLogger("FreezeThaw_Advisor_AutoML")
 
@@ -50,12 +49,9 @@ class FreezeThaw(MsgDispatcherBase):
         self.optimize_mode = OptimizeMode(optimize_mode)
 
         # target space
-        self._space = None
+        self._space = None 
 
         self._random_state = np.random.RandomState()  # pylint: disable=no-member
-
-        # nu, alpha are GPR related params
-        self._predictor = Predictor()
 
     def load_checkpoint(self):
         pass

@@ -23,16 +23,18 @@ kernels.py
 
 import numpy as np
 
+
 class KTC():
     '''
-    Kernel for Training Curve 
+    Kernel for Training Curve
+    k(t, t') = beta^alpha/(t+t'+beta)^alpha + delta(t,t')*sigma^2
     '''
+
     def __init__(self, alpha, beta):
         self.alpha = alpha
         self.beta = beta
         self.var = 0
-        
 
     def cov(self, inputs):
-        cov = self.alpha + self.beta 
+        cov = self.alpha + self.beta
         return cov
