@@ -26,8 +26,14 @@ import numpy as np
 
 class KTC():
     '''
-    Kernel for Training Curve
-    k(t, t') = beta^alpha/(t+t'+beta)^alpha + delta(t,t')*sigma^2
+    Kernel for Training Curve. The kernel given by:
+
+    k(t, t') = beta^alpha/(t+t'+beta)^alpha + delta(t,t')*sigma^2 
+
+    Parameters
+    ----------
+    alpha : float > 0, default: 1.0
+        Scale mixture parameter
     '''
 
     def __init__(self, alpha, beta):

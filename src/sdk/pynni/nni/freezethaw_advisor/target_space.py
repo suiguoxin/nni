@@ -21,14 +21,14 @@
 target_space.py
 """
 
-from sklearn.gaussian_process.kernels import Matern
+import numpy as np
 
-from .kernels import KTC
 
 class TargetSpace():
     """
     Holds the param-space coordinates (X) and target values (Y)
     """
+
     def __init__(self, search_space, random_state=None):
         """
         Parameters
@@ -40,33 +40,6 @@ class TargetSpace():
         random_state : int, RandomState, or None
             optionally specify a seed for a random number generator
         """
+        self.random_state = random_state
         self.X = None
         self.y = None
-        self.random_state = random_state
-        self.matern = Matern(nu=2.5)
-        self.ktc = KTC(0, 0)
-
-    def register(self, x, y):
-        '''
-        receive new result
-        '''
-    
-    def predict_asymptote(self, x):
-        '''
-        posterior distribution of a new hyperparameter setting : Equation 14(19)
-        '''
-        mean = 0
-        std = 0
-        return mean, std
-
-    def predict_point_old(self, x):
-        '''
-        posterior distribution for a new point in a training curve: Equation 15(20)
-        '''
-
-    def predict_point_new(self, x):
-        '''
-        posterior distribution for a new point in the absence of any observations : Equation 16(21)
-        '''
-
-        
