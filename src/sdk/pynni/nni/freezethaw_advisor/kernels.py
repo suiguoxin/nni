@@ -22,20 +22,7 @@ kernels.py
 """
 
 import numpy as np
-from scipy.spatial.distance import pdist, squareform
-
-from sklearn.gaussian_process.kernels import StationaryKernelMixin, NormalizedKernelMixin, Kernel, Hyperparameter
-
-
-def _check_length_scale(X, length_scale):
-    length_scale = np.squeeze(length_scale).astype(float)
-    if np.ndim(length_scale) > 1:
-        raise ValueError("length_scale cannot be of dimension greater than 1")
-    if np.ndim(length_scale) == 1 and X.shape[1] != length_scale.shape[0]:
-        raise ValueError("Anisotropic kernel must have the same number of "
-                         "dimensions as data (%d!=%d)"
-                         % (length_scale.shape[0], X.shape[1]))
-    return length_scale
+from sklearn.gaussian_process.kernels import StationaryKernelMixin, Kernel, Hyperparameter
 
 
 class KTC(StationaryKernelMixin, Kernel):
@@ -43,11 +30,13 @@ class KTC(StationaryKernelMixin, Kernel):
 
     The kernel given by:
 
-    k(t, t') = beta^alpha/(t+t'+beta)^alpha + delta(t,t')*sigma^2
+    k(t, t') = beta^alpha/(t+t'+beta)^alpha
 
     Parameters
     ----------
-    alpha : float > 0, default: 1.0
+    alpha : float > 0, default: 0.5
+        Scale mixture parameter
+    beta : float > 0, default: 0.5
         Scale mixture parameter
     '''
 
@@ -56,9 +45,6 @@ class KTC(StationaryKernelMixin, Kernel):
         self.beta = beta
         self.alpha_bounds = alpha_bounds
         self.beta_bounds = beta_bounds
-
-        # self.hyperparameter_alpha = Hyperparameter("alpha", "numeric", self.alpha_bounds)
-        # self.hyperparameter_beta = Hyperparameter("beta", "numeric", self.beta_bounds)
 
     @property
     def hyperparameter_alpha(self):  # pylint:disable=missing-docstring
@@ -75,7 +61,7 @@ class KTC(StationaryKernelMixin, Kernel):
 
         Parameters
         ----------
-        X : array, shape (n_samples_X, n_features) 
+        X : array, shape (n_samples_X, n_features)
             Left argument of the returned kernel k(X, Y)
 
         Y : array, shape (n_samples_Y, n_features), (optional, default=None)
@@ -113,18 +99,17 @@ class KTC(StationaryKernelMixin, Kernel):
                 K_gradient = np.zeros((K.shape[0], K.shape[0], n_gradient_dim))
                 for i in range(X.shape[0]):
                     for j in range(X.shape[0]):
-                        t1 = X[i][0]
-                        t2 = X[j][0]
+                        t_1 = X[i][0]
+                        t_2 = X[j][0]
                         K_gradient[i, j, 0] = K[i, j] * \
-                            np.log(self.beta / (self.beta + t1 + t2))
+                            np.log(self.beta / (self.beta + t_1 + t_2))
                         K_gradient[i, j, 1] = K[i, j] * \
-                            (t1 + t2 / (self.beta*(self.beta + t1 + t2)))
+                            (t_1 + t_2 / (self.beta*(self.beta + t_1 + t_2)))
                 return K, K_gradient
             else:
                 return K
         else:
-            # TODO: not used here
-            return np.zeros((X.shape[0], Y.shape[0]))
+            raise ValueError("Not implemented.")
 
     def diag(self, X):
         """Returns the diagonal of the kernel k(X, X).

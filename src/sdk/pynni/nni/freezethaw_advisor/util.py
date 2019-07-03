@@ -34,23 +34,29 @@ def acq_max():
     Step 2; get a config by 'Information Gain'
     '''
 
+    # get a basket
+    _get_basket(predictor, num_old, num_new)
 
-def _get_basket(num_old, num_new):
+
+def _get_basket(predictor, num_old, num_new):
     '''
     get a basket of num_old + num_new canditate by EI
     '''
+    old_points = []
+    for X in old_points:
+        mean, std = predictor.predict_asymptote_old(X)
 
 
-def _ei(x, gp, y_max, xi):
+def _ei(x, mean, std, y_max, xi=0):
     '''
     calculate ei of one configurationi
     '''
-    with warnings.catch_warnings():
-        warnings.simplefilter("ignore")
-        mean, std = gp.predict(x, return_std=True)
-
     z = (mean - y_max - xi)/std
     return (mean - y_max - xi) * norm.cdf(z) + std * norm.pdf(z)
+
+
+def _ei_ed(x, mean, std, y_max, xi=0):
+
 
 
 def _ig(X, gp):
@@ -59,4 +65,4 @@ def _ig(X, gp):
     '''
     # calculate P of X
     # ...
-    # TODO: slice sampling 
+    # TODO: slice sampling

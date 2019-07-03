@@ -36,6 +36,9 @@ print(outer(t1, t2))
 # pylint:disable=no-member
 
 
+PATH = './src/sdk/pynni/nni/freezethaw_advisor/test'
+
+
 def ktc_1():
     x = np.arange(100)
     for lam in np.arange(0, 1, 0.05):
@@ -43,7 +46,7 @@ def ktc_1():
         plt.plot(x, y)
 
     plt.title('Exponential Decay Basis')
-    plt.savefig('./ktc_1.png')
+    plt.savefig('{}/ktc_1.png'.format(PATH))
     plt.close()
 
 
@@ -64,7 +67,7 @@ def ktc_2():
         plt.plot(range(1, 100), y)
 
     plt.title('Samples')
-    plt.savefig('./ktc_2.png')
+    plt.savefig('{}/ktc_2.png'.format(PATH))
     plt.close()
 
 
@@ -92,13 +95,14 @@ def ktc_3():
         plt.plot(range(0, N), y, label='mean prior:{0:.2g}'.format(mean_prior))
     plt.title('Training Curve Samples')
     plt.legend()
-    plt.savefig('./ktc_3.png')
+    plt.savefig('{}/ktc_3.png'.format(PATH))
     plt.close()
 
 
 def ktc_4():
     ktc = KTC(alpha=1, beta=0.5) + WhiteKernel(noise_level=1e-4)
     gp = GaussianProcessRegressor(
+        optimizer=None,
         kernel=ktc
     )
 
@@ -128,11 +132,11 @@ def ktc_4():
 
         plt.plot(range(1, 100), y)
     plt.title('Training Curve Samples')
-    plt.savefig('./ktc_5.png')
+    plt.savefig('{}/ktc_4.png'.format(PATH))
     plt.close()
 
 
-# ktc_1()
-# ktc_2()
-# ktc_3()
+ktc_1()
+ktc_2()
+ktc_3()
 ktc_4()
