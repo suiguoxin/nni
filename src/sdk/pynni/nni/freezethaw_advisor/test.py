@@ -1,36 +1,17 @@
+from scipy.linalg import cholesky, cho_solve, solve_triangular, block_diag
 import warnings
 
 import numpy as np
 
 from sklearn.gaussian_process.kernels import Matern, WhiteKernel
 from sklearn.gaussian_process import GaussianProcessRegressor
+from itertools import chain
 
 import matplotlib.pyplot as plt
 
 from nni.freezethaw_advisor.kernels import KTC
+from nni.freezethaw_advisor.predictor import Predictor
 
-
-'''
-t1 = np.array([[1], [2], [3])
-t2 = np.array([[2], [3], [4])
-
-
-ufunc = np.frompyfunc(lambda x, y: x+y, 2, 1)
-
-print(ufunc(2,1))
-
-def outer(X, Y):
-    r = np.empty((X.shape[0], Y.shape[0]))
-    print((X.shape[0], Y.shape[0]))
-    for i, x in enumerate(X):
-        for j, y in enumerate(Y):
-            r[i][j] = x[0] +y
-    return r
-
-
-print(outer(t1, t2))
-
-'''
 
 # pylint:disable=missing-docstring
 # pylint:disable=no-member
@@ -51,7 +32,7 @@ def ktc_1():
 
 
 def ktc_2():
-    #matern = Matern(nu=2.5)
+    # matern = Matern(nu=2.5)
     ktc = KTC(alpha=1, beta=0.5)
     gp = GaussianProcessRegressor(
         kernel=ktc
@@ -59,8 +40,8 @@ def ktc_2():
 
     for _ in range(10):
         X = np.arange(1, 100).reshape(-1, 1)
-        #K = ktc(X)
-        #y = np.random.multivariate_normal([0]*99, K)
+        # K = ktc(X)
+        # y = np.random.multivariate_normal([0]*99, K)
         mean, cov = gp.predict(X, return_cov=True)
         y = np.random.multivariate_normal(mean, cov)
 
@@ -79,8 +60,8 @@ def ktc_3():
 
     for mean_prior in np.arange(0, 0.3, 0.05):
         # warm up
-        #X_obs = [[1], [2]]
-        #y_obs = [0.9, 0.7]
+        # X_obs = [[1], [2]]
+        # y_obs = [0.9, 0.7]
         X_obs = [[0]]
         y_obs = [1]
         gp.fit(X_obs, y_obs)
@@ -136,7 +117,132 @@ def ktc_4():
     plt.close()
 
 
-ktc_1()
-ktc_2()
-ktc_3()
-ktc_4()
+# ktc_1()
+# ktc_2()
+# ktc_3()
+# ktc_4()
+
+def kernel_ktc_test():
+    # test of K(X, X), k(x,x) = 0
+    ktc = KTC(alpha=1, beta=0)
+    X = np.array([[1], [2]])
+    K = np.array([[0, 0],
+                  [0, 0]])
+
+    K_cal = ktc(X)
+
+    assert np.array_equal(K, K_cal)
+    print('test 1 pass !')
+
+    # test of K(X, X), k(x,x) != 0
+    ktc = KTC(alpha=1, beta=1)
+    X = [[1], [2]]
+    K = np.array([[1/3, 1/4],
+                  [1/4, 1/5]])
+
+    K_cal = ktc(X)
+
+    assert np.array_equal(K, K_cal)
+    print('test 2 pass !')
+
+    # test of K(X, Y), k(x,y) = 0
+    ktc = KTC(alpha=1, beta=0)
+    X = [[1], [2]]
+    Y = [[1], [2]]
+    K = np.array([[0, 0],
+                  [0, 0]])
+
+    K_cal = ktc(X, Y)
+
+    assert np.array_equal(K, K_cal)
+    print('test 3 pass !')
+
+    # test of K(X, Y), k(x,y) != 0
+    ktc = KTC(alpha=1, beta=1)
+    X = [[1], [2]]
+    Y = [[1],
+         [2],
+         [3]]
+    K = np.array([[1/3, 1/4, 1/5],
+                  [1/4, 1/5, 1/6]])
+
+    K_cal = ktc(X, Y)
+
+    assert np.array_equal(K, K_cal)
+    print('test 4 pass !')
+
+
+def predict_asymptote_new_test():
+    # X, y
+    X = np.array([[1],
+                  [2]])
+    y = np.array([[1, 2],
+                  [1, 2, 3]])
+    print('x.shape:', X.shape)
+    print('y.shape:', y.shape)
+
+    # X_train_, y_train_, y_train_flatten_
+    X_train_ = np.copy(X)
+    y_train_ = np.copy(y)
+    y_train_flatten_ = []
+    for t in y_train_:
+        y_train_flatten_ += t
+    y_train_flatten_ = np.array(y_train_flatten_).reshape(-1, 1)
+    print('X_train_.shape:', X_train_.shape)
+    print('y_train_flatten_.shape:', y_train_flatten_.shape)
+
+    # O (NT, N)
+    O = block_diag(*[np.ones((len(y_train_[i]), 1))
+                     for i in range(y_train_.shape[0])])
+    print('O:\n', O)
+
+    # K_x, K_t
+    kernel_as_ = Matern(nu=2.5)
+    kernel_tc_ = KTC(alpha=1, beta=0.5)
+    K_x = kernel_as_(X_train_)
+    K_t = block_diag(*[kernel_tc_(np.reshape(y_train_[i], (-1, 1)))
+                       for i in range(y_train_.shape[0])])
+    print('K_x:\n', K_x)
+    print('K_t:\n', K_t)
+
+    # m
+    m = np.zeros((y_train_.shape[0], 1))
+    print('m:')
+    print(m)
+
+    # gamma
+    tmp = np.matmul(np.transpose(O), np.linalg.pinv(K_t))  # shape (N,NT)
+    gamma = np.matmul(tmp, y_train_flatten_ - np.matmul(O, m))
+    print('gamma:')
+    print(gamma)
+
+    # Lambda
+    tmp = np.matmul(np.transpose(O), np.linalg.pinv(K_t))
+    Lambda = np.matmul(tmp, O)
+    print('Lambda:')
+    print(Lambda)
+
+    # C
+    tmp = np.matmul(K_x, np.linalg.pinv(K_x + np.linalg.pinv(Lambda)))
+    C = K_x - np.matmul(tmp, K_x)
+    print('C:')
+    print(C)
+
+    # mu
+    mu = np.matmul(C, gamma)
+    mu += m
+    print('mu:')
+    print(mu)
+
+    predictor = Predictor()
+    predictor.fit(X, y)
+    mu_pred, C_pred = predictor.predict_asymptote_old()
+
+    assert np.array_equal(mu, mu_pred)
+    assert np.array_equal(C, C_pred)
+
+    print('test 1 pass !')
+
+
+# kernel_ktc_test()
+predict_asymptote_new_test()

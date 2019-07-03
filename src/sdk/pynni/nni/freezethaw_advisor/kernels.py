@@ -109,7 +109,16 @@ class KTC(StationaryKernelMixin, Kernel):
             else:
                 return K
         else:
-            raise ValueError("Not implemented.")
+            Y = np.atleast_2d(Y)
+            tmp = np.float_power(self.beta, self.alpha)
+            K = np.empty(shape=(X.shape[0], Y.shape[0]))
+            # print(X.shape, Y.shape)
+            for i in range(X.shape[0]):
+                for j in range(Y.shape[0]):
+                    K[i, j] = tmp / \
+                        np.float_power(X[i][0] + Y[j][0] +  # X, Y is shape(,1) here
+                                       self.beta, self.alpha)
+            return K
 
     def diag(self, X):
         """Returns the diagonal of the kernel k(X, X).

@@ -22,12 +22,11 @@ predictor.py
 """
 
 import numpy as np
-from scipy.linalg import cholesky, cho_solve, solve_triangular
+from scipy.linalg import cholesky, cho_solve, solve_triangular, block_diag
 import warnings
 
 from sklearn.base import clone
-from sklearn.gaussian_process.kernels import Matern
-from sklearn.gaussian_process.kernels import WhiteKernel
+from sklearn.gaussian_process.kernels import Matern, WhiteKernel
 from sklearn.utils.validation import check_X_y, check_array
 
 from .kernels import KTC
@@ -38,15 +37,15 @@ class Predictor():
     Freeze-Thaw Two Step Gaussian Process Predictor
     """
 
-    def __init__(self, kernel_x, kernel_t, search_space, normalize_y=False, copy_X_train=True, random_state=None):
+    def __init__(self, normalize_y=False, copy_X_train=True, random_state=None):
         """
         Parameters
         ----------
         """
-        # TODO: check alpha : positive ?
-
+        # TODO: check alpha : positive definite ?
         self.kernel_as = Matern(nu=2.5)  # kernel for asymptotes
-        self.kernel_tc = WhiteKernel()  # kernel for training curves
+        # kernel for training curves TODO: add KTC
+        self.kernel_tc = KTC(alpha=1, beta=0.5)
 
         self.normalize_y = normalize_y
         self.copy_X_train = copy_X_train
@@ -60,7 +59,7 @@ class Predictor():
         X : array-like, shape = (N, 1)
             Training data
 
-        y : matrix-like, shape = (N, [n_output_dims])
+        y : matrix-like, shape = (N, )
             Target values
 
         Returns
@@ -70,24 +69,24 @@ class Predictor():
         self.kernel_as_ = clone(self.kernel_as)
         self.kernel_tc_ = clone(self.kernel_tc)
 
-        X, y = check_X_y(X, y, multi_output=True, y_numeric=True)
-
-        # Normalize target value
-        if self.normalize_y:
-            self._y_train_mean = np.mean(y, axis=0)
-            # demean yF
-            y = y - self._y_train_mean
-        else:
-            self._y_train_mean = np.zeros(1)
-
         self.X_train_ = np.copy(X) if self.copy_X_train else X
         self.y_train_ = np.copy(y) if self.copy_X_train else y
+
+        y_train_flatten_ = []
+        for t in self.y_train_:
+            y_train_flatten_ += t
+        self.y_train_flatten_ = np.array(y_train_flatten_).reshape(-1, 1)
+
+        '''
 
         # Precompute quantities required for predictions which are independent of actual query points
         K_x = self.kernel_as_(self.X_train_)
 
         # Posterior distribution : P(f|y, X) = N(f;mu, C)
         # Equation 13(18)
+        # O = block_diag[np.eye(1) * len(self.y_train_[i]) for i in self.y_train_.shape[0]]
+
+
         self.Lambda_ = []  # TODO
         self.KLam_inv = np.linalg.pinv(
             K_x + np.linalg.pinv(self.Lambda_))  # K_x + Lambda_inv_
@@ -110,12 +109,43 @@ class Predictor():
         # TODO minus prior mean
         self.alpha_ = cho_solve((self.L_, True), self.mu_)
 
+        '''
+
         return self
 
-    def predict_asymptote_old(self, X):
+    def predict_asymptote_old(self):
         '''
         posterior distribution of a old hyperparameter's asymptote : Equation 12, 13(17, 18)
         '''
+        # O (NT, N)
+        O = block_diag(*[np.ones((len(self.y_train_[i]), 1))
+                         for i in range(self.y_train_.shape[0])])
+
+        # K_x, K_t
+        K_x = self.kernel_as_(self.X_train_)
+        K_t = block_diag(*[self.kernel_tc_(np.reshape(self.y_train_[i], (-1, 1)))
+                           for i in range(self.y_train_.shape[0])])
+
+        # m
+        m = np.zeros((self.y_train_.shape[0], 1))
+
+        # gamma
+        tmp = np.matmul(np.transpose(O), np.linalg.pinv(K_t))
+        gamma = np.matmul(tmp, self.y_train_flatten_ - np.matmul(O, m))
+
+        # Lambda
+        tmp = np.matmul(np.transpose(O), np.linalg.pinv(K_t))
+        Lambda = np.matmul(tmp, O)
+
+        # C， Equation 13(18)
+        tmp = np.matmul(K_x, np.linalg.pinv(K_x + np.linalg.pinv(Lambda)))
+        C = K_x - np.matmul(tmp, K_x)
+
+        # mu, Equation 12(17)
+        mu = np.matmul(C, gamma)
+        mu += m
+
+        return mu, C
 
     def predict_asymptote_new(self, X):
         '''
@@ -125,7 +155,6 @@ class Predictor():
 
         # Compute mean of predictive distribution
         y_mean = K_trans.dot(self.alpha_)
-        y_mean = self._y_train_mean + y_mean  # undo normal.
 
         # Compute variance of predictive distribution
         y_std = self.kernel_as_.diag(X)
@@ -151,7 +180,7 @@ class Predictor():
         '''
         posterior distribution for a new point in the absence of any observations : Equation 16(21)
         '''
-        mean, std = self.predict_asymptote(X)
+        mean, std = self.predict_asymptote_new(X)
         K_t = self.kernel_tc_(self.X_train_)
         std += K_t
 
