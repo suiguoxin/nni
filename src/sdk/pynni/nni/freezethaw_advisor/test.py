@@ -241,7 +241,29 @@ def predict_asymptote_new_test():
     assert np.array_equal(mu, mu_pred)
     assert np.array_equal(C, C_pred)
 
-    print('test 1 pass !')
+    print('--------------test asymptote_new pass !----------------------')
+
+    x = np.array([[3],
+                  [4]])
+
+    K_x_s = kernel_as_(X_train_, x)
+    tmp = np.matmul(np.transpose(K_x_s), np.linalg.inv(K_x))
+    mean = np.matmul(tmp, mu - m)
+    print('mean:')
+    print(mean)
+
+    tmp = np.matmul(np.transpose(K_x_s), np.linalg.inv(
+        K_x + np.linalg.inv(Lambda)))
+    var = np.matmul(tmp, K_x_s)
+    print('var:')
+    print(var)
+
+    mean_pred, var_pred = predictor.predict_asymptote_new(x)
+
+    assert np.array_equal(mean, mean_pred)
+    assert np.array_equal(var, var_pred)
+
+    print('--------------test asymptote_old pass !----------------------')
 
 
 # kernel_ktc_test()
