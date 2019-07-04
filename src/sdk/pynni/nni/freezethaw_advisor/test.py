@@ -310,6 +310,21 @@ def predict_test():
     assert np.array_equal(var, var_pred)
     print('--------------test point_old pass !----------------------')
 
+    mean, var = predictor.predict_asymptote_new(x)
+    K_t = kernel_tc_(1)
+    var += K_t
 
-# kernel_ktc_test()
+    print('mean')
+    print(mean)
+    print('var')
+    print(var)
+
+    mean_pred, var_pred = predictor.predict_point_new(x)
+
+    assert np.array_equal(mean, mean_pred)
+    assert np.array_equal(var, var_pred)
+
+    print('--------------test point_new pass !----------------------')
+
+
 predict_test()

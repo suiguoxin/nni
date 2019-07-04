@@ -180,8 +180,8 @@ class Predictor():
         '''
         posterior distribution for a new point in the absence of any observations : Equation 16(21)
         '''
-        mean, std = self.predict_asymptote_new(X)
-        K_t = self.kernel_tc_(self.X_train_)
-        std += K_t
+        mean, var = self.predict_asymptote_new(X)
+        K_t = self.kernel_tc_(1)
+        var += K_t
 
-        return mean, std
+        return mean, var
