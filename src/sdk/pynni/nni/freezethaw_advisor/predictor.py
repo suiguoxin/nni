@@ -147,11 +147,34 @@ class Predictor():
 
         return f_mean, f_var
 
-    def predict_point_old(self, X):
+    def predict_point_old(self, idx):
         '''
         posterior distribution for a new point in a training curve: Equation 15(20)
         '''
-        Omga = []  # TODO
+        y_t = np.reshape(self.y_train_[idx], (-1, 1))
+        T = y_t.shape[0]
+        T_arr = np.arange(1, T+1).reshape(-1, 1)
+        K_t_n = self.kernel_tc_(T_arr)
+        K_t_n_s = self.kernel_tc_(T_arr, T+1)
+
+        tmp = np.matmul(np.transpose(K_t_n_s), np.linalg.inv(K_t_n))
+        Omega = np.matmul(tmp, np.ones(T).reshape(-1, 1))
+        Omega = 1 - Omega
+
+        mu_n = self.mu[idx]
+        C_n_n = self.C[np.ix_([idx], [idx])]
+        y_n = self.y_train_[idx]
+
+        tmp = np.matmul(np.transpose(K_t_n_s), np.linalg.inv(K_t_n))
+        mean = np.matmul(tmp, y_n) + np.matmul(Omega, mu_n)
+
+        K_t_n_s_s = self.kernel_tc_(T+1, T+1)
+
+        tmp = np.matmul(np.transpose(K_t_n_s), np.linalg.inv(K_t_n))
+        var = K_t_n_s_s - np.matmul(tmp, K_t_n_s) + \
+            np.matmul(np.matmul(Omega, C_n_n), np.transpose(Omega))
+
+        return mean, var
 
     def predict_point_new(self, X):
         '''

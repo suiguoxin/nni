@@ -172,7 +172,7 @@ def kernel_ktc_test():
     print('test 4 pass !')
 
 
-def predict_asymptote_new_test():
+def predict_test():
     # X, y
     X = np.array([[1],
                   [2]])
@@ -265,6 +265,51 @@ def predict_asymptote_new_test():
 
     print('--------------test asymptote_old pass !----------------------')
 
+    idx = 1
+
+    y_t = np.reshape(y_train_[idx], (-1, 1))
+    T = y_t.shape[0]
+    T_arr = np.arange(1, T+1).reshape(-1, 1)
+    print('T_arr:', T_arr)
+    K_t_n = kernel_tc_(T_arr)
+    K_t_n_s = kernel_tc_(T_arr, T+1)
+    print('K_t_n:')
+    print(K_t_n)
+    print('K_t_n_s:')
+    print(K_t_n_s)
+    tmp = np.matmul(np.transpose(K_t_n_s), np.linalg.inv(K_t_n))
+    print('tmp:')
+    print(tmp)
+    Omega = np.matmul(tmp, np.ones(T).reshape(-1, 1))
+    Omega = 1 - Omega
+    print('Omega:')
+    print(Omega)
+
+    mu_n = mu[idx]
+    C_n_n = C[np.ix_([idx], [idx])]
+    print('C_n_n')
+    print(C_n_n)
+    y_n = y_train_[idx]
+
+    tmp = np.matmul(np.transpose(K_t_n_s), np.linalg.inv(K_t_n))
+    mean = np.matmul(tmp, y_n) + np.matmul(Omega, mu_n)
+    print('mean')
+    print(mean)
+
+    K_t_n_s_s = kernel_tc_(T+1, T+1)
+
+    tmp = np.matmul(np.transpose(K_t_n_s), np.linalg.inv(K_t_n))
+    var = K_t_n_s_s - np.matmul(tmp, K_t_n_s) + \
+        np.matmul(np.matmul(Omega, C_n_n), np.transpose(Omega))
+    print('var')
+    print(var)
+
+    mean_pred, var_pred = predictor.predict_point_old(1)
+
+    assert np.array_equal(mean, mean_pred)
+    assert np.array_equal(var, var_pred)
+    print('--------------test point_old pass !----------------------')
+
 
 # kernel_ktc_test()
-predict_asymptote_new_test()
+predict_test()
