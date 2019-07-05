@@ -21,15 +21,18 @@
 predictor.py
 """
 
-import numpy as np
-from scipy.linalg import cholesky, cho_solve, solve_triangular, block_diag
 import warnings
+import numpy as np
+from scipy.linalg import block_diag
 
 from sklearn.base import clone
 from sklearn.gaussian_process.kernels import Matern, WhiteKernel
-from sklearn.utils.validation import check_X_y, check_array
 
 from .kernels import KTC
+
+# pylint:disable=invalid-name
+# pylint:disable=attribute-defined-outside-init
+# TODO: successive matmul? pinv ?
 
 
 class Predictor():
@@ -45,7 +48,7 @@ class Predictor():
         # TODO: check alpha : positive definite ?
         self.kernel_as = Matern(nu=2.5)  # kernel for asymptotes
         # kernel for training curves TODO: add KTC
-        self.kernel_tc = KTC(alpha=1, beta=0.5)
+        self.kernel_tc = KTC(alpha=1, beta=0.5) + WhiteKernel(1e-4)
 
         self.normalize_y = normalize_y
         self.copy_X_train = copy_X_train
@@ -106,12 +109,13 @@ class Predictor():
         self.C = self.K_x - np.matmul(tmp, self.K_x)
 
         # Check if any of the variances is negative because of numerical issues. If yes: set the variance to 0.
+        '''
         C_negative = self.C < 0
         if np.any(C_negative):
             warnings.warn("Predicted variances smaller than 0. "
                           "Setting those variances to 0.")
             self.C[C_negative] = 0.0
-
+        '''
         # mu, Equation 12(17)
         self.mu = np.matmul(self.C, gamma)
         self.mu += self.m
@@ -139,12 +143,13 @@ class Predictor():
         f_var = np.matmul(tmp, K_x_s)
 
         # Check if any of the variances is negative because of numerical issues. If yes: set the variance to 0.
+        '''
         f_var_negative = f_var < 0
         if np.any(f_var_negative):
             warnings.warn("Predicted variances smaller than 0. "
                           "Setting those variances to 0.")
             f_var[f_var_negative] = 0.0
-
+        '''
         return f_mean, f_var
 
     def predict_point_old(self, idx):
@@ -155,7 +160,7 @@ class Predictor():
         T = y_t.shape[0]
         T_arr = np.arange(1, T+1).reshape(-1, 1)
         K_t_n = self.kernel_tc_(T_arr)
-        K_t_n_s = self.kernel_tc_(T_arr, T+1)
+        K_t_n_s = self.kernel_tc_(T_arr, np.array([T+1]))
 
         tmp = np.matmul(np.transpose(K_t_n_s), np.linalg.inv(K_t_n))
         Omega = np.matmul(tmp, np.ones(T).reshape(-1, 1))
@@ -168,7 +173,7 @@ class Predictor():
         tmp = np.matmul(np.transpose(K_t_n_s), np.linalg.inv(K_t_n))
         mean = np.matmul(tmp, y_n) + np.matmul(Omega, mu_n)
 
-        K_t_n_s_s = self.kernel_tc_(T+1, T+1)
+        K_t_n_s_s = self.kernel_tc_(np.array([T+1]), np.array([T+1]))
 
         tmp = np.matmul(np.transpose(K_t_n_s), np.linalg.inv(K_t_n))
         var = K_t_n_s_s - np.matmul(tmp, K_t_n_s) + \
@@ -181,7 +186,7 @@ class Predictor():
         posterior distribution for a new point in the absence of any observations : Equation 16(21)
         '''
         mean, var = self.predict_asymptote_new(X)
-        K_t = self.kernel_tc_(1)
+        K_t = self.kernel_tc_(np.array([1]))
         var += K_t
 
         return mean, var

@@ -1,13 +1,31 @@
-from scipy.linalg import cholesky, cho_solve, solve_triangular, block_diag
-import warnings
+# Copyright (c) Microsoft Corporation
+# All rights reserved.
+#
+# MIT License
+#
+# Permission is hereby granted, free of charge,
+# to any person obtaining a copy of this software and associated
+# documentation files (the "Software"), to deal in the Software without restriction,
+# including without limitation the rights to use, copy, modify, merge, publish,
+# distribute, sublicense, and/or sell copies of the Software, and
+# to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+# The above copyright notice and this permission notice shall be included
+# in all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED *AS IS*, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING
+# BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+# NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+# DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+"""
+test.py
+"""
 
+import json
 import numpy as np
+from scipy.linalg import block_diag
 
 from sklearn.gaussian_process.kernels import Matern, WhiteKernel
-from sklearn.gaussian_process import GaussianProcessRegressor
-from itertools import chain
-
-import matplotlib.pyplot as plt
 
 from nni.freezethaw_advisor.kernels import KTC
 from nni.freezethaw_advisor.predictor import Predictor
@@ -15,112 +33,11 @@ from nni.freezethaw_advisor.predictor import Predictor
 
 # pylint:disable=missing-docstring
 # pylint:disable=no-member
+# pylint:disable=invalid-name
 
 
 PATH = './src/sdk/pynni/nni/freezethaw_advisor/test'
 
-
-def ktc_1():
-    x = np.arange(100)
-    for lam in np.arange(0, 1, 0.05):
-        y = np.exp(-x*lam)
-        plt.plot(x, y)
-
-    plt.title('Exponential Decay Basis')
-    plt.savefig('{}/ktc_1.png'.format(PATH))
-    plt.close()
-
-
-def ktc_2():
-    # matern = Matern(nu=2.5)
-    ktc = KTC(alpha=1, beta=0.5)
-    gp = GaussianProcessRegressor(
-        kernel=ktc
-    )
-
-    for _ in range(10):
-        X = np.arange(1, 100).reshape(-1, 1)
-        # K = ktc(X)
-        # y = np.random.multivariate_normal([0]*99, K)
-        mean, cov = gp.predict(X, return_cov=True)
-        y = np.random.multivariate_normal(mean, cov)
-
-        plt.plot(range(1, 100), y)
-
-    plt.title('Samples')
-    plt.savefig('{}/ktc_2.png'.format(PATH))
-    plt.close()
-
-
-def ktc_3():
-    ktc = KTC(alpha=1, beta=0.5) + WhiteKernel(noise_level=1e-4)
-    gp = GaussianProcessRegressor(
-        kernel=ktc
-    )
-
-    for mean_prior in np.arange(0, 0.3, 0.05):
-        # warm up
-        # X_obs = [[1], [2]]
-        # y_obs = [0.9, 0.7]
-        X_obs = [[0]]
-        y_obs = [1]
-        gp.fit(X_obs, y_obs)
-
-        N = 100
-
-        X_s = np.arange(1, N).reshape(-1, 1)
-        mean, cov = gp.predict(X_s, return_cov=True)
-        y_s = np.random.multivariate_normal(mean+mean_prior, cov)
-        y = np.append(y_obs, y_s, axis=0)
-
-        plt.plot(range(0, N), y, label='mean prior:{0:.2g}'.format(mean_prior))
-    plt.title('Training Curve Samples')
-    plt.legend()
-    plt.savefig('{}/ktc_3.png'.format(PATH))
-    plt.close()
-
-
-def ktc_4():
-    ktc = KTC(alpha=1, beta=0.5) + WhiteKernel(noise_level=1e-4)
-    gp = GaussianProcessRegressor(
-        optimizer=None,
-        kernel=ktc
-    )
-
-    warm_up = True
-
-    for i in range(1):
-        X = np.empty(shape=(0, 1))
-        y = np.empty(shape=(0))
-
-        if warm_up:
-            warmup_X = [[1], [2], [3], [4], [5]]
-            warmup_y = [1-0.098, 1-0.716, 1-0.830, 1-0.848, 1-0.878]
-            X = np.append(X, warmup_X, axis=0)
-            y = np.append(y, warmup_y, axis=0)
-            gp.fit(X, y)
-
-        for x in range(6, 100):
-            with warnings.catch_warnings():
-                warnings.simplefilter("ignore")
-                mean_prior = 0.1
-                mean, std = gp.predict(np.array([[x]]), return_std=True)
-                y_sample = np.random.normal(
-                    mean+mean_prior, std)  # pylint:disable=no-member
-                X = np.append(X, [[x]], axis=0)
-                y = np.append(y, y_sample, axis=0)
-                gp.fit(X, y)
-
-        plt.plot(range(1, 100), y)
-    plt.title('Training Curve Samples')
-    plt.savefig('{}/ktc_4.png'.format(PATH))
-    plt.close()
-
-
-# ktc_1()
-# ktc_2()
-# ktc_3()
-# ktc_4()
 
 def kernel_ktc_test():
     # test of K(X, X), k(x,x) = 0
@@ -172,12 +89,37 @@ def kernel_ktc_test():
     print('test 4 pass !')
 
 
+
+def fake_X_y():
+    with open('{}/experiment.json'.format(PATH)) as json_file:
+        data = json.load(json_file)
+        trials = data['trialMessage']
+        X = np.empty([len(trials), 1])
+        y = np.empty(len(trials), dtype=object)
+
+        for i, trial in enumerate(trials):
+            # X
+            X[i] = [trial['hyperParameters']['parameters']['dropout_rate']]
+            # y
+            y[i] = []
+            intermediate = trial['intermediate']
+            for j, res in enumerate(intermediate):
+                y[i] += [1 - float(res['data'])]
+
+        print(X)
+        print(y)
+        print(X.shape)
+        print(y.shape)
+
+        return X, y
+
 def predict_test():
     # X, y
-    X = np.array([[1],
-                  [2]])
-    y = np.array([[1, 2],
-                  [1, 2, 3]])
+    #X = np.array([[1],
+    #              [2]])
+    #y = np.array([[1, 2],
+    #             [1, 2, 3]])
+    X, y = fake_X_y()
     print('x.shape:', X.shape)
     print('y.shape:', y.shape)
 
@@ -198,7 +140,7 @@ def predict_test():
 
     # K_x, K_t
     kernel_as_ = Matern(nu=2.5)
-    kernel_tc_ = KTC(alpha=1, beta=0.5)
+    kernel_tc_ = KTC(alpha=1, beta=0.5) + WhiteKernel(1e-4)
     K_x = kernel_as_(X_train_)
     K_t = block_diag(*[kernel_tc_(np.reshape(y_train_[i], (-1, 1)))
                        for i in range(y_train_.shape[0])])
@@ -241,10 +183,10 @@ def predict_test():
     assert np.array_equal(mu, mu_pred)
     assert np.array_equal(C, C_pred)
 
-    print('--------------test asymptote_new pass !----------------------')
+    print('--------------test asymptote_old pass !----------------------')
 
-    x = np.array([[3],
-                  [4]])
+    x = np.array([[0.7],
+                  [0.8]])
 
     K_x_s = kernel_as_(X_train_, x)
     tmp = np.matmul(np.transpose(K_x_s), np.linalg.inv(K_x))
@@ -263,7 +205,7 @@ def predict_test():
     assert np.array_equal(mean, mean_pred)
     assert np.array_equal(var, var_pred)
 
-    print('--------------test asymptote_old pass !----------------------')
+    print('--------------test asymptote_new pass !----------------------')
 
     idx = 1
 
@@ -272,7 +214,7 @@ def predict_test():
     T_arr = np.arange(1, T+1).reshape(-1, 1)
     print('T_arr:', T_arr)
     K_t_n = kernel_tc_(T_arr)
-    K_t_n_s = kernel_tc_(T_arr, T+1)
+    K_t_n_s = kernel_tc_(T_arr, np.array([T+1]))
     print('K_t_n:')
     print(K_t_n)
     print('K_t_n_s:')
@@ -296,7 +238,7 @@ def predict_test():
     print('mean')
     print(mean)
 
-    K_t_n_s_s = kernel_tc_(T+1, T+1)
+    K_t_n_s_s = kernel_tc_(np.array([T+1]), np.array([T+1]))
 
     tmp = np.matmul(np.transpose(K_t_n_s), np.linalg.inv(K_t_n))
     var = K_t_n_s_s - np.matmul(tmp, K_t_n_s) + \
@@ -311,7 +253,7 @@ def predict_test():
     print('--------------test point_old pass !----------------------')
 
     mean, var = predictor.predict_asymptote_new(x)
-    K_t = kernel_tc_(1)
+    K_t = kernel_tc_([1])
     var += K_t
 
     print('mean')
@@ -325,6 +267,10 @@ def predict_test():
     assert np.array_equal(var, var_pred)
 
     print('--------------test point_new pass !----------------------')
+
+
+def util_test():
+    pass
 
 
 predict_test()

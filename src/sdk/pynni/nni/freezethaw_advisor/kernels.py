@@ -24,6 +24,8 @@ kernels.py
 import numpy as np
 from sklearn.gaussian_process.kernels import StationaryKernelMixin, Kernel, Hyperparameter
 
+# pylint:disable=invalid-name
+
 
 class KTC(StationaryKernelMixin, Kernel):
     '''Kernel for Training Curve.
