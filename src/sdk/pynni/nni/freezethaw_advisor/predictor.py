@@ -41,7 +41,7 @@ from .kernels import KTC
 
 class Predictor():
     """
-    Freeze-Thaw Two Step Gaussian Process Predictor
+    Freeze-Thaw Bayesian Optimization: Two Step Gaussian Process Predictor
     """
 
     def __init__(self, optimizer="fmin_l_bfgs_b", n_restarts_optimizer=0, normalize_y=False, copy_X_train=True, random_state=None):
@@ -50,7 +50,7 @@ class Predictor():
         ----------
         """
         # TODO: check alpha : positive definite ?
-        self.kernel_as = Matern(nu=2.5)  # kernel for asymptotes
+        self.kernel_as = Matern(nu=2.5) # kernel for asymptotes
         self.kernel_tc = KTC(alpha=0.5, beta=0.5) + \
             WhiteKernel(1e-4)  # kernel for trainning curves
 
@@ -68,7 +68,7 @@ class Predictor():
         X : array-like, shape = (N, 1)
             Training data
 
-        y : matrix-like, shape = (N, )
+        y : matrix-like, shape = (N, ), dtype = object (list)
             Target values
 
         Returns
@@ -83,6 +83,10 @@ class Predictor():
             [self.kernel_as_.theta, self.kernel_tc_.theta])
         self.bounds = np.vstack(
             [self.kernel_as_.bounds, self.kernel_tc_.bounds])
+        print('self.kernel_as_')
+        print(self.kernel_as_)
+        print('self.kernel_as_.theta')
+        print(self.kernel_as_.theta)
         print('self.theta')
         print(self.theta)
         print('self.bounds')

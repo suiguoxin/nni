@@ -29,6 +29,7 @@ from sklearn.gaussian_process.kernels import Matern, WhiteKernel
 
 from nni.freezethaw_advisor.kernels import KTC
 from nni.freezethaw_advisor.predictor import Predictor
+from nni.freezethaw_advisor.test.util import create_fake_data_simple
 
 
 # pylint:disable=missing-docstring
@@ -185,14 +186,14 @@ def predict_test():
 
     tmp = np.matmul(np.transpose(K_x_s), np.linalg.inv(
         K_x + np.linalg.inv(Lambda)))
-    var = np.matmul(tmp, K_x_s)
-    print('var:')
-    print(var)
+    cov = np.matmul(tmp, K_x_s)
+    print('cov:')
+    print(cov)
 
-    mean_pred, var_pred = predictor.predict_asymptote_new(x)
+    mean_pred, cov_pred = predictor.predict_asymptote_new(x)
 
     assert np.array_equal(mean, mean_pred)
-    assert np.array_equal(var, var_pred)
+    assert np.array_equal(cov, cov_pred)
 
     print('--------------test asymptote_new pass !----------------------')
 
@@ -230,30 +231,30 @@ def predict_test():
     K_t_n_s_s = kernel_tc_(np.array([T+1]), np.array([T+1]))
 
     tmp = np.matmul(np.transpose(K_t_n_s), np.linalg.inv(K_t_n))
-    var = K_t_n_s_s - np.matmul(tmp, K_t_n_s) + \
+    cov = K_t_n_s_s - np.matmul(tmp, K_t_n_s) + \
         np.matmul(np.matmul(Omega, C_n_n), np.transpose(Omega))
-    print('var')
-    print(var)
+    print('cov')
+    print(cov)
 
-    mean_pred, var_pred = predictor.predict_point_old(1)
+    mean_pred, cov_pred = predictor.predict_point_old(1)
 
     assert np.array_equal(mean, mean_pred)
-    assert np.array_equal(var, var_pred)
+    assert np.array_equal(cov, cov_pred)
     print('--------------test point_old pass !----------------------')
 
-    mean, var = predictor.predict_asymptote_new(x)
+    mean, cov = predictor.predict_asymptote_new(x)
     K_t = kernel_tc_([1])
-    var += K_t
+    cov += K_t
 
     print('mean')
     print(mean)
-    print('var')
-    print(var)
+    print('cov')
+    print(cov)
 
-    mean_pred, var_pred = predictor.predict_point_new(x)
+    mean_pred, cov_pred = predictor.predict_point_new(x)
 
     assert np.array_equal(mean, mean_pred)
-    assert np.array_equal(var, var_pred)
+    assert np.array_equal(cov, cov_pred)
 
     print('--------------test point_new pass !----------------------')
 
@@ -270,5 +271,6 @@ def log_likelihood_test():
 
 
 # kernel_ktc_test()
-predict_test()
-# log_likelihood_test()
+# predict_test()
+log_likelihood_test()
+ 
