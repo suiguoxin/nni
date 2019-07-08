@@ -1,4 +1,25 @@
-import json
+# Copyright (c) Microsoft Corporation
+# All rights reserved.
+#
+# MIT License
+#
+# Permission is hereby granted, free of charge,
+# to any person obtaining a copy of this software and associated
+# documentation files (the "Software"), to deal in the Software without restriction,
+# including without limitation the rights to use, copy, modify, merge, publish,
+# distribute, sublicense, and/or sell copies of the Software, and
+# to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+# The above copyright notice and this permission notice shall be included
+# in all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED *AS IS*, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING
+# BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+# NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+# DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+"""
+plot_predictor.py
+"""
 import numpy as np
 
 
@@ -9,9 +30,8 @@ from sklearn.gaussian_process.kernels import Matern
 from sklearn.gaussian_process import GaussianProcessRegressor
 
 from nni.freezethaw_advisor.predictor import Predictor
-
-
-PATH = './src/sdk/pynni/nni/freezethaw_advisor/test'
+from nni.freezethaw_advisor.test.util import PATH
+from nni.freezethaw_advisor.test.util import create_fake_data_expdacay
 
 
 def target(x):
@@ -60,65 +80,8 @@ def plot_gp(predictor, x, y, x_obs, y_obs):
     plt.savefig('{}/plot_gp.png'.format(PATH))
 
 
-x = np.linspace(-2, 10, 10000).reshape(-1, 1)
-y = target(x)
-x_obs = np.array([[-1], [2], [5], [8]])
-y_obs = np.array([target(-1), target(2), target(5), target(8)])
-
-predictor = GaussianProcessRegressor(kernel=Matern(nu=2.5))
-# plot_gp(predictor, x, y, x_obs, y_obs)
-
-
-def create_fake_data(exp_lambda=0.5, asymp=0.5, gaussian_noise=0.1):
-    MAXTIME = 50
-    # asymps = [0.4, 0.3, 0.2, 0.1]
-    asymps = [0.4]
-
-    # X = np.array([1, 2, 3, 4]).reshape(-1, 1)
-    X = np.array([1]).reshape(-1, 1)
-    y = np.empty(len(asymps), dtype=object)
-
-    for i, asymp in enumerate(asymps):
-        y[i] = []
-        for t in range(MAXTIME):
-            sample = np.exp(-exp_lambda * t)
-            sample = sample * (1-asymp) + asymp
-            noise = np.random.normal(0, 1/(t+1) * gaussian_noise)
-            sample += noise
-            y[i] += [sample]
-
-    return X, y
-
-
-def fake_X_y():
-    with open('{}/experiment.json'.format(PATH)) as json_file:
-        data = json.load(json_file)
-        trials = data['trialMessage']
-        X = np.empty([len(trials), 1])
-        y = np.empty(len(trials), dtype=object)
-
-        for i, trial in enumerate(trials):
-            # X
-            X[i] = [trial['hyperParameters']['parameters']['dropout_rate']]
-            # y
-            y[i] = []
-            intermediate = trial['intermediate']
-            for j, res in enumerate(intermediate):
-                y[i] += [1 - float(res['data'])]
-
-        X = X[:3][:]
-        y = y[:3][:3]
-
-        print(X)
-        print(y)
-        print(X.shape)
-        print(y.shape)
-
-        return X, y
-
-
 def plot_asymptote():
-    X, y = create_fake_data()
+    X, y = create_fake_data_expdacay()
 
     predictor = Predictor(optimizer=None)
 
