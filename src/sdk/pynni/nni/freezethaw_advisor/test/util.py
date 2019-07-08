@@ -16,15 +16,38 @@ def create_fake_data_simple():
 def create_fake_data_expdacay(exp_lambda=0.5, asymp=0.5, gaussian_noise=0.1):
     MAXTIME = 50
     asymps = [0.4, 0.3, 0.2, 0.1]
-    #asymps = [0.4]
+    # asymps = [0.4]
 
     X = np.array([1, 2, 3, 4]).reshape(-1, 1)
-    #X = np.array([1]).reshape(-1, 1)
+    # X = np.array([1]).reshape(-1, 1)
     y = np.empty(len(asymps), dtype=object)
 
     for i, asymp in enumerate(asymps):
         y[i] = []
         for t in range(MAXTIME):
+            sample = np.exp(-exp_lambda * t)
+            sample = sample * (1-asymp) + asymp
+            noise = np.random.normal(0, 1/(t+1) * gaussian_noise)
+            sample += noise
+            y[i] += [sample]
+
+    return X, y
+
+
+def create_fake_data_expdacay_diff_length(exp_lambda=0.5, asymp=0.5, gaussian_noise=0.1):
+    '''
+    data for fig 2(b)
+    '''
+    MAXTIME = 50
+    asymps = [0.4, 0.3, 0.2, 0.1]
+    length = [15, 5, 35, 50]
+
+    X = np.array([1, 2, 3, 4]).reshape(-1, 1)
+    y = np.empty(len(asymps), dtype=object)
+
+    for i, asymp in enumerate(asymps):
+        y[i] = []
+        for t in range(length[i]):
             sample = np.exp(-exp_lambda * t)
             sample = sample * (1-asymp) + asymp
             noise = np.random.normal(0, 1/(t+1) * gaussian_noise)

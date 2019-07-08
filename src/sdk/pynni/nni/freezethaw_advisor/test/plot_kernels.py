@@ -21,8 +21,6 @@
 plot_kernels.py
 """
 
-import warnings
-
 import numpy as np
 from sklearn.gaussian_process.kernels import Matern, WhiteKernel
 from sklearn.gaussian_process import GaussianProcessRegressor
