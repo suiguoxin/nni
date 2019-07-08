@@ -22,6 +22,7 @@ test.py
 """
 
 import json
+import warnings
 import numpy as np
 from scipy.linalg import block_diag
 
@@ -39,27 +40,85 @@ from nni.freezethaw_advisor.predictor import Predictor
 PATH = './src/sdk/pynni/nni/freezethaw_advisor/test'
 
 
+def create_fake_data_simple():
+    X = np.array([[1],
+                  [2]])
+    y = np.array([[1, 2],
+                  [1, 2, 3]])
+    return X, y
+
+
+def create_fake_data_expdecay(exp_lambda=0.5, asymp=0.5, gaussian_noise=0.1):
+    MAXTIME = 50
+    asymps = [0.4, 0.3, 0.2, 0.1]
+
+    X = np.array([1, 2, 3, 4]).reshape(-1, 1)
+    y = np.empty(len(asymps), dtype=object)
+
+    for i, asymp in enumerate(asymps):
+        y[i] = []
+        for t in range(MAXTIME):
+            sample = np.exp(-exp_lambda * t)
+            sample = sample * (1-asymp) + asymp
+            noise = np.random.normal(0, 1/(t+1) * gaussian_noise)
+            sample += noise
+            y[i] += [sample]
+
+    return X, y
+
+
+def create_fake_data_mnist():
+    with open('{}/experiment.json'.format(PATH)) as json_file:
+        data = json.load(json_file)
+        trials = data['trialMessage']
+        X = np.empty([len(trials), 1])
+        y = np.empty(len(trials), dtype=object)
+
+        for i, trial in enumerate(trials):
+            # X
+            X[i] = [trial['hyperParameters']['parameters']['dropout_rate']]
+            # y
+            y[i] = []
+            intermediate = trial['intermediate']
+            for j, res in enumerate(intermediate):
+                y[i] += [1 - float(res['data'])]
+
+        X = X[: 3][:]
+        y = y[: 3][: 3]
+
+        return X, y
+
+
 def kernel_ktc_test():
     # test of K(X, X), k(x,x) = 0
     ktc = KTC(alpha=1, beta=0)
     X = np.array([[1], [2]])
     K = np.array([[0, 0],
                   [0, 0]])
-
     K_cal = ktc(X)
 
+    K_diag = np.array([0, 0])
+    K_diag_cal = ktc.diag(X)
+
     assert np.array_equal(K, K_cal)
+    assert np.array_equal(K_diag, K_diag_cal)
     print('test 1 pass !')
 
     # test of K(X, X), k(x,x) != 0
     ktc = KTC(alpha=1, beta=1)
     X = [[1], [2]]
-    K = np.array([[1/3, 1/4],
-                  [1/4, 1/5]])
+    X = np.arange(3).reshape(-1, 1)
+    K = np.array([[1, 1/2, 1/3],
+                  [1/2, 1/3, 1/4],
+                  [1/3, 1/4, 1/5]])
 
     K_cal = ktc(X)
 
+    K_diag = np.array([1, 1/3, 1/5])
+    K_diag_cal = ktc.diag(X)
+
     assert np.array_equal(K, K_cal)
+    assert np.array_equal(K_diag, K_diag_cal)
     print('test 2 pass !')
 
     # test of K(X, Y), k(x,y) = 0
@@ -89,37 +148,11 @@ def kernel_ktc_test():
     print('test 4 pass !')
 
 
-
-def fake_X_y():
-    with open('{}/experiment.json'.format(PATH)) as json_file:
-        data = json.load(json_file)
-        trials = data['trialMessage']
-        X = np.empty([len(trials), 1])
-        y = np.empty(len(trials), dtype=object)
-
-        for i, trial in enumerate(trials):
-            # X
-            X[i] = [trial['hyperParameters']['parameters']['dropout_rate']]
-            # y
-            y[i] = []
-            intermediate = trial['intermediate']
-            for j, res in enumerate(intermediate):
-                y[i] += [1 - float(res['data'])]
-
-        print(X)
-        print(y)
-        print(X.shape)
-        print(y.shape)
-
-        return X, y
-
 def predict_test():
     # X, y
-    #X = np.array([[1],
-    #              [2]])
-    #y = np.array([[1, 2],
-    #             [1, 2, 3]])
-    X, y = fake_X_y()
+    X, y = create_fake_data_simple()
+    print(X)
+    print(y)
     print('x.shape:', X.shape)
     print('y.shape:', y.shape)
 
@@ -133,6 +166,11 @@ def predict_test():
     print('X_train_.shape:', X_train_.shape)
     print('y_train_flatten_.shape:', y_train_flatten_.shape)
 
+    # m
+    m = np.zeros((y_train_.shape[0], 1))
+    print('m:')
+    print(m)
+
     # O (NT, N)
     O = block_diag(*[np.ones((len(y_train_[i]), 1))
                      for i in range(y_train_.shape[0])])
@@ -140,17 +178,14 @@ def predict_test():
 
     # K_x, K_t
     kernel_as_ = Matern(nu=2.5)
-    kernel_tc_ = KTC(alpha=1, beta=0.5) + WhiteKernel(1e-4)
+    kernel_tc_ = KTC(alpha=0.5, beta=0.5) + WhiteKernel(1e-4)
     K_x = kernel_as_(X_train_)
-    K_t = block_diag(*[kernel_tc_(np.reshape(y_train_[i], (-1, 1)))
+    # K_t = block_diag(*[kernel_tc_(np.reshape(y_train_[i], (-1, 1)))
+    #                   for i in range(y_train_.shape[0])])
+    K_t = block_diag(*[kernel_tc_(np.arange(1, len(y_train_[i])+1).reshape(-1, 1))
                        for i in range(y_train_.shape[0])])
     print('K_x:\n', K_x)
     print('K_t:\n', K_t)
-
-    # m
-    m = np.zeros((y_train_.shape[0], 1))
-    print('m:')
-    print(m)
 
     # gamma
     tmp = np.matmul(np.transpose(O), np.linalg.pinv(K_t))  # shape (N,NT)
@@ -165,10 +200,17 @@ def predict_test():
     print(Lambda)
 
     # C
-    tmp = np.matmul(K_x, np.linalg.pinv(K_x + np.linalg.pinv(Lambda)))
-    C = K_x - np.matmul(tmp, K_x)
+    C = np.linalg.pinv(np.linalg.pinv(K_x) + Lambda)
     print('C:')
     print(C)
+
+    C_negative = C < 0
+    if np.any(C_negative):
+        warnings.warn("Predicted variances smaller than 0. "
+                      "Setting those variances to 0.")
+        C[C_negative] = 0.0
+        print('C:')
+        print(C)
 
     # mu
     mu = np.matmul(C, gamma)
@@ -176,7 +218,7 @@ def predict_test():
     print('mu:')
     print(mu)
 
-    predictor = Predictor()
+    predictor = Predictor(optimizer=None)
     predictor.fit(X, y)
     mu_pred, C_pred = predictor.predict_asymptote_old()
 
@@ -269,8 +311,17 @@ def predict_test():
     print('--------------test point_new pass !----------------------')
 
 
-def util_test():
-    pass
+def log_likelihood_test():
+    X, y = create_fake_data_simple()
+    theta = np.array([0, -0.69314718, -0.69314718, -9.21034037])
+    predictor = Predictor()
+    predictor.fit(X, y)
+    log_likelihood = predictor.log_marginal_likelihood(theta)
+
+    print('log_likelihood')
+    print(log_likelihood)
 
 
 predict_test()
+# kernel_ktc_test()
+# log_likelihood_test()

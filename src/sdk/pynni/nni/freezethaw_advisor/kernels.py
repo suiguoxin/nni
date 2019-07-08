@@ -42,7 +42,7 @@ class KTC(StationaryKernelMixin, Kernel):
         Scale mixture parameter
     '''
 
-    def __init__(self, alpha=0.5, beta=0.5, alpha_bounds=(1e-5, 1), beta_bounds=(1e-5, 1)):
+    def __init__(self, alpha=0.5, beta=0.5, alpha_bounds=(1e-6, 1), beta_bounds=(1e-6, 1)):
         self.alpha = alpha
         self.beta = beta
         self.alpha_bounds = alpha_bounds
@@ -105,7 +105,7 @@ class KTC(StationaryKernelMixin, Kernel):
                         t_2 = X[j][0]
                         K_gradient[i, j, 0] = K[i, j] * \
                             np.log(self.beta / (self.beta + t_1 + t_2))
-                        K_gradient[i, j, 1] = K[i, j] * \
+                        K_gradient[i, j, 1] = self.alpha * K[i, j] * \
                             (t_1 + t_2 / (self.beta*(self.beta + t_1 + t_2)))
                 return K, K_gradient
             else:
@@ -149,5 +149,4 @@ class KTC(StationaryKernelMixin, Kernel):
         return diag
 
     def __repr__(self):
-        return "{0}(alpha=[{1}], beta={2})".format(self.__class__.__name__,
-                                                   ", ".join(map("{0:.3g}".format, self.alpha)), self.beta)
+        return "{0}(alpha={1}, beta={2})".format(self.__class__.__name__, self.alpha, self.beta)

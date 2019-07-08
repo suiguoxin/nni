@@ -75,27 +75,59 @@ def ktc_2():
 
 
 def ktc_3():
-    ktc = KTC(alpha=1, beta=0.5) + WhiteKernel(noise_level=1e-4)
+    # TODO: get negative variances if delete WhiteKernel
+    ktc = KTC(alpha=0.42, beta=0.47) + WhiteKernel(1e-4)
     gp = GaussianProcessRegressor(
+        # optimizer=None,
         kernel=ktc
     )
 
-    for mean_prior in np.arange(0, 0.3, 0.05):
+    y_true = [1.0079430977511248, 0.76330811643219, 0.6032876372496866, 0.5168444483741073,
+              0.508861394142888, 0.4497688131732428, 0.425768623752674, 0.41931871156546363,
+              0.3937311341078193, 0.395356073476545, 0.404160268384624, 0.4155731870866553,
+              0.4041162868757059, 0.40535759334652105, 0.385601675552465, 0.41066804715942196,
+              0.402773438132659, 0.40282431477974856, 0.39815940349966084, 0.3965369598572702,
+              0.3939059994292343, 0.40036844994894766, 0.40237072170638555, 0.3992678671362422,
+              0.4001442467909903, 0.40163208405314343, 0.39720951332291565, 0.4075465165026093,
+              0.400577844627453, 0.40388590130410923, 0.39923794188541434, 0.40341386476802144,
+              0.3986970571777314, 0.40092351782685054, 0.40154781507529796, 0.4007543310111782,
+              0.39861314181038077, 0.3977118733915813, 0.4005187692633148, 0.4036269361641092,
+              0.4015537217666074, 0.39978830997620074, 0.3999756165922316, 0.3998083424295331,
+              0.39969519330378667, 0.3969197859555333, 0.39982714973931366, 0.39787110070109244,
+              0.400697870379133, 0.399801453513319]
+
+    N = len(y_true)
+
+    for mean_prior in np.arange(0.3, 0.35, 0.1):
         # warm up
-        # X_obs = [[1], [2]]
-        # y_obs = [0.9, 0.7]
-        X_obs = [[0]]
-        y_obs = [1]
-        gp.fit(X_obs, y_obs)
+        N_obs = 30
+        X_obs = np.arange(N_obs).reshape(-1, 1)
+        y_obs = y_true[:N_obs]
+        gp.fit(X_obs, y_obs - mean_prior)
 
-        N = 100
+        print('ktc after fit:')
+        print(gp.kernel_)
+        print('gp.kernel_.theta')
+        print(gp.kernel_.theta)
+        print('gp.kernel_.bounds')
+        print(gp.kernel_.bounds)
+        print('gp.log_marginal_likelihood(gp.kernel_.theta)')
+        print(gp.log_marginal_likelihood(gp.kernel_.theta))
 
-        X_s = np.arange(1, N).reshape(-1, 1)
-        mean, cov = gp.predict(X_s, return_cov=True)
-        y_s = np.random.multivariate_normal(mean+mean_prior, cov)
-        y = np.append(y_obs, y_s, axis=0)
+        # predict
+        X_s = np.arange(N).reshape(-1, 1)
+        mean, std = gp.predict(X_s, return_std=True)
+        mean += mean_prior
+        #y_s = np.random.multivariate_normal(mean+mean_prior, cov)
 
-        plt.plot(range(0, N), y, label='mean prior:{0:.2g}'.format(mean_prior))
+        plt.plot(range(0, N), mean,
+                 label='y_predict with mean prior:{0:.2g}'.format(mean_prior))
+
+        T = np.arange(N).reshape(-1, 1)
+        plt.fill(np.concatenate([T, T[::-1]]), np.concatenate([mean - 1.9600 * std, (mean + 1.9600 * std)[::-1]]),
+                 alpha=.6, fc='c', ec='None', label='95% confidence interval')
+
+    plt.plot(range(0, N), y_true, label='y_true')
     plt.title('Training Curve Samples')
     plt.legend()
     plt.savefig('{}/ktc_3.png'.format(PATH))
@@ -173,6 +205,6 @@ def ktc_5():
 
 # ktc_1()
 # ktc_2()
-# ktc_3()
+ktc_3()
 # ktc_4()
-ktc_5()
+# ktc_5()

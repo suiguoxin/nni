@@ -69,6 +69,27 @@ predictor = GaussianProcessRegressor(kernel=Matern(nu=2.5))
 # plot_gp(predictor, x, y, x_obs, y_obs)
 
 
+def create_fake_data(exp_lambda=0.5, asymp=0.5, gaussian_noise=0.1):
+    MAXTIME = 50
+    # asymps = [0.4, 0.3, 0.2, 0.1]
+    asymps = [0.4]
+
+    # X = np.array([1, 2, 3, 4]).reshape(-1, 1)
+    X = np.array([1]).reshape(-1, 1)
+    y = np.empty(len(asymps), dtype=object)
+
+    for i, asymp in enumerate(asymps):
+        y[i] = []
+        for t in range(MAXTIME):
+            sample = np.exp(-exp_lambda * t)
+            sample = sample * (1-asymp) + asymp
+            noise = np.random.normal(0, 1/(t+1) * gaussian_noise)
+            sample += noise
+            y[i] += [sample]
+
+    return X, y
+
+
 def fake_X_y():
     with open('{}/experiment.json'.format(PATH)) as json_file:
         data = json.load(json_file)
@@ -97,12 +118,12 @@ def fake_X_y():
 
 
 def plot_asymptote():
-    X, y = fake_X_y()
+    X, y = create_fake_data()
 
-    predictor = Predictor()
+    predictor = Predictor(optimizer=None)
 
     predictor.fit(X, y)
-    mean, var = predictor.predict_asymptote_old()
+    mean, std = predictor.predict_asymptote_old(return_std=True)
 
     for i in range(len(y)):
         length = len(y[i])
@@ -113,7 +134,7 @@ def plot_asymptote():
         mu = mean[i][0]
         print('mu:')
         print(mu)
-        sigma = np.sqrt(var[i][i])
+        sigma = np.sqrt(std[i])
         print('sigma:')
         print(sigma)
         plt.plot(np.arange(length), [mu] *
