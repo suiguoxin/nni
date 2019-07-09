@@ -23,14 +23,16 @@ plot_predictor.py
 import numpy as np
 
 import matplotlib.pyplot as plt
-from matplotlib import gridspec
 
 from sklearn.gaussian_process.kernels import Matern
-from sklearn.gaussian_process import GaussianProcessRegressor
 
 from nni.freezethaw_advisor.predictor import Predictor
 from nni.freezethaw_advisor.test.util import PATH, COLORS
-from nni.freezethaw_advisor.test.util import create_fake_data_expdacay, create_fake_data_expdacay_diff_length
+from nni.freezethaw_advisor.test.util import create_fake_data_expdacay, create_fake_data_expdacay_diff_length, create_fake_data_mnist_diff_length
+
+# pylint:disable=missing-docstring
+# pylint:disable=no-member
+# pylint:disable=invalid-name
 
 
 def plot_asymptote():
@@ -38,16 +40,17 @@ def plot_asymptote():
     Fig 2(b)
     '''
     X, y = create_fake_data_expdacay_diff_length()
+    #X, y = create_fake_data_mnist_diff_length()
 
-    predictor = Predictor(optimizer=None)
+    predictor = Predictor()
 
     predictor.fit(X, y)
     mean, std = predictor.predict_asymptote_old(return_std=True)
 
-    for i in range(len(y)):
+    for i, y_i in enumerate(y):
         length = len(y[i])
 
-        plt.plot(np.arange(length), y[i], color=COLORS[i], )
+        plt.plot(np.arange(length), y_i, color=COLORS[i], )
         mu = mean[i][0]
         sigma = std[i]
         plt.plot(np.arange(length), [mu] * length,
@@ -58,7 +61,7 @@ def plot_asymptote():
 
     plt.title('Training Curve Predictions')
     plt.legend()
-    plt.savefig('{}/image/2_b.png'.format(PATH))
+    plt.savefig('{}/image/2_b_expdecay.png'.format(PATH))
 
 
 plot_asymptote()

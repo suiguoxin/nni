@@ -22,6 +22,7 @@ predictor.py
 """
 
 import warnings
+from functools import reduce
 from operator import itemgetter
 
 import numpy as np
@@ -36,7 +37,7 @@ from .kernels import KTC
 
 # pylint:disable=invalid-name
 # pylint:disable=attribute-defined-outside-init
-# TODO: successive matmul? pinv ?
+# TODO: pinv ? choleskey
 
 
 class Predictor():
@@ -50,8 +51,8 @@ class Predictor():
         ----------
         """
         # TODO: check alpha : positive definite ?
-        self.kernel_as = Matern(nu=2.5) # kernel for asymptotes
-        self.kernel_tc = KTC(alpha=0.5, beta=0.5) + \
+        self.kernel_as = Matern(nu=2.5)  # kernel for asymptotes
+        self.kernel_tc = KTC(alpha=1, beta=1) + \
             WhiteKernel(1e-4)  # kernel for trainning curves
 
         self.optimizer = optimizer
@@ -83,6 +84,7 @@ class Predictor():
             [self.kernel_as_.theta, self.kernel_tc_.theta])
         self.bounds = np.vstack(
             [self.kernel_as_.bounds, self.kernel_tc_.bounds])
+        '''
         print('self.kernel_as_')
         print(self.kernel_as_)
         print('self.kernel_as_.theta')
@@ -91,7 +93,7 @@ class Predictor():
         print(self.theta)
         print('self.bounds')
         print(self.bounds)
-
+        '''
         self._rng = check_random_state(self.random_state)
 
         self.X_train_ = np.copy(X) if self.copy_X_train else X
@@ -107,6 +109,7 @@ class Predictor():
 
         # fit theta
         if self.optimizer is not None:
+            '''
             def obj_func(theta):
                 return -self.log_marginal_likelihood(theta)
 
@@ -137,6 +140,40 @@ class Predictor():
             self.kernel_as_.theta = thetas[0]
             self.kernel_tc_.theta = thetas[1]
             self.log_marginal_likelihood_value_ = -np.min(lml_values)
+            '''
+            # First optimize starting from theta specified in kernel
+            optima = [(self.theta, -self.log_marginal_likelihood(self.theta))]
+            # Additional runs are performed from log-uniform chosen initial
+            self.n_starting_points = 100
+            if self.n_starting_points > 0:
+                if not np.isfinite(self.bounds).all():
+                    raise ValueError(
+                        "Multiple optimizer restarts (n_restarts_optimizer>0) "
+                        "requires that all bounds are finite.")
+                bounds = self.bounds
+                for _ in range(self.n_starting_points):
+                    theta_initial = \
+                        self._rng.uniform(bounds[:, 0], bounds[:, 1])
+                    optima.append(
+                        (theta_initial, -self.log_marginal_likelihood(theta_initial)))
+            # Select result from run with minimal (negative) log-marginal
+            # likelihood
+
+            lml_values = list(map(itemgetter(1), optima))
+            print('optima')
+            print(optima)
+            print('lml_values')
+            print(lml_values)
+            self.theta = optima[np.argmin(lml_values)][0]
+            thetas = np.hsplit(
+                self.theta, [self.kernel_as_.theta.shape[0], self.theta.shape[0]])
+            self.kernel_as_.theta = thetas[0]
+            self.kernel_tc_.theta = thetas[1]
+            self.log_marginal_likelihood_value_ = -np.min(lml_values)
+            print('kernels after fitting')
+            print(self.kernel_as_)
+            print(self.kernel_tc_)
+
         else:
             self.log_marginal_likelihood_value_ = \
                 self.log_marginal_likelihood(self.theta)
@@ -167,22 +204,19 @@ class Predictor():
         '''
         O = block_diag(*[np.ones((len(self.y_train_[i]), 1))
                          for i in range(self.y_train_.shape[0])])
+        O_trans = np.transpose(O)
 
         # K_x, K_t
         self.K_x = self.kernel_as_(self.X_train_)
-        # self.K_t = block_diag(*[self.kernel_tc_(np.reshape(self.y_train_[i], (-1, 1)))
-        #                        for i in range(self.y_train_.shape[0])])
         self.K_t = block_diag(*[self.kernel_tc_(np.arange(1, len(self.y_train_[i])+1).reshape(-1, 1))
-                       for i in range(self.y_train_.shape[0])])
+                                for i in range(self.y_train_.shape[0])])
+        self.K_x_inv = np.linalg.pinv(self.K_x)
+        self.K_t_inv = np.linalg.pinv(self.K_t)
 
-        # gamma
-        tmp = np.matmul(np.transpose(O), np.linalg.pinv(self.K_t))
-        self.gamma = np.matmul(
-            tmp, self.y_train_flatten_ - np.matmul(O, self.mean_prior))
-
-        # Lambda
-        tmp = np.matmul(np.transpose(O), np.linalg.pinv(self.K_t))
-        self.Lambda = np.matmul(tmp, O)
+        # gamma, Lambda
+        self.gamma = reduce(np.matmul, [
+                            O_trans, self.K_t_inv, self.y_train_flatten_ - np.matmul(O, self.mean_prior)])
+        self.Lambda = reduce(np.matmul, [O_trans, self.K_t_inv, O])
 
         return self
 
@@ -214,7 +248,6 @@ class Predictor():
         f_var = np.matmul(tmp, K_x_s)
 
         # Check if any of the variances is negative because of numerical issues. If yes: set the variance to 0.
-
         f_var_negative = f_var < 0
         if np.any(f_var_negative):
             warnings.warn("Predicted variances smaller than 0. "
@@ -280,36 +313,37 @@ class Predictor():
 
         O = block_diag(*[np.ones((len(self.y_train_[i]), 1))
                          for i in range(self.y_train_.shape[0])])
+        O_trans = np.transpose(O)
 
         # K_x, K_t
         K_x = kernel_as(self.X_train_)
-        K_t = block_diag(*[kernel_tc(np.reshape(self.y_train_[i], (-1, 1)))
+        K_t = block_diag(*[kernel_tc(np.arange(1, len(self.y_train_[i])+1).reshape(-1, 1))
                            for i in range(self.y_train_.shape[0])])
+        K_x_inv = np.linalg.pinv(K_x)
+        K_t_inv = np.linalg.pinv(K_t)
 
-        # gamma
-        tmp = np.matmul(np.transpose(O), np.linalg.pinv(K_t))
-        gamma = np.matmul(
-            tmp, self.y_train_flatten_ - np.matmul(O, self.mean_prior))
-
-        # Lambda
-        tmp = np.matmul(np.transpose(O), np.linalg.pinv(K_t))
-        Lambda = np.matmul(tmp, O)
+        # gamma, Lambda
+        gamma = reduce(np.matmul, [
+            O_trans, K_t_inv, self.y_train_flatten_ - np.matmul(O, self.mean_prior)])
+        Lambda = reduce(np.matmul, [O_trans, K_t_inv, O])
 
         # log_likelihood
-        tmp = np.matmul(np.transpose(
-            self.y_train_flatten_ - np.matmul(O, self.mean_prior)), np.linalg.pinv(K_t))
+        y_flatten_demean = self.y_train_flatten_ - \
+            np.matmul(O, self.mean_prior)
         log_likelihood = -0.5 * \
-            np.matmul(tmp, self.y_train_flatten_ -
-                      np.matmul(O, self.mean_prior))
+            reduce(np.matmul, [np.transpose(
+                y_flatten_demean), K_t_inv, y_flatten_demean])
+        #print('log_likelihood step 1:', log_likelihood)
 
-        tmp = np.matmul(np.transpose(gamma), np.linalg.pinv(
-            np.linalg.pinv(K_x)+Lambda))
-        log_likelihood += 0.5 * np.matmul(tmp, gamma)
+        log_likelihood += 0.5 * reduce(np.matmul, [np.transpose(gamma), np.linalg.pinv(
+            np.linalg.pinv(K_x)+Lambda), gamma])
+        #print('log_likelihood step 2:', log_likelihood)
 
-        tmp = np.linalg.det(np.linalg.pinv(K_x)+Lambda)
-        log_likelihood -= 0.5*np.log(tmp)
-
-        log_likelihood += (np.linalg.det(K_x)+np.linalg.det(K_t))
+        _, tmp_0 = np.linalg.slogdet(np.linalg.pinv(K_x)+Lambda)
+        _, tmp_1 = np.linalg.slogdet(K_x)
+        _, tmp_2 = np.linalg.slogdet(K_t)
+        log_likelihood -= 0.5 * (tmp_0 + tmp_1 + tmp_2)
+        #print('log_likelihood step 3:', log_likelihood)
 
         return log_likelihood[0][0]
 

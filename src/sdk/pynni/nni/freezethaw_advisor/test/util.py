@@ -99,3 +99,33 @@ def create_fake_data_mnist():
         y = y[: 3][: 3]
 
     return X, y
+
+
+def create_fake_data_mnist_diff_length():
+    MAX = 3
+    length = [7, 5, 9]
+    with open('{}/experiment.json'.format(PATH)) as json_file:
+        data = json.load(json_file)
+        trials = data['trialMessage']
+        X = np.empty([len(trials), 1])
+        y = np.empty(len(trials), dtype=object)
+
+        for i, trial in enumerate(trials):
+            if i >= MAX:
+                break
+            # X
+            X[i] = [trial['hyperParameters']['parameters']['dropout_rate']]
+            # y
+            y[i] = []
+            intermediate = trial['intermediate']
+            for j, res in enumerate(intermediate):
+                if j > length[i]:
+                    break
+                y[i] += [1 - float(res['data'])]
+
+        X = X[: MAX][:]
+        y = y[: MAX][:]
+        print(X)
+        print(y)
+
+    return X, y

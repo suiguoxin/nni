@@ -261,16 +261,20 @@ def predict_test():
 
 def log_likelihood_test():
     X, y = create_fake_data_simple()
-    theta = np.array([0, -0.69314718, -0.69314718, -9.21034037])
+
     predictor = Predictor()
     predictor.fit(X, y)
-    log_likelihood = predictor.log_marginal_likelihood(theta)
 
-    print('log_likelihood')
-    print(log_likelihood)
+    print('log_likelihood final of theta:')
+    print(predictor.theta)
+    print(predictor.bounds)
+    print(predictor.log_marginal_likelihood_value_)
+
+    print('log_likelihood of random theta')
+    theta = np.array([0, -0.69314718, -0.69314718, -9.21034037])
+    print(predictor.log_marginal_likelihood(theta))
 
 
 # kernel_ktc_test()
 # predict_test()
 log_likelihood_test()
- 
