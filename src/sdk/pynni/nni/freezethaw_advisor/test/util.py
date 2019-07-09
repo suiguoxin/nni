@@ -24,7 +24,7 @@ import json
 import numpy as np
 
 PATH = './src/sdk/pynni/nni/freezethaw_advisor/test'
-COLORS = ['b', 'g', 'r', 'c', 'm']
+COLORS = ['b', 'g', 'r', 'y', 'm']
 
 
 def create_fake_data_simple():
@@ -61,10 +61,10 @@ def create_fake_data_expdacay_diff_length(exp_lambda=0.5, asymp=0.5, gaussian_no
     data for fig 2(b)
     '''
     MAXTIME = 50
-    asymps = [0.4, 0.3, 0.2, 0.1]
-    length = [15, 5, 35, 50]
+    asymps = [0.2, 0.25, 0.4, 0.2, 0.35]
+    length = [50, 35, 5, 20, 15]
 
-    X = np.array([1, 2, 3, 4]).reshape(-1, 1)
+    X = np.arange(1, 6).reshape(-1, 1)
     y = np.empty(len(asymps), dtype=object)
 
     for i, asymp in enumerate(asymps):

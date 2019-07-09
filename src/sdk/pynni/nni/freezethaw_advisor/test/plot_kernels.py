@@ -149,7 +149,7 @@ def ktc_3_1():
 
         T = np.arange(N).reshape(-1, 1)
         plt.fill(np.concatenate([T, T[::-1]]), np.concatenate([mean - 1.9600 * std, (mean + 1.9600 * std)[::-1]]),
-                 color=COLORS[i], alpha=.6, fc='c', ec='None')
+                 color=COLORS[i], alpha=.6)
 
     plt.title('Training Curve Samples with 95% confidence interval')
     plt.legend()

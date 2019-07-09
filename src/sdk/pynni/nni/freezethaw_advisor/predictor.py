@@ -52,7 +52,7 @@ class Predictor():
         """
         # TODO: check alpha : positive definite ?
         self.kernel_as = Matern(nu=2.5)  # kernel for asymptotes
-        self.kernel_tc = KTC(alpha=1, beta=1) + \
+        self.kernel_tc = KTC(alpha=0.5, beta=0.5) + \
             WhiteKernel(1e-4)  # kernel for trainning curves
 
         self.optimizer = optimizer
@@ -160,10 +160,10 @@ class Predictor():
             # likelihood
 
             lml_values = list(map(itemgetter(1), optima))
-            print('optima')
-            print(optima)
-            print('lml_values')
-            print(lml_values)
+            # print('optima')
+            # print(optima)
+            # print('lml_values')
+            # print(lml_values)
             self.theta = optima[np.argmin(lml_values)][0]
             thetas = np.hsplit(
                 self.theta, [self.kernel_as_.theta.shape[0], self.theta.shape[0]])
@@ -349,10 +349,10 @@ class Predictor():
 
     def _constrained_optimization(self, obj_func, initial_theta, bounds):
         if self.optimizer == "fmin_l_bfgs_b":
-            print('initial_theta')
-            print(initial_theta)
-            print('bounds')
-            print(bounds)
+            # print('initial_theta')
+            # print(initial_theta)
+            # print('bounds')
+            # print(bounds)
             theta_opt, func_min, convergence_dict = fmin_l_bfgs_b(
                 obj_func, initial_theta, bounds=bounds)
             if convergence_dict["warnflag"] != 0:
