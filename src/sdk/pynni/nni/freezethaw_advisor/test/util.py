@@ -23,6 +23,10 @@ util.py
 import json
 import numpy as np
 
+# pylint:disable=missing-docstring
+# pylint:disable=no-member
+# pylint:disable=invalid-name
+
 PATH = './src/sdk/pynni/nni/freezethaw_advisor/test'
 COLORS = ['b', 'g', 'r', 'y', 'm']
 
@@ -37,11 +41,12 @@ def create_fake_data_simple():
 
 def create_fake_data_expdacay(exp_lambda=0.5, asymp=0.5, gaussian_noise=0.1):
     MAXTIME = 50
-    asymps = [0.4, 0.3, 0.2, 0.1]
+    #asymps = [0.4, 0.3, 0.2, 0.1]
+    asymps = [0.4]
     # asymps = [0.4]
 
-    X = np.array([1, 2, 3, 4]).reshape(-1, 1)
-    # X = np.array([1]).reshape(-1, 1)
+    #X = np.array([1, 2, 3, 4]).reshape(-1, 1)
+    X = np.array([1]).reshape(-1, 1)
     y = np.empty(len(asymps), dtype=object)
 
     for i, asymp in enumerate(asymps):
@@ -60,7 +65,6 @@ def create_fake_data_expdacay_diff_length(exp_lambda=0.5, asymp=0.5, gaussian_no
     '''
     data for fig 2(b)
     '''
-    MAXTIME = 50
     asymps = [0.2, 0.25, 0.4, 0.2, 0.35]
     length = [50, 35, 5, 20, 15]
 
@@ -92,7 +96,7 @@ def create_fake_data_mnist():
             # y
             y[i] = []
             intermediate = trial['intermediate']
-            for j, res in enumerate(intermediate):
+            for _, res in enumerate(intermediate):
                 y[i] += [1 - float(res['data'])]
 
         X = X[: 3][:]

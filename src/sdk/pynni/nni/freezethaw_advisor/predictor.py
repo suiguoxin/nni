@@ -37,7 +37,7 @@ from .kernels import KTC
 
 # pylint:disable=invalid-name
 # pylint:disable=attribute-defined-outside-init
-# TODO: pinv ? choleskey
+# TODO: inv ? choleskey
 
 
 class Predictor():
@@ -45,7 +45,7 @@ class Predictor():
     Freeze-Thaw Bayesian Optimization: Two Step Gaussian Process Predictor
     """
 
-    def __init__(self, optimizer="fmin_l_bfgs_b", n_restarts_optimizer=0, normalize_y=False, copy_X_train=True, random_state=None):
+    def __init__(self, alpha=1e-10, optimizer="fmin_l_bfgs_b", n_restarts_optimizer=0, normalize_y=False, copy_X_train=True, random_state=None):
         """
         Parameters
         ----------
@@ -54,6 +54,7 @@ class Predictor():
         self.kernel_as = Matern(nu=2.5)  # kernel for asymptotes
         self.kernel_tc = KTC(alpha=0.5, beta=0.5) + \
             WhiteKernel(1e-4)  # kernel for trainning curves
+        self.alpha = alpha
 
         self.optimizer = optimizer
         self.n_restarts_optimizer = n_restarts_optimizer
@@ -178,13 +179,13 @@ class Predictor():
             self.log_marginal_likelihood_value_ = \
                 self.log_marginal_likelihood(self.theta)
 
-        # re-compute gamma, Lambda, K_x, K_t
+        # compute gamma, Lambda, K_x, K_t
         self.__pre_compute()
 
         # Precompute quantities required for predictions which are independent of actual query points
         # Posterior distribution : P(f|y, X) = N(f;mu, C)
         # C， Equation 13(18)
-        self.C = np.linalg.pinv(np.linalg.pinv(self.K_x) + self.Lambda)
+        self.C = np.linalg.inv(np.linalg.inv(self.K_x) + self.Lambda)
         # Check if any of the variances is negative because of numerical issues. If yes: set the variance to 0.
         C_negative = self.C < 0
         if np.any(C_negative):
@@ -208,10 +209,11 @@ class Predictor():
 
         # K_x, K_t
         self.K_x = self.kernel_as_(self.X_train_)
+        self.K_x[np.diag_indices_from(self.K_x)] += self.alpha # TODO 
         self.K_t = block_diag(*[self.kernel_tc_(np.arange(1, len(self.y_train_[i])+1).reshape(-1, 1))
                                 for i in range(self.y_train_.shape[0])])
-        self.K_x_inv = np.linalg.pinv(self.K_x)
-        self.K_t_inv = np.linalg.pinv(self.K_t)
+        self.K_x_inv = np.linalg.inv(self.K_x)
+        self.K_t_inv = np.linalg.inv(self.K_t)
 
         # gamma, Lambda
         self.gamma = reduce(np.matmul, [
@@ -319,8 +321,8 @@ class Predictor():
         K_x = kernel_as(self.X_train_)
         K_t = block_diag(*[kernel_tc(np.arange(1, len(self.y_train_[i])+1).reshape(-1, 1))
                            for i in range(self.y_train_.shape[0])])
-        K_x_inv = np.linalg.pinv(K_x)
-        K_t_inv = np.linalg.pinv(K_t)
+        K_x_inv = np.linalg.inv(K_x)
+        K_t_inv = np.linalg.inv(K_t)
 
         # gamma, Lambda
         gamma = reduce(np.matmul, [
@@ -335,11 +337,11 @@ class Predictor():
                 y_flatten_demean), K_t_inv, y_flatten_demean])
         #print('log_likelihood step 1:', log_likelihood)
 
-        log_likelihood += 0.5 * reduce(np.matmul, [np.transpose(gamma), np.linalg.pinv(
-            np.linalg.pinv(K_x)+Lambda), gamma])
+        log_likelihood += 0.5 * reduce(np.matmul, [np.transpose(gamma), np.linalg.inv(
+            np.linalg.inv(K_x)+Lambda), gamma])
         #print('log_likelihood step 2:', log_likelihood)
 
-        _, tmp_0 = np.linalg.slogdet(np.linalg.pinv(K_x)+Lambda)
+        _, tmp_0 = np.linalg.slogdet(np.linalg.inv(K_x)+Lambda)
         _, tmp_1 = np.linalg.slogdet(K_x)
         _, tmp_2 = np.linalg.slogdet(K_t)
         log_likelihood -= 0.5 * (tmp_0 + tmp_1 + tmp_2)

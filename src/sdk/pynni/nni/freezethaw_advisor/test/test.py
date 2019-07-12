@@ -136,19 +136,19 @@ def predict_test():
     print('K_t:\n', K_t)
 
     # gamma
-    tmp = np.matmul(np.transpose(O), np.linalg.pinv(K_t))  # shape (N,NT)
+    tmp = np.matmul(np.transpose(O), np.linalg.inv(K_t))  # shape (N,NT)
     gamma = np.matmul(tmp, y_train_flatten_ - np.matmul(O, m))
     print('gamma:')
     print(gamma)
 
     # Lambda
-    tmp = np.matmul(np.transpose(O), np.linalg.pinv(K_t))
+    tmp = np.matmul(np.transpose(O), np.linalg.inv(K_t))
     Lambda = np.matmul(tmp, O)
     print('Lambda:')
     print(Lambda)
 
     # C
-    C = np.linalg.pinv(np.linalg.pinv(K_x) + Lambda)
+    C = np.linalg.inv(np.linalg.inv(K_x) + Lambda)
     print('C:')
     print(C)
 
@@ -275,6 +275,12 @@ def log_likelihood_test():
     print(predictor.log_marginal_likelihood(theta))
 
 
-# kernel_ktc_test()
-# predict_test()
+def inv_test():
+    X = np.arange(4).reshape(2, 2)
+    print(np.linalg.inv(X))
+    print(np.linalg.inv(X))
+
+kernel_ktc_test()
+predict_test()
 log_likelihood_test()
+# inv_test()

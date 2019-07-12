@@ -39,13 +39,16 @@ def plot_asymptote():
     '''
     Fig 2(b)， 2(c)
     '''
-    X, y = create_fake_data_expdacay_diff_length()
+    X, y = create_fake_data_expdacay()
+    # X, y = create_fake_data_expdacay_diff_length()
     #X, y = create_fake_data_mnist_diff_length()
 
     predictor = Predictor()
 
     predictor.fit(X, y)
     mean, std = predictor.predict_asymptote_old(return_std=True)
+    print('mean, std:')
+    print(mean, std)
 
     # figure 2(b)
     for i, y_i in enumerate(y):
@@ -54,6 +57,10 @@ def plot_asymptote():
         plt.plot(np.arange(length), y_i, color=COLORS[i], )
         mu = mean[i][0]
         sigma = std[i]
+        print('mu:')
+        print(mu)
+        print('sigma:')
+        print(sigma)
         plt.plot(np.arange(length), [mu] * length,
                  '--', color=COLORS[i], label='Prediction')
         plt.fill_between(np.arange(length), [
@@ -65,7 +72,7 @@ def plot_asymptote():
     plt.savefig('{}/image/2_b_expdecay.png'.format(PATH))
     # plt.savefig('{}/image/2_b_mnist.png'.format(PATH))
     plt.close()
-    
+
     # figure 2(c)
     print('X')
     print(X)
