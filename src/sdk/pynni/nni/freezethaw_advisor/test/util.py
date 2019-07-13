@@ -38,6 +38,14 @@ def create_fake_data_simple():
                   [1, 2, 3]])
     return X, y
 
+def target(x):
+    return np.exp(-(x - 2)**2) + np.exp(-(x - 6)**2/10) + 1/ (x**2 + 1)
+
+def create_fake_data_one_dimension():
+    x = [-2, ]
+x = np.linspace(-2, 10, 10000).reshape(-1, 1)
+y = target(x)
+
 
 def create_fake_data_expdacay(exp_lambda=0.5, asymp=0.5, gaussian_noise=0.1):
     MAXTIME = 50
