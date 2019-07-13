@@ -27,7 +27,7 @@ import numpy as np
 # pylint:disable=no-member
 # pylint:disable=invalid-name
 
-PATH = './src/sdk/pynni/nni/freezethaw_advisor/test'
+PATH = './src/sdk/pynni/nni/mtsmac_advisor/test'
 COLORS = ['b', 'g', 'r', 'y', 'm']
 
 
@@ -38,11 +38,15 @@ def create_fake_data_simple():
                   [1, 2, 3]])
     return X, y
 
+
 def target(x):
-    return np.exp(-(x - 2)**2) + np.exp(-(x - 6)**2/10) + 1/ (x**2 + 1)
+    return np.exp(-(x - 2)**2) + np.exp(-(x - 6)**2/10) + 1 / (x**2 + 1)
+
 
 def create_fake_data_one_dimension():
     x = [-2, ]
+
+
 x = np.linspace(-2, 10, 10000).reshape(-1, 1)
 y = target(x)
 
@@ -91,7 +95,7 @@ def create_fake_data_expdacay_diff_length(exp_lambda=0.5, asymp=0.5, gaussian_no
     return X, y
 
 
-def create_fake_data_mnist():
+def create_fake_data_mnist(size_X=3, size_y=3):
     with open('{}/experiment.json'.format(PATH)) as json_file:
         data = json.load(json_file)
         trials = data['trialMessage']
@@ -107,8 +111,8 @@ def create_fake_data_mnist():
             for _, res in enumerate(intermediate):
                 y[i] += [1 - float(res['data'])]
 
-        X = X[: 3][:]
-        y = y[: 3][: 3]
+        X = X[: size_X][:]
+        y = y[: size_X][: size_y]
 
     return X, y
 
