@@ -49,7 +49,7 @@ class FreezeThaw(MsgDispatcherBase):
         self.optimize_mode = OptimizeMode(optimize_mode)
 
         # target space
-        self._space = None 
+        self._space = None
 
         self._random_state = np.random.RandomState()  # pylint: disable=no-member
 

@@ -21,17 +21,10 @@
 predictor_rf.py
 """
 
-import warnings
-from functools import reduce
-from operator import itemgetter
-
 import numpy as np
-
 from sklearn.ensemble import RandomForestRegressor
 
-
 # pylint:disable=invalid-name
-# pylint:disable=attribute-defined-outside-init
 
 
 class Predictor():
@@ -47,6 +40,7 @@ class Predictor():
         self.regr = RandomForestRegressor(
             n_estimators=10, max_depth=3, min_samples_split=2, max_features=5/6, random_state=0)
         self.final_only = final_only
+        self.epochs = None
 
     def fit(self, X, y):
         """Fit Freeze-Thaw Two Step Gaussian process regression model.
@@ -63,6 +57,7 @@ class Predictor():
         -------
         self: returns an instance of self.
         """
+        self.epochs = len(y[0])  # TODO: maybe not exact
         X, y = self.transform_data(X, y)
         self.regr.fit(X, y)
 
@@ -81,7 +76,6 @@ class Predictor():
             N_features = X[0].shape[0]
             X_new = np.empty([0, N_features+1])
             y_new = np.empty(0)
-            self.epochs = len(y[0])  # TODO: maybe not exact
             for i in range(N):
                 for t in range(len(y[i])):
                     X_new = np.vstack((X_new, np.append(X[i], [t])))
@@ -96,14 +90,11 @@ class Predictor():
         return X_new, y_new
 
     def predict(self, X):
-        """Generate next parameter for trial
-        If the number of trial result is lower than cold start number,
-        gp will first randomly generate some parameters.
-        Otherwise, choose the parameters by the Gussian Process Model
-
+        """ predict
         Parameters
         ----------
-        parameter_id : int
+        X : array-like, shape = (N, N_features)
+            Training data
 
         Returns
         -------

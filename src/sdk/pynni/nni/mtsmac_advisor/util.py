@@ -56,7 +56,7 @@ def _ei(x, mean, std, y_max, xi=0):
 
 
 def _ei_ed(x, mean, std, y_max, xi=0):
-
+    pass
 
 
 def _ig(X, gp):
