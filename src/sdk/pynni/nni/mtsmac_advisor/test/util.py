@@ -96,15 +96,15 @@ def create_fake_data_expdacay_diff_length(exp_lambda=0.5, asymp=0.5, gaussian_no
 
 
 def create_fake_data_mnist(size_X=3, size_y=3):
-    with open('{}/experiment.json'.format(PATH)) as json_file:
+    with open('{}/data/experiment.json'.format(PATH)) as json_file:
         data = json.load(json_file)
         trials = data['trialMessage']
-        X = np.empty([len(trials), 1])
+        X = np.empty([len(trials), len(trials[0]['hyperParameters']['parameters'])])
         y = np.empty(len(trials), dtype=object)
 
         for i, trial in enumerate(trials):
             # X
-            X[i] = [trial['hyperParameters']['parameters']['dropout_rate']]
+            X[i] = [val for _, val in trial['hyperParameters']['parameters'].items()]
             # y
             y[i] = []
             intermediate = trial['intermediate']
@@ -145,3 +145,6 @@ def create_fake_data_mnist_diff_length():
         print(y)
 
     return X, y
+
+
+create_fake_data_mnist(size_X=3, size_y=3)

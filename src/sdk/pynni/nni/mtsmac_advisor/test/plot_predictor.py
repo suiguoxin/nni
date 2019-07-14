@@ -20,75 +20,62 @@
 """
 plot_predictor.py
 """
-import numpy as np
 
+import numpy as np
 import matplotlib.pyplot as plt
 
-from sklearn.gaussian_process.kernels import Matern
+from nni.mtsmac_advisor.test.util import PATH, COLORS
+from nni.mtsmac_advisor.predictor import Predictor
+from nni.mtsmac_advisor.test.util import create_fake_data_simple, create_fake_data_mnist
+from nni.mtsmac_advisor.test.util import create_fake_data_expdacay, create_fake_data_expdacay_diff_length, create_fake_data_mnist_diff_length
 
-from nni.freezethaw_advisor.predictor import Predictor
-from nni.freezethaw_advisor.test.util import PATH, COLORS
-from nni.freezethaw_advisor.test.util import create_fake_data_expdacay, create_fake_data_expdacay_diff_length, create_fake_data_mnist_diff_length
 
 # pylint:disable=missing-docstring
 # pylint:disable=no-member
 # pylint:disable=invalid-name
 
 
-def plot_asymptote():
-    '''
-    Fig 2(b)， 2(c)
-    '''
-    X, y = create_fake_data_expdacay()
-    # X, y = create_fake_data_expdacay_diff_length()
-    #X, y = create_fake_data_mnist_diff_length()
+def plot_rfr(final_only=False):
+    size_X = 20
+    size_y = 100
+    X, y = create_fake_data_mnist(size_X, size_y)
 
-    predictor = Predictor()
+    predictor = Predictor(final_only=final_only)
+    size_train = 17
+    predictor.fit(X[:size_train], y[:size_train])
+    mean, std = predictor.predict(X[size_train:])
 
-    predictor.fit(X, y)
-    mean, std = predictor.predict_asymptote_old(return_std=True)
-    print('mean, std:')
-    print(mean, std)
+    # plot true learning curve
+    idx_color = 0
+    for i in range(size_train, size_X):
+        N = len(y[i])
+        plt.plot(range(N), y[i], color=COLORS[idx_color], label='y_true')
+        idx_color += 1
 
-    # figure 2(b)
-    for i, y_i in enumerate(y):
-        length = len(y[i])
-
-        plt.plot(np.arange(length), y_i, color=COLORS[i], )
-        mu = mean[i][0]
+    # plot prediction
+    size_predict = size_X - size_train
+    for i in range(size_predict):
+        mu = mean[i]
         sigma = std[i]
         print('mu:')
         print(mu)
         print('sigma:')
         print(sigma)
-        plt.plot(np.arange(length), [mu] * length,
-                 '--', color=COLORS[i], label='Prediction')
-        plt.fill_between(np.arange(length), [
-            mu-1.9600 * sigma * 0.1]*length, [mu + 1.9600 * sigma * 0.1]*length, color=COLORS[i], alpha=0.5, interpolate=True)
-        # TODO: remove * 0.1
+        length = len(y[i])
+        if final_only:
+            plt.plot(range(length), [mu] * length, label='y_predict')
+            plt.fill_between(np.arange(length), [
+                mu-1.9600 * sigma * 0.1]*length, [mu + 1.9600 * sigma * 0.1]*length, color=COLORS[i], alpha=0.5, interpolate=True)
+        else:
+            plt.plot(range(length), mu, label='y_predict')
+            T = np.arange(len(y[i])).reshape(-1, 1)
+            plt.fill(np.concatenate([T, T[::-1]]), np.concatenate([mu - 1.9600 * sigma * 0.1, (mu + 1.9600 * sigma * 0.1)[::-1]]),
+                     color=COLORS[i], alpha=.6)
 
-    plt.title('Training Curve Predictions')
+    plt.title('Learning curve MNIST')
     plt.legend()
-    plt.savefig('{}/image/2_b_expdecay.png'.format(PATH))
-    # plt.savefig('{}/image/2_b_mnist.png'.format(PATH))
-    plt.close()
-
-    # figure 2(c)
-    print('X')
-    print(X)
-    print('mean')
-    print(mean)
-    print('std')
-    print(std)
-
-    # TODO: remove * 0.1
-    plt.plot(X, mean, label='mean')
-    plt.fill(np.concatenate([X, X[::-1]]), np.concatenate([mean - 1.9600 * std *
-                                                           0.1, (mean + 1.9600 * std * 0.1)[::-1]]), alpha=.6, fc='c', ec='None')
-    plt.title('Asymptotic GP')
-    plt.legend()
-    plt.savefig('{}/image/2_c_expdecay.png'.format(PATH))
+    plt.savefig('{}/image/lr.png'.format(PATH))
     plt.close()
 
 
-plot_asymptote()
+plot_rfr(final_only=False)
