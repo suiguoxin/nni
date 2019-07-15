@@ -2,7 +2,7 @@ authorName: default
 experimentName: example_mnist_hyperband
 trialConcurrency: 2
 maxExecDuration: 100h
-maxTrialNum: 10000
+maxTrialNum: 500
 #choice: local, remote, pai
 trainingServicePlatform: local
 searchSpacePath: search_space.json
@@ -14,7 +14,7 @@ advisor:
   classArgs:
     #R: the maximum trial budget (could be the number of mini-batches or epochs) can be
     #   allocated to a trial. Each trial should use trial budget to control how long it runs.
-    R: 100
+    R: 81
     #eta: proportion of discarded trials
     eta: 3
     #choice: maximize, minimize

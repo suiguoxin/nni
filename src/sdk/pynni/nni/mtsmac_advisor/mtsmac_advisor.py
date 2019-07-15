@@ -18,7 +18,7 @@
 # DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 """
-freezethaw_advisor.py
+mtsmac_advisor.py
 """
 
 import logging
@@ -30,22 +30,21 @@ from nni.utils import NodeType, OptimizeMode, extract_scalar_reward
 
 from .target_space import TargetSpace
 
-logger = logging.getLogger("FreezeThaw_Advisor_AutoML")
+logger = logging.getLogger("MTSMAC_Advisor_AutoML")
 
 
-class FreezeThaw(MsgDispatcherBase):
-    """
-    Parameters
-    ----------
-    R: int
-        the maximum amount of resource that can be allocated to a single configuration
-    eta: int
-        the variable that controls the proportion of configurations discarded in each round of SuccessiveHalving
-    optimize_mode: str
-        optimize mode, 'maximize' or 'minimize'
-    """
-
+class MTSMAC(MsgDispatcherBase):
+    '''
+    Multi-Task SMAC
+    '''
     def __init__(self, optimize_mode='maximize'):
+        """
+        Parameters
+        ----------
+        optimize_mode: str
+            optimize mode, 'maximize' or 'minimize'
+        """
+        super(MTSMAC, self).__init__()
         self.optimize_mode = OptimizeMode(optimize_mode)
 
         # target space
@@ -105,7 +104,7 @@ class FreezeThaw(MsgDispatcherBase):
             hyper_params: the hyperparameters (a string) generated and returned by tuner
         """
         # update _space
-        # update _gp
+        # update _predictor
 
     def handle_report_metric_data(self, data):
         """
@@ -120,7 +119,7 @@ class FreezeThaw(MsgDispatcherBase):
             Data type not supported
         """
         # update _space
-        # update _gp
+        # update _predictor
 
     def handle_add_customized_trial(self, data):
         pass

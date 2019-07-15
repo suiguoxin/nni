@@ -127,14 +127,14 @@ class Predictor():
                 mean = np.hstack((mean, mean_t.reshape(-1, 1)))
                 std = np.hstack((std, std_t.reshape(-1, 1)))
 
-        print('shape of mean, std:')
-        print(mean.shape)
-        print(std.shape)
-        print('res')
-        print(res)
-        print('mean')
-        print(mean)
-        print('std')
-        print(std)
+        # print('shape of mean, std:')
+        # print(mean.shape)
+        # print(std.shape)
+        # print('res')
+        # print(res)
+        # print('mean')
+        # print(mean)
+        # print('std')
+        # print(std)
 
         return mean, std
