@@ -92,6 +92,7 @@ class MTSMAC(MsgDispatcherBase):
         """
         # generate one trial
         parameter_id, parameters = self._space.select_config()
+        parameters['TRIAL_BUDGET'] = 1
         res = {
             'parameter_id': parameter_id,
             'parameter_source': 'algorithm',
@@ -107,7 +108,7 @@ class MTSMAC(MsgDispatcherBase):
         data: JSON object
             search space
         """
-        self._space = TargetSpace(data, self._random_state)
+        self._space = TargetSpace(data, random_state=self._random_state)
 
     def handle_trial_end(self, data):
         """
@@ -119,7 +120,8 @@ class MTSMAC(MsgDispatcherBase):
             event: the job's state
             hyper_params: the hyperparameters (a string) generated and returned by tuner
         """
-        parameter_id = data['hyper_params']['parameter_id']
+        hyper_params = json_tricks.loads(data['hyper_params']) #TODO: bug of framework
+        parameter_id = hyper_params['parameter_id']
         self._space.trial_end(parameter_id)
 
     def handle_report_metric_data(self, data):

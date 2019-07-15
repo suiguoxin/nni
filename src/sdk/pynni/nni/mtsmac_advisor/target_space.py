@@ -51,13 +51,14 @@ class TargetSpace():
         self._bounds = np.array([item[1] for item in sorted(
             search_space.items(), key=lambda x: x[0])])
 
-        self._params = None  # X
-        self._target = None  # y
+        # preallocated memory for X and Y points
+        self._params = np.empty(shape=(0, self.dim))
+        self._target = np.empty(shape=(0), dtype=object)
 
         self.hyper_configs_running = {}  # {id: {params:, perf: [], length: N}}
         self.hyper_configs_completed = {}  # {id: {params:, perf: [], length: N}}
 
-        self.cur_param_id = 0
+        self.next_param_id = 0
         self.max_epoch = max_epoch
 
     @property
@@ -94,25 +95,64 @@ class TargetSpace():
         '''bounds'''
         return self._bounds
 
+    def params_to_array(self, params):
+        ''' dict to array '''
+        try:
+            assert set(params) == set(self.keys)
+        except AssertionError:
+            raise ValueError(
+                "Parameters' keys ({}) do ".format(sorted(params)) +
+                "not match the expected set of keys ({}).".format(self.keys)
+            )
+        return np.asarray([params[key] for key in self.keys])
+
+    def array_to_params(self, x):
+        '''
+        array to dict
+
+        maintain int type if the paramters is defined as int in search_space.json
+        '''
+        try:
+            assert len(x) == len(self.keys)
+        except AssertionError:
+            raise ValueError(
+                "Size of array ({}) is different than the ".format(len(x)) +
+                "expected number of parameters ({}).".format(self.dim())
+            )
+
+        params = {}
+        for i, _bound in enumerate(self._bounds):
+            if _bound['_type'] == 'choice' and all(isinstance(val, int) for val in _bound['_value']):
+                params.update({self.keys[i]: int(x[i])})
+            elif _bound['_type'] in ['randint']:
+                params.update({self.keys[i]: int(x[i])})
+            else:
+                params.update({self.keys[i]:  x[i]})
+
+        return params
+
     def register_new_config(self, parameter_id, params):
         '''
         register new config without performance
         '''
         self.hyper_configs_running[parameter_id] = {
-            'params': params,
+            'params': self.array_to_params(params),
             'perf': []
         }
 
-        param = [val for _, val in params.items()]
-        self._params = np.vstack((self._params, param))
-        self._target = np.append(self._target, [])
+        # param = [val for _, val in params.items()]
+        self._params = np.vstack((self._params, params))
+        self._target = np.append(self._target, ['NO_VALUE']) # TODO: refine
 
     def register(self, parameter_id, value):
         '''
         insert a result into target space
         '''
         self.hyper_configs_running[parameter_id]['perf'].append(value)
-        self._target[parameter_id].append(value)
+        if self._target[parameter_id] == 'NO_VALUE':
+            self._target[parameter_id] = [value]
+        else:
+            self._target[parameter_id].append(value)
 
     def trial_end(self, parameter_id):
         '''
@@ -159,9 +199,11 @@ class TargetSpace():
         # TODO: select from running configs
         # select from new configs
         params = self.random_sample()
-        self.cur_param_id += 1
-        parameter_id = self.cur_param_id
+        parameter_id = self.next_param_id
+        self.next_param_id += 1
 
         self.register_new_config(parameter_id, params)
 
-        return parameter_id, params
+        parameter_json = self.array_to_params(params)
+
+        return parameter_id, parameter_json

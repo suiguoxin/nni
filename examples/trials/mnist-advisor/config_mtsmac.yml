@@ -1,5 +1,5 @@
 authorName: default
-experimentName: example_mnist_hyperband
+experimentName: example_mnist_MTSMAC
 trialConcurrency: 2
 maxExecDuration: 100h
 maxTrialNum: 500
