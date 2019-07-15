@@ -22,21 +22,39 @@ mtsmac_advisor.py
 """
 
 import logging
+import json_tricks
 import numpy as np
 
 from nni.protocol import CommandType, send
 from nni.msg_dispatcher_base import MsgDispatcherBase
 from nni.utils import NodeType, OptimizeMode, extract_scalar_reward
 
-from .target_space import TargetSpace
+from nni.mtsmac_advisor.target_space import TargetSpace
 
 logger = logging.getLogger("MTSMAC_Advisor_AutoML")
+
+_next_parameter_id = 0
+_KEY = 'TRIAL_BUDGET'
+
+
+def create_parameter_id():
+    """Create an id
+
+    Returns
+    -------
+    int
+        parameter id
+    """
+    global _next_parameter_id  # pylint: disable=global-statement
+    _next_parameter_id += 1
+    return _next_parameter_id - 1
 
 
 class MTSMAC(MsgDispatcherBase):
     '''
     Multi-Task SMAC
     '''
+
     def __init__(self, optimize_mode='maximize'):
         """
         Parameters
@@ -81,8 +99,23 @@ class MTSMAC(MsgDispatcherBase):
     def _request_one_trial_job(self):
         """
         get one trial job, i.e., one hyperparameter configuration.
+        If the number of trial result is lower than cold start number,
+        gp will first randomly generate some parameters.
+        Otherwise, choose the parameters by the Gussian Process Model
+
+        Returns
+        -------
+        result : dict
         """
         # generate one trial
+        # TODO: arg_max
+        res = {
+            'parameter_id': create_parameter_id,
+            'parameter_source': 'algorithm',
+            'parameters': self._space.random_sample()
+        }
+        logger.info("Generate paramageters:\n %s", res)
+        send(CommandType.NewTrialJob, json_tricks.dumps(res))
 
     def handle_update_search_space(self, data):
         """
@@ -103,8 +136,10 @@ class MTSMAC(MsgDispatcherBase):
             event: the job's state
             hyper_params: the hyperparameters (a string) generated and returned by tuner
         """
-        # update _space
-        # update _predictor
+        # update target space
+        hyper_params = json_tricks.loads(data['hyper_params'])
+        parameter_id = hyper_params['parameter_id']
+        self._space.trial_end(parameter_id)
 
     def handle_report_metric_data(self, data):
         """
@@ -118,8 +153,16 @@ class MTSMAC(MsgDispatcherBase):
         ValueError
             Data type not supported
         """
-        # update _space
-        # update _predictor
+        # update target space
+        value = extract_scalar_reward(data['value'])
+        if data['type'] == 'FINAL':
+            self._space.register(data['parameter_id'], data['sequence'], value)
+            # self.completed_hyper_configs.append(data)  # TODO: check
+        elif data['type'] == 'PERIODICAL':
+            self._space.register(data['parameter_id'], data['sequence'], value)
+        else:
+            raise ValueError(
+                'Data type not supported: {}'.format(data['type']))
 
     def handle_add_customized_trial(self, data):
         pass
