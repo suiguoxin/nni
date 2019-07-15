@@ -27,27 +27,11 @@ import numpy as np
 
 from nni.protocol import CommandType, send
 from nni.msg_dispatcher_base import MsgDispatcherBase
-from nni.utils import NodeType, OptimizeMode, extract_scalar_reward
+from nni.utils import OptimizeMode, extract_scalar_reward
 
 from nni.mtsmac_advisor.target_space import TargetSpace
 
 logger = logging.getLogger("MTSMAC_Advisor_AutoML")
-
-_next_parameter_id = 0
-_KEY = 'TRIAL_BUDGET'
-
-
-def create_parameter_id():
-    """Create an id
-
-    Returns
-    -------
-    int
-        parameter id
-    """
-    global _next_parameter_id  # pylint: disable=global-statement
-    _next_parameter_id += 1
-    return _next_parameter_id - 1
 
 
 class MTSMAC(MsgDispatcherBase):
@@ -67,7 +51,6 @@ class MTSMAC(MsgDispatcherBase):
 
         # target space
         self._space = None
-
         self._random_state = np.random.RandomState()  # pylint: disable=no-member
 
     def load_checkpoint(self):
@@ -108,11 +91,11 @@ class MTSMAC(MsgDispatcherBase):
         result : dict
         """
         # generate one trial
-        # TODO: arg_max
+        parameter_id, parameters = self._space.select_config()
         res = {
-            'parameter_id': create_parameter_id,
+            'parameter_id': parameter_id,
             'parameter_source': 'algorithm',
-            'parameters': self._space.random_sample()
+            'parameters': parameters
         }
         logger.info("Generate paramageters:\n %s", res)
         send(CommandType.NewTrialJob, json_tricks.dumps(res))
@@ -136,9 +119,7 @@ class MTSMAC(MsgDispatcherBase):
             event: the job's state
             hyper_params: the hyperparameters (a string) generated and returned by tuner
         """
-        # update target space
-        hyper_params = json_tricks.loads(data['hyper_params'])
-        parameter_id = hyper_params['parameter_id']
+        parameter_id = data['hyper_params']['parameter_id']
         self._space.trial_end(parameter_id)
 
     def handle_report_metric_data(self, data):
@@ -156,10 +137,9 @@ class MTSMAC(MsgDispatcherBase):
         # update target space
         value = extract_scalar_reward(data['value'])
         if data['type'] == 'FINAL':
-            self._space.register(data['parameter_id'], data['sequence'], value)
-            # self.completed_hyper_configs.append(data)  # TODO: check
+            self._space.register(data['parameter_id'], value)
         elif data['type'] == 'PERIODICAL':
-            self._space.register(data['parameter_id'], data['sequence'], value)
+            self._space.register(data['parameter_id'], value)
         else:
             raise ValueError(
                 'Data type not supported: {}'.format(data['type']))

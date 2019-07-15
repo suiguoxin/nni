@@ -154,6 +154,13 @@ advisor_schema_dict = {
         },
         Optional('gpuNum'): setNumberRange('gpuNum', int, 0, 99999),
     },
+    'MTSMAC':{
+        'builtinAdvisorName': Or('MTSMAC'),
+        'classArgs': {
+            'optimize_mode': setChoice('optimize_mode', 'maximize', 'minimize')
+        },
+        Optional('gpuNum'): setNumberRange('gpuNum', int, 0, 99999),
+    },
     'customized':{
         'codeDir': setPathCheck('codeDir'),
         'classFileName': setType('classFileName', str),

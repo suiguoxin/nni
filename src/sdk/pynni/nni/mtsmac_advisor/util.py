@@ -27,17 +27,6 @@ from scipy.stats import norm
 from scipy.optimize import minimize
 
 
-def acq_max():
-    '''
-    A function to find the maximum of the acquisition function.
-    Step 1: get a basket by 'Expected Improvement'
-    Step 2; get a config by 'Information Gain'
-    '''
-
-    # get a basket
-    _get_basket(predictor, num_old, num_new)
-
-
 def _get_basket(predictor, num_old, num_new):
     '''
     get a basket of num_old + num_new canditate by EI

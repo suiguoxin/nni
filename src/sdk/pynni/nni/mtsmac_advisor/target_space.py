@@ -30,7 +30,7 @@ class TargetSpace():
     Holds the param-space coordinates (X) and target values (Y)
     """
 
-    def __init__(self, search_space, random_state=None):
+    def __init__(self, search_space, max_epoch=20, random_state=None):
         """
         Parameters
         ----------
@@ -48,16 +48,17 @@ class TargetSpace():
         # Get the name of the parameters
         self._keys = sorted(search_space)
         # Create an array with parameters bounds
-        self._bounds = np.array(
-            [item[1]
-                for item in sorted(search_space.items(), key=lambda x: x[0])]
-        )
+        self._bounds = np.array([item[1] for item in sorted(
+            search_space.items(), key=lambda x: x[0])])
 
         self._params = None  # X
         self._target = None  # y
 
         self.hyper_configs_running = {}  # {id: {params:, perf: [], length: N}}
         self.hyper_configs_completed = {}  # {id: {params:, perf: [], length: N}}
+
+        self.cur_param_id = 0
+        self.max_epoch = max_epoch
 
     @property
     def params(self):
@@ -93,28 +94,34 @@ class TargetSpace():
         '''bounds'''
         return self._bounds
 
-    def register(self, parameter_id, seq, value):
+    def register_new_config(self, parameter_id, params):
+        '''
+        register new config without performance
+        '''
+        self.hyper_configs_running[parameter_id] = {
+            'params': params,
+            'perf': []
+        }
+
+        param = [val for _, val in params.items()]
+        self._params = np.vstack((self._params, param))
+        self._target = np.append(self._target, [])
+
+    def register(self, parameter_id, value):
         '''
         insert a result into target space
         '''
-        # TODO: if parameter_id doesn't exist
         self.hyper_configs_running[parameter_id]['perf'].append(value)
-
-        # update _params, _target
-        X = np.empty(0, self.dim)
-        y = np.empty(0, dtype=object)
-
-        # for _ in hyper_configs_running:
-        #    np.vstack
-        self._params = X
-        self._target = y
+        self._target[parameter_id].append(value)
 
     def trial_end(self, parameter_id):
         '''
         trial end
         '''
-        params = self.hyper_configs_running.pop(parameter_id)
-        self.hyper_configs_running[parameter_id] = params.hyper_params
+        if len(self.hyper_configs_running[parameter_id]['perf']) >= self.max_epoch:
+            params = self.hyper_configs_running.pop(
+                parameter_id)  # TODO: check
+            self.hyper_configs_completed[parameter_id] = params.hyper_params
 
     def random_sample(self):
         """
@@ -142,3 +149,19 @@ class TargetSpace():
                     _bound['_value'][0], _bound['_value'][1], _bound['_value'][2], self.random_state)
 
         return params
+
+    def select_config(self):
+        '''
+        function to find the maximum of the acquisition function.
+        Step 1: get a basket by 'Expected Improvement'
+        Step 2; get a config by 'Information Gain'
+        '''
+        # TODO: select from running configs
+        # select from new configs
+        params = self.random_sample()
+        self.cur_param_id += 1
+        parameter_id = self.cur_param_id
+
+        self.register_new_config(parameter_id, params)
+
+        return parameter_id, params
