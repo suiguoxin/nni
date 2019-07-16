@@ -29,6 +29,7 @@ from nni.protocol import CommandType, send
 from nni.msg_dispatcher_base import MsgDispatcherBase
 from nni.utils import OptimizeMode, extract_scalar_reward
 
+from nni.mtsmac_advisor.predictor import Predictor
 from nni.mtsmac_advisor.target_space import TargetSpace
 
 logger = logging.getLogger("MTSMAC_Advisor_AutoML")
@@ -39,7 +40,7 @@ class MTSMAC(MsgDispatcherBase):
     Multi-Task SMAC
     '''
 
-    def __init__(self, optimize_mode='maximize'):
+    def __init__(self, optimize_mode='maximize', cold_start_num=2, max_epochs=20):
         """
         Parameters
         ----------
@@ -48,6 +49,11 @@ class MTSMAC(MsgDispatcherBase):
         """
         super(MTSMAC, self).__init__()
         self.optimize_mode = OptimizeMode(optimize_mode)
+
+        self._predictor = Predictor()
+        # num of random evaluations before GPR
+        self._cold_start_num = cold_start_num
+        self._max_epochs = max_epochs
 
         # target space
         self._space = None
@@ -76,6 +82,8 @@ class MTSMAC(MsgDispatcherBase):
         data: int
             number of trial jobs
         """
+        if self._space.len_completed() >= self._cold_start_num:
+            self._predictor.fit(self._space.params, self._space.target)
         for _ in range(data):
             self._request_one_trial_job()
 
@@ -90,9 +98,14 @@ class MTSMAC(MsgDispatcherBase):
         -------
         result : dict
         """
-        # generate one trial
-        parameter_id, parameters = self._space.select_config()
-        parameters['TRIAL_BUDGET'] = 1
+        if self._space.len_completed() < self._cold_start_num:
+            parameter_id, parameters = self._space.select_config_warmup()
+            parameters['TRIAL_BUDGET'] = self._max_epochs
+        else:
+            # generate one trial
+            parameter_id, parameters = self._space.select_config(
+                self._predictor)
+            parameters['TRIAL_BUDGET'] = 1
         res = {
             'parameter_id': parameter_id,
             'parameter_source': 'algorithm',
@@ -108,7 +121,8 @@ class MTSMAC(MsgDispatcherBase):
         data: JSON object
             search space
         """
-        self._space = TargetSpace(data, random_state=self._random_state)
+        self._space = TargetSpace(
+            data, random_state=self._random_state, max_epochs=self._max_epochs)
 
     def handle_trial_end(self, data):
         """
@@ -120,7 +134,8 @@ class MTSMAC(MsgDispatcherBase):
             event: the job's state
             hyper_params: the hyperparameters (a string) generated and returned by tuner
         """
-        hyper_params = json_tricks.loads(data['hyper_params']) #TODO: bug of framework
+        # TODO: bug of framework not dict
+        hyper_params = json_tricks.loads(data['hyper_params'])
         parameter_id = hyper_params['parameter_id']
         self._space.trial_end(parameter_id)
 
@@ -136,11 +151,9 @@ class MTSMAC(MsgDispatcherBase):
         ValueError
             Data type not supported
         """
-        # update target space
+        # update target space and fit predictor
         value = extract_scalar_reward(data['value'])
-        if data['type'] == 'FINAL':
-            self._space.register(data['parameter_id'], value)
-        elif data['type'] == 'PERIODICAL':
+        if data['type'] == 'FINAL' or data['type'] == 'PERIODICAL':
             self._space.register(data['parameter_id'], value)
         else:
             raise ValueError(

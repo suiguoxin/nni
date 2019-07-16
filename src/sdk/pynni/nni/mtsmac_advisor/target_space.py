@@ -21,8 +21,13 @@
 target_space.py
 """
 
+import logging
 import numpy as np
 import nni.parameter_expressions as parameter_expressions
+
+from nni.mtsmac_advisor.util import ei
+
+logger = logging.getLogger("MTSMAC_Advisor_AutoML")
 
 
 class TargetSpace():
@@ -30,7 +35,7 @@ class TargetSpace():
     Holds the param-space coordinates (X) and target values (Y)
     """
 
-    def __init__(self, search_space, max_epoch=20, random_state=None):
+    def __init__(self, search_space, max_epochs=20, random_state=None):
         """
         Parameters
         ----------
@@ -59,7 +64,10 @@ class TargetSpace():
         self.hyper_configs_completed = {}  # {id: {params:, perf: [], length: N}}
 
         self.next_param_id = 0
-        self.max_epoch = max_epoch
+        self.max_epochs = max_epochs
+
+        self._len_completed = 0
+        self._y_max = 0  # TODO: update
 
     @property
     def params(self):
@@ -94,6 +102,11 @@ class TargetSpace():
     def bounds(self):
         '''bounds'''
         return self._bounds
+
+    @property
+    def len_completed(self):
+        '''length of completed trials'''
+        return self._len_completed
 
     def params_to_array(self, params):
         ''' dict to array '''
@@ -142,7 +155,7 @@ class TargetSpace():
 
         # param = [val for _, val in params.items()]
         self._params = np.vstack((self._params, params))
-        self._target = np.append(self._target, ['NO_VALUE']) # TODO: refine
+        self._target = np.append(self._target, ['NO_VALUE'])  # TODO: refine
 
     def register(self, parameter_id, value):
         '''
@@ -158,10 +171,11 @@ class TargetSpace():
         '''
         trial end
         '''
-        if len(self.hyper_configs_running[parameter_id]['perf']) >= self.max_epoch:
+        if len(self.hyper_configs_running[parameter_id]['perf']) >= self.max_epochs:
             params = self.hyper_configs_running.pop(
                 parameter_id)  # TODO: check
             self.hyper_configs_completed[parameter_id] = params.hyper_params
+            self._len_completed += 1
 
     def random_sample(self):
         """
@@ -190,7 +204,7 @@ class TargetSpace():
 
         return params
 
-    def select_config(self):
+    def select_config(self, predictor, num_warmup=100):
         '''
         function to find the maximum of the acquisition function.
         Step 1: get a basket by 'Expected Improvement'
@@ -198,6 +212,29 @@ class TargetSpace():
         '''
         # TODO: select from running configs
         # select from new configs
+        # Warm up with random points
+        x_tries = [self.random_sample()
+                   for _ in range(int(num_warmup))]
+        mean_tries, std_tries = predictor(x_tries)
+        ys = ei(x_tries, mean_tries, std_tries, y_max=self._y_max)
+        x_max = x_tries[ys.argmax()]
+        # max_acq = ys.max()
+
+        params = x_max
+        parameter_id = self.next_param_id
+        self.next_param_id += 1
+
+        self.register_new_config(parameter_id, params)
+
+        parameter_json = self.array_to_params(params)
+        logger.info("Generate paramageter from new :\n %s", parameter_json)
+
+        return parameter_id, parameter_json
+
+    def select_config_warmup(self):
+        '''
+        select configs for random warmup
+        '''
         params = self.random_sample()
         parameter_id = self.next_param_id
         self.next_param_id += 1
@@ -205,5 +242,6 @@ class TargetSpace():
         self.register_new_config(parameter_id, params)
 
         parameter_json = self.array_to_params(params)
+        logger.info("Generate paramageter from new :\n %s", parameter_json)
 
         return parameter_id, parameter_json

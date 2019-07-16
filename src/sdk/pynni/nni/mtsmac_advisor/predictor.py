@@ -57,7 +57,7 @@ class Predictor():
         -------
         self: returns an instance of self.
         """
-        self.epochs = len(y[0])  # TODO: maybe not exact
+        self.epochs = max([len(y_i) for y_i in y])  # TODO: check
         X, y = self.transform_data(X, y)
         self.regr.fit(X, y)
 

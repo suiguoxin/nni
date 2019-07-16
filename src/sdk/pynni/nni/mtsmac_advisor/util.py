@@ -26,6 +26,7 @@ import numpy as np
 from scipy.stats import norm
 from scipy.optimize import minimize
 
+# pylint:disable=invalid-name
 
 def _get_basket(predictor, num_old, num_new):
     '''
@@ -36,7 +37,7 @@ def _get_basket(predictor, num_old, num_new):
         mean, std = predictor.predict_asymptote_old(X)
 
 
-def _ei(x, mean, std, y_max, xi=0):
+def ei(x, mean, std, y_max, xi=0):
     '''
     calculate ei of one configurationi
     '''
