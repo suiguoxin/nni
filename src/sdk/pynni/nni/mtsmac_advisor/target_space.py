@@ -29,6 +29,8 @@ from nni.mtsmac_advisor.util import ei
 
 logger = logging.getLogger("MTSMAC_Advisor_AutoML")
 
+# pylint:disable=invalid-name
+
 
 class TargetSpace():
     """
@@ -41,7 +43,7 @@ class TargetSpace():
         ----------
         search_space : dict
                 example: search_space = {
-                        "dropout_rate":{"_type":"uniform","_value":[0.5,0.9]},
+                        "dropout_rate":{"_type":"uniform","_value":[0.5,0.9]},q
                         "conv_size":{"_type":"choice","_value":[2,3,5,7]}
                         }
 
@@ -52,36 +54,23 @@ class TargetSpace():
 
         # Get the name of the parameters
         self._keys = sorted(search_space)
-        # Create an array with parameters bounds
+        # Create an array with parameters types/bounds
         self._bounds = np.array([item[1] for item in sorted(
             search_space.items(), key=lambda x: x[0])])
 
-        # preallocated memory for X and Y points
+        # used for saving all info about params
+        # [{id: 0, params:[], perf: []}, {...}]
+        self.hyper_configs = []
+
+        # used for fitting predictor
         self._params = np.empty(shape=(0, self.dim))
         self._target = np.empty(shape=(0), dtype=object)
-
-        self.hyper_configs_running = {}  # {id: {params:, perf: [], length: N}}
-        self.hyper_configs_completed = {}  # {id: {params:, perf: [], length: N}}
 
         self.next_param_id = 0
         self.max_epochs = max_epochs
 
         self._len_completed = 0
         self._y_max = 0  # TODO: update
-
-    @property
-    def params(self):
-        '''
-        params: numpy array
-        '''
-        return self._params
-
-    @property
-    def target(self):
-        '''
-        target: numpy array
-        '''
-        return self._target
 
     @property
     def dim(self):
@@ -104,9 +93,31 @@ class TargetSpace():
         return self._bounds
 
     @property
+    def len(self):
+        '''
+        length of generated parameters
+        '''
+        return len(self.hyper_configs)
+
+    @property
     def len_completed(self):
         '''length of completed trials'''
         return self._len_completed
+
+    def get_train_data(self):
+        '''
+        params, target: numpy array
+        '''
+        params = np.empty(shape=(0, self.dim))
+        target = np.empty(shape=(0), dtype=object)
+        for item in self.hyper_configs:
+            if len(item['perf']) >= 0:
+                params = np.vstack((params, item['params']))
+                target = np.append(target, ['new_serial'])
+                target[-1] = item['perf']  # TODO: more elegent
+        logger.info("params:%s", params)
+        logger.info("target:%s", target)
+        return params, target
 
     def params_to_array(self, params):
         ''' dict to array '''
@@ -148,33 +159,26 @@ class TargetSpace():
         '''
         register new config without performance
         '''
-        self.hyper_configs_running[parameter_id] = {
-            'params': self.array_to_params(params),
-            'perf': []
-        }
-
-        # param = [val for _, val in params.items()]
-        self._params = np.vstack((self._params, params))
-        self._target = np.append(self._target, ['NO_VALUE'])  # TODO: refine
+        self.hyper_configs.append({
+            'parameter_id': parameter_id,
+            'params': params,  # array
+            'perf': [],
+            'status': 'RUNNING'
+        })
 
     def register(self, parameter_id, value):
         '''
         insert a result into target space
         '''
-        self.hyper_configs_running[parameter_id]['perf'].append(value)
-        if self._target[parameter_id] == 'NO_VALUE':
-            self._target[parameter_id] = [value]
-        else:
-            self._target[parameter_id].append(value)
+        self.hyper_configs[parameter_id]['perf'].append(value)
 
     def trial_end(self, parameter_id):
         '''
         trial end
         '''
-        if len(self.hyper_configs_running[parameter_id]['perf']) >= self.max_epochs:
-            params = self.hyper_configs_running.pop(
-                parameter_id)  # TODO: check
-            self.hyper_configs_completed[parameter_id] = params.hyper_params
+        logger.info("Trial end, parameter_id: %s", parameter_id)
+        if len(self.hyper_configs[parameter_id]['perf']) >= self.max_epochs:
+            self.hyper_configs[parameter_id]['status'] = 'FINISH'
             self._len_completed += 1
 
     def random_sample(self):
@@ -204,7 +208,7 @@ class TargetSpace():
 
         return params
 
-    def select_config(self, predictor, num_warmup=100):
+    def select_config(self, predictor, num_warmup=50):
         '''
         function to find the maximum of the acquisition function.
         Step 1: get a basket by 'Expected Improvement'
@@ -213,18 +217,36 @@ class TargetSpace():
         # TODO: select from running configs
         # select from new configs
         # Warm up with random points
+        # choice = np.random.choice(['new', 'old'])
         x_tries = [self.random_sample()
                    for _ in range(int(num_warmup))]
-        mean_tries, std_tries = predictor(x_tries)
+        mean_tries, std_tries = predictor.predict(x_tries)
         ys = ei(x_tries, mean_tries, std_tries, y_max=self._y_max)
+        logger.info("ys shape : %s", len(ys))
+        logger.info("ys : %s", ys)
+        logger.info("argmax idx : %s", ys.argmax())
         x_max = x_tries[ys.argmax()]
         # max_acq = ys.max()
-
         params = x_max
         parameter_id = self.next_param_id
         self.next_param_id += 1
-
         self.register_new_config(parameter_id, params)
+        '''
+        else:
+            # step 1: get vertor of running configs
+            self.hyper_configs_running = {}  # {id: {params:, perf: [], length: N}}
+            params_running = [self.params_to_array(
+                item['params']) for item in self.hyper_configs_running.items()]
+            # params_running=np.where(len(self._target) < self.max_epochs, self._params)
+            # step 2: predict
+            mean_tries, std_tries = predictor.predict(params_running)
+            ys = ei(x_tries, mean_tries, std_tries, y_max=self._y_max)
+            x_max = params_running[ys.argmax()]
+            params = x_max
+            parameter_id = self.next_param_id
+            self.next_param_id += 1
+            self.register_new_config(parameter_id, params)
+        '''
 
         parameter_json = self.array_to_params(params)
         logger.info("Generate paramageter from new :\n %s", parameter_json)
@@ -242,6 +264,6 @@ class TargetSpace():
         self.register_new_config(parameter_id, params)
 
         parameter_json = self.array_to_params(params)
-        logger.info("Generate paramageter from new :\n %s", parameter_json)
+        logger.info("Generate paramageter for warm up :\n %s", parameter_json)
 
         return parameter_id, parameter_json

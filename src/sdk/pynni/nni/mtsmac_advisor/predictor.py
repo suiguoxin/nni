@@ -105,9 +105,9 @@ class Predictor():
             for _, estimator in enumerate(self.regr.estimators_):
                 tmp = estimator.predict(X)
                 res = np.vstack((res, tmp))
-                print('tmp, res')
-                print(tmp)
-                print(res)
+                # print('tmp, res')
+                # print(tmp)
+                # print(res)
             mean = np.mean(res, axis=0)
             std = np.std(res, axis=0)
             assert (mean == self.regr.predict(X)).all()
@@ -116,8 +116,8 @@ class Predictor():
             std = np.empty([len(X), 0])
             for t in range(self.epochs):
                 X_t = np.hstack((X, np.ones([len(X), 1])*t))
-                print('X_t')
-                print(X_t)
+                # print('X_t')
+                # print(X_t)
                 res = np.empty([0, len(X)])
                 for _, estimator in enumerate(self.regr.estimators_):
                     tmp = estimator.predict(X_t)
