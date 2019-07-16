@@ -36,7 +36,7 @@ def _get_basket(predictor, num_old, num_new):
         mean, std = predictor.predict_asymptote_old(X)
 
 
-def ei(x, mean, std, y_max, xi=0):
+def ei(mean, std, y_max, xi=0):
     '''
     calculate ei of one configurationi
     '''

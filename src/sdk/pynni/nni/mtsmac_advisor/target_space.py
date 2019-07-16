@@ -94,15 +94,18 @@ class TargetSpace():
 
     @property
     def len(self):
-        '''
-        length of generated parameters
-        '''
+        '''length of generated parameters'''
         return len(self.hyper_configs)
 
     @property
     def len_completed(self):
         '''length of completed trials'''
         return self._len_completed
+
+    @property
+    def y_max(self):
+        '''max y in the final epoch'''
+        return 0  # TODO: calculate
 
     def get_train_data(self):
         '''
@@ -208,50 +211,60 @@ class TargetSpace():
 
         return params
 
-    def select_config(self, predictor, num_warmup=50):
+    def select_config(self, predictor):
         '''
         function to find the maximum of the acquisition function.
         Step 1: get a basket by 'Expected Improvement'
         Step 2; get a config by 'Information Gain'
         '''
-        # TODO: select from running configs
+
+        params_new = self._select_from_new(predictor)
+        parameter_id = self.next_param_id
+        self.next_param_id += 1
+        self.register_new_config(parameter_id, params_new)
+        logger.info("New config proposed")
+
+        self._select_from_old(predictor)
+
+        parameter_json = self.array_to_params(params_new)
+        logger.info("Generate paramageter :\n %s", parameter_json)
+
+        return parameter_id, parameter_json
+
+    def _select_from_new(self, predictor, num_warmup=50):
         # select from new configs
         # Warm up with random points
-        # choice = np.random.choice(['new', 'old'])
         x_tries = [self.random_sample()
                    for _ in range(int(num_warmup))]
         mean_tries, std_tries = predictor.predict(x_tries)
-        ys = ei(x_tries, mean_tries, std_tries, y_max=self._y_max)
-        logger.info("ys shape : %s", len(ys))
-        logger.info("ys : %s", ys)
-        logger.info("argmax idx : %s", ys.argmax())
-        x_max = x_tries[ys.argmax()]
-        # max_acq = ys.max()
-        params = x_max
-        parameter_id = self.next_param_id
-        self.next_param_id += 1
-        self.register_new_config(parameter_id, params)
-        '''
-        else:
-            # step 1: get vertor of running configs
-            self.hyper_configs_running = {}  # {id: {params:, perf: [], length: N}}
-            params_running = [self.params_to_array(
-                item['params']) for item in self.hyper_configs_running.items()]
-            # params_running=np.where(len(self._target) < self.max_epochs, self._params)
+        ys = ei(mean_tries, std_tries, y_max=self._y_max)
+        params = x_tries[ys.argmax()]
+        max_acq = ys.max()
+
+        return params
+
+    def _select_from_old(self, predictor):
+        # select from running configs
+        # step 1: get vertor of running configs
+        params_running = np.empty(shape=(0, self.dim))
+        for item in self.hyper_configs:
+            if item['status'] == 'RUNNING':
+                params_running = np.vstack((params_running, item['params']))
+        if params_running.shape[0] > 0:
             # step 2: predict
             mean_tries, std_tries = predictor.predict(params_running)
-            ys = ei(x_tries, mean_tries, std_tries, y_max=self._y_max)
-            x_max = params_running[ys.argmax()]
-            params = x_max
-            parameter_id = self.next_param_id
-            self.next_param_id += 1
-            self.register_new_config(parameter_id, params)
-        '''
+            ys = ei(mean_tries, std_tries, y_max=self._y_max)
+            params = params_running[ys.argmax()]
+            max_acq = ys.max()
+            # find the original parameter_id TODO:more pythonic
+            parameter_id = 0
+            for item in self.hyper_configs:
+                if np.array_equal(item['params'], params):
+                    parameter_id = item['parameter_id']
+                    break
+            logger.info("Old configs proposed, parameter_id: %s", parameter_id)
 
-        parameter_json = self.array_to_params(params)
-        logger.info("Generate paramageter from new :\n %s", parameter_json)
-
-        return parameter_id, parameter_json
+        return parameter_id, params
 
     def select_config_warmup(self):
         '''
