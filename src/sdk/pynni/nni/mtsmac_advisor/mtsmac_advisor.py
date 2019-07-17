@@ -50,7 +50,7 @@ class MTSMAC(MsgDispatcherBase):
         super(MTSMAC, self).__init__()
         self.optimize_mode = OptimizeMode(optimize_mode)
 
-        self._predictor = Predictor(multi_task=False)
+        self._predictor = Predictor(multi_task=True)
         # num of random evaluations before GPR
         self._cold_start_num = cold_start_num
         self._max_epochs = max_epochs
@@ -105,11 +105,13 @@ class MTSMAC(MsgDispatcherBase):
         if self._space.len < self._cold_start_num:  # TODO: support parallisim
             parameter_id, parameters = self._space.select_config_warmup()
             parameters['TRIAL_BUDGET'] = self._max_epochs
+            parameters['PARAMETER_ID'] = parameter_id
         else:
             # generate one trial
             parameter_id, parameters = self._space.select_config(
                 self._predictor)
             parameters['TRIAL_BUDGET'] = 1
+            parameters['PARAMETER_ID'] = parameter_id
         res = {
             'parameter_id': parameter_id,
             'parameter_source': 'algorithm',

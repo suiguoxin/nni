@@ -215,16 +215,15 @@ class TargetSpace():
         Step 1: get a basket by 'Expected Improvement'
         Step 2; get a config by 'Information Gain'
         '''
+        if self.len >= 3:
+            parameter_id, params = self._select_from_old(predictor)
+        else:
+            params = self._select_from_new(predictor)
+            parameter_id = self.next_param_id
+            self.next_param_id += 1
+            self.register_new_config(parameter_id, params)
 
-        params_new = self._select_from_new(predictor)
-        parameter_id = self.next_param_id
-        self.next_param_id += 1
-        self.register_new_config(parameter_id, params_new)
-        logger.info("New config proposed")
-
-        self._select_from_old(predictor)
-
-        parameter_json = self.array_to_params(params_new)
+        parameter_json = self.array_to_params(params)
         logger.info("Generate paramageter :\n %s", parameter_json)
 
         return parameter_id, parameter_json
@@ -237,7 +236,10 @@ class TargetSpace():
         mean_tries, std_tries = predictor.predict(x_tries, final_only=True)
         ys = ei(mean_tries, std_tries, y_max=self._y_max)
         params = x_tries[ys.argmax()]
-        max_acq = ys.max()
+        max_ei = ys.max()
+
+        logger.info(
+            "New configs proposed, ei: %s", max_ei)
 
         return params
 
@@ -254,14 +256,15 @@ class TargetSpace():
                 params_running, final_only=True)
             ys = ei(mean_tries, std_tries, y_max=self._y_max)
             params = params_running[ys.argmax()]
-            max_acq = ys.max()
+            max_ei = ys.max()
             # find the original parameter_id TODO:more pythonic
             parameter_id = 0
             for item in self.hyper_configs:
                 if np.array_equal(item['params'], params):
                     parameter_id = item['parameter_id']
                     break
-            logger.info("Old configs proposed, parameter_id: %s", parameter_id)
+            logger.info(
+                "Old configs proposed, parameter_id: %s, ei: %s", parameter_id, max_ei)
 
         return parameter_id, params
 
