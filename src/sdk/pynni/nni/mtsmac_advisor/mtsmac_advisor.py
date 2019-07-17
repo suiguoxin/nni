@@ -50,7 +50,7 @@ class MTSMAC(MsgDispatcherBase):
         super(MTSMAC, self).__init__()
         self.optimize_mode = OptimizeMode(optimize_mode)
 
-        self._predictor = Predictor(multi_task=True)
+        self._predictor = Predictor(multi_task=False)
         # num of random evaluations before GPR
         self._cold_start_num = cold_start_num
         self._max_epochs = max_epochs
@@ -102,7 +102,7 @@ class MTSMAC(MsgDispatcherBase):
         """
         logger.info("requst_one_trial_job called, len_completed: %s",
                     self._space.len_completed)
-        if self._space.len < self._cold_start_num:  # TODO: not support multi thread
+        if self._space.len < self._cold_start_num:  # TODO: support parallisim
             parameter_id, parameters = self._space.select_config_warmup()
             parameters['TRIAL_BUDGET'] = self._max_epochs
         else:
@@ -138,7 +138,6 @@ class MTSMAC(MsgDispatcherBase):
             event: the job's state
             hyper_params: the hyperparameters (a string) generated and returned by tuner
         """
-        # TODO: bug of framework not dict
         hyper_params = json_tricks.loads(data['hyper_params'])
         parameter_id = hyper_params['parameter_id']
         self._space.trial_end(parameter_id)

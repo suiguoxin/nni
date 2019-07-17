@@ -24,6 +24,7 @@ plot_predictor.py
 import numpy as np
 import matplotlib.pyplot as plt
 
+# pylint:disable=import-error
 from nni.mtsmac_advisor.test.util import PATH, COLORS
 from nni.mtsmac_advisor.predictor import Predictor
 from nni.mtsmac_advisor.test.util import create_fake_data_simple, create_fake_data_mnist

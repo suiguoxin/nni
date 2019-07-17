@@ -57,7 +57,8 @@ class Predictor():
         -------
         self: returns an instance of self.
         """
-        self.epochs = max([len(y_i) for y_i in y])  # TODO: check
+        # max epochs in training data
+        self.epochs = max([len(y_i) for y_i in y])
         X, y = self.transform_data(X, y)
         self.regr.fit(X, y)
 
@@ -65,14 +66,21 @@ class Predictor():
 
     def transform_data(self, X, y):
         '''
-        transform data
+        transform data for training model
         '''
+        N = X.shape[0]
+        N_features = X[0].shape[0]
+
         if not self.multi_task:
-            X_new = X
-            y_new = np.array([y_i[-1] for _, y_i in enumerate(y)]) #TODO select from completed trials
+            X_new = np.empty([0, N_features])
+            y_new = np.empty(0)
+
+            # select from completed trials
+            for X_i, y_i in zip(X, y):
+                if len(y_i) == self.epochs:
+                    X_new = np.vstack((X_new, X_i))
+                    y_new = np.append(y_new, y_i[-1])
         else:
-            N = X.shape[0]
-            N_features = X[0].shape[0]
             X_new = np.empty([0, N_features+1])
             y_new = np.empty(0)
             for i in range(N):
@@ -83,8 +91,6 @@ class Predictor():
         print('shape of new X, y:')
         print(X_new.shape)
         print(y_new.shape)
-        # print(X_new)
-        # print(y_new)
 
         return X_new, y_new
 

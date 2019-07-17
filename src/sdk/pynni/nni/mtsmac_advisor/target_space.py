@@ -70,7 +70,7 @@ class TargetSpace():
         self.max_epochs = max_epochs
 
         self._len_completed = 0
-        self._y_max = 0  # TODO: update
+        self._y_max = 0
 
     @property
     def dim(self):
@@ -102,11 +102,6 @@ class TargetSpace():
         '''length of completed trials'''
         return self._len_completed
 
-    @property
-    def y_max(self):
-        '''max y in the final epoch'''
-        return 0  # TODO: calculate
-
     def get_train_data(self):
         '''
         params, target: numpy array
@@ -117,7 +112,7 @@ class TargetSpace():
             if len(item['perf']) >= 0:
                 params = np.vstack((params, item['params']))
                 target = np.append(target, ['new_serial'])
-                target[-1] = item['perf']  # TODO: more elegent
+                target[-1] = item['perf']  # TODO: more pythonic
         logger.info("params:%s", params)
         logger.info("target:%s", target)
         return params, target
@@ -182,7 +177,10 @@ class TargetSpace():
         logger.info("Trial end, parameter_id: %s", parameter_id)
         if len(self.hyper_configs[parameter_id]['perf']) >= self.max_epochs:
             self.hyper_configs[parameter_id]['status'] = 'FINISH'
+            # update internal flag variables
             self._len_completed += 1
+            if self.hyper_configs[parameter_id]['perf'][-1] > self._y_max:
+                self._y_max = self.hyper_configs[parameter_id]['perf'][-1]
 
     def random_sample(self):
         """
