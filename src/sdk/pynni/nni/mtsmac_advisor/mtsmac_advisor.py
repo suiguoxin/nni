@@ -108,7 +108,7 @@ class MTSMAC(MsgDispatcherBase):
             parameters['PARAMETER_ID'] = parameter_id
         else:
             # generate one trial
-            parameter_id, parameters = self._space.select_config(
+            parameter_id, parameters = self._space.select_config_demo(
                 self._predictor)
             parameters['TRIAL_BUDGET'] = 1
             parameters['PARAMETER_ID'] = parameter_id

@@ -26,6 +26,7 @@ import numpy as np
 import nni.parameter_expressions as parameter_expressions
 
 from nni.mtsmac_advisor.util import ei
+from nni.mtsmac_advisor.predictor import Predictor
 
 logger = logging.getLogger("MTSMAC_Advisor_AutoML")
 
@@ -209,16 +210,16 @@ class TargetSpace():
 
         return params
 
-    def select_config(self, predictor):
+    def select_config_demo(self, predictor):
         '''
         function to find the maximum of the acquisition function.
         Step 1: get a basket by 'Expected Improvement'
         Step 2; get a config by 'Information Gain'
         '''
         if self.len >= 3:
-            parameter_id, params = self._select_from_old(predictor)
+            parameter_id, params = self._select_from_old_demo(predictor)
         else:
-            params = self._select_from_new(predictor)
+            params = self._select_from_new_demo(predictor)
             parameter_id = self.next_param_id
             self.next_param_id += 1
             self.register_new_config(parameter_id, params)
@@ -228,7 +229,7 @@ class TargetSpace():
 
         return parameter_id, parameter_json
 
-    def _select_from_new(self, predictor, num_warmup=50):
+    def _select_from_new_demo(self, predictor, num_warmup=50):
         # select from new configs
         # Warm up with random points
         x_tries = [self.random_sample()
@@ -243,7 +244,7 @@ class TargetSpace():
 
         return params
 
-    def _select_from_old(self, predictor):
+    def _select_from_old_demo(self, predictor):
         # select from running configs
         # step 1: get vertor of running configs
         params_running = np.empty(shape=(0, self.dim))
@@ -267,6 +268,171 @@ class TargetSpace():
                 "Old configs proposed, parameter_id: %s, ei: %s", parameter_id, max_ei)
 
         return parameter_id, params
+
+    def select_config_draft(self, predictor):
+        '''
+        Algorithm 1 of Freeze-Thaw
+        Step 1: get a basket by 'Expected Improvement'
+        Step 2: get a config by 'Information Gain'
+        '''
+        # construct the basket of all configs: [{'params':[], 'mean':, 'std':}, {...}]
+        basket_new = self._get_basket_new(predictor, 3)
+        basket_old = self._get_basket_old(predictor, 10)
+        basket = np.append(basket_new, basket_old)
+
+        # vector format of params in the basket
+        params = np.empty(0, len(basket))
+        for item in basket:
+            params = np.vstack((params, item['params']))
+
+        # get P_min and current entropy
+        P_min = self._get_P_min(basket)
+        H = self._cal_entropy(P_min)
+
+        # get information gain
+        a = np.empty(len(basket))
+        n_fant = 5
+        for i, item in enumerate(basket):
+            for _ in range(n_fant):
+                if i < len(basket_old):
+                    # fantasize an observation
+                    cur_epoch = len(item['perf'])
+                    mean, std = predictor.predict(item['param'])
+                    obs = self.random_state.normal(
+                        mean[0][cur_epoch], std[0][cur_epoch])
+                    # add fantsized point to training data
+                    X_fant, y_fant = self.get_train_data()
+                    for k, item in enumerate(X_fant):
+                        if np.array_equal(item['param'], X_fant[i]):
+                            y_fant[k].append(obs)
+                else:
+                    # fantasize an observation
+                    mean, std = predictor.predict(item['param'])
+                    obs = self.random_state.normal(mean[0][0], std[0][0])
+
+                    # add fantsized point to training data
+                    X, y = self.get_train_data()
+                    X_fant = np.vstack((X, item['param']))
+                    y_fant = np.append(y, ['new_serial'])
+                    y_fant[-1] = [obs]
+
+                # conditioned on the observation, re-compute P_min and H
+                # fit a new predictor with fantsized point added in training data
+                predictor_fant = predictor.copy()
+                predictor_fant.fit(X_fant, y_fant)
+                # re-calculate P_min, H
+                mean, std = predictor_fant.predict(
+                    params, final_only=True)
+                P_min_fant = self._get_P_min(
+                    mean=mean, std=std, format='vertor')
+                H_fant = self._cal_entropy(P_min_fant)
+                # average over n_fant
+                a[i] += H_fant / n_fant
+
+        param_selected = basket[a.argmax()]
+
+        params = param_selected['params']
+        if not param_selected['parameter_id']:
+            parameter_id = self.next_param_id
+            self.next_param_id += 1
+            self.register_new_config(parameter_id, params)
+        else:
+            parameter_id = param_selected['parameter_id']
+
+        parameter_json = self.array_to_params(params)
+        logger.info("Generate paramageter :\n %s", parameter_json)
+
+        return parameter_id, parameter_json
+
+    # TODO: more pythonic
+    def _get_P_min(self, basket=[], mean=[], std=[], format='json'):
+        '''
+        Parameters
+        ----------
+        basket: list, i.e. [{'params':[], 'mean':, 'std':}, {...}]
+
+        Returns
+        -------
+        result: P_min, i.e. [0.1, 0.5, 0.4]
+        '''
+        n_monte_carlo = 1000
+        if format == 'json':
+            n_params = len(basket)
+            P_min = np.zeros(n_params)
+            for _ in range(n_monte_carlo):
+                vals = np.empty(n_params)
+                for i, item in enumerate(basket):
+                    vals[i] = self.random_state.normal(
+                        item['mean'], item['std'])
+                P_min[vals.argmin()] += 1
+        else:
+            n_params = len(mean)
+            P_min = np.zeros(n_params)
+            for _ in range(n_monte_carlo):
+                vals = np.empty(n_params)
+                for i, item in enumerate(zip(mean, std)):
+                    vals[i] = self.random_state.normal(mean, std)
+                P_min[vals.argmin()] += 1
+
+        P_min /= n_monte_carlo
+        return P_min
+
+    def _cal_entropy(self, P_min):
+        '''
+        Parameters
+        ----------
+        params: P_min, i.e. [0.1, 0.5, 0.4]
+
+        Returns
+        -------
+        result: entropy
+        '''
+        result = 0
+        for p in P_min:
+            result -= p*np.log(p)
+        return result
+
+    def _get_basket_new(self, predictor, num, num_warmup=50):
+        '''
+        select a basket from new configs
+        '''
+        # Warm up with random points
+        x_tries = [self.random_sample()
+                   for _ in range(int(num_warmup))]
+        mean, std = predictor.predict(x_tries, final_only=True)
+        ys = ei(mean, std, y_max=self._y_max)
+
+        basket_new = []
+        for i, x_i in enumerate(x_tries):
+            basket_new.append(
+                {'param': x_i, 'mean': mean[i], 'std': std[i], 'ei': ys[i]})  # TODO parameter_id = -1 ?
+        # sort basket by ei, from big to small
+        sorted(basket_new, key=lambda item: item['ei'], reverse=True)
+        logger.info("basket_new: %s", basket_new[:num])
+
+        return basket_new[:num]
+
+    def _get_basket_old(self, predictor, num):
+        '''
+        select a basket from running configs
+        '''
+        basket_old = []
+        for item in self.hyper_configs:
+            if item['status'] == 'RUNNING':
+                mean, std = predictor.predict(
+                    [item['params']], final_only=True)
+                ys = ei(mean, std, y_max=self._y_max)
+                basket_old.append(
+                    {'parameter_id': item['parameter_id'], 'param': item['params'], 'mean': mean[0], 'std': std[0], 'ei': ys[0]})
+
+        # sort basket by ei, from big to small
+        sorted(basket_old, key=lambda item: item['ei'], reverse=True)
+        logger.info("basket_new: %s", basket_old[:num])
+
+        if len(basket_old) >= num:
+            return basket_old[:num]
+        else:
+            return basket_old
 
     def select_config_warmup(self):
         '''
