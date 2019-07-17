@@ -236,7 +236,7 @@ class TargetSpace():
         # Warm up with random points
         x_tries = [self.random_sample()
                    for _ in range(int(num_warmup))]
-        mean_tries, std_tries = predictor.predict(x_tries)
+        mean_tries, std_tries = predictor.predict(x_tries, final_only=True)
         ys = ei(mean_tries, std_tries, y_max=self._y_max)
         params = x_tries[ys.argmax()]
         max_acq = ys.max()
@@ -252,7 +252,8 @@ class TargetSpace():
                 params_running = np.vstack((params_running, item['params']))
         if params_running.shape[0] > 0:
             # step 2: predict
-            mean_tries, std_tries = predictor.predict(params_running)
+            mean_tries, std_tries = predictor.predict(
+                params_running, final_only=True)
             ys = ei(mean_tries, std_tries, y_max=self._y_max)
             params = params_running[ys.argmax()]
             max_acq = ys.max()

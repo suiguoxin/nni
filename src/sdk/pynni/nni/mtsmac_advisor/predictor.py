@@ -32,14 +32,14 @@ class Predictor():
     Freeze-Thaw Bayesian Optimization: Two Step Gaussian Process Predictor
     """
 
-    def __init__(self, final_only=False):
+    def __init__(self, multi_task=False):
         """
         Parameters
         ----------
         """
         self.regr = RandomForestRegressor(
             n_estimators=10, max_depth=3, min_samples_split=2, max_features=5/6, random_state=0)
-        self.final_only = final_only
+        self.multi_task = multi_task
         self.epochs = None
 
     def fit(self, X, y):
@@ -67,10 +67,9 @@ class Predictor():
         '''
         transform data
         '''
-        if self.final_only:
+        if not self.multi_task:
             X_new = X
-            y_new = np.array([y_i[-1] for _, y_i in enumerate(y)])
-
+            y_new = np.array([y_i[-1] for _, y_i in enumerate(y)]) #TODO select from completed trials
         else:
             N = X.shape[0]
             N_features = X[0].shape[0]
@@ -89,7 +88,7 @@ class Predictor():
 
         return X_new, y_new
 
-    def predict(self, X):
+    def predict(self, X, final_only=False):
         """ predict
         Parameters
         ----------
@@ -98,9 +97,9 @@ class Predictor():
 
         Returns
         -------
-        result : mean, std of shape(len(X), len(epochs)) if final_only == False; else shape(len(X),)
+        result : if multi_task && !final_only, mean, std of shape(len(X), len(epochs)) ; else shape(len(X),)
         """
-        if self.final_only:
+        if not self.multi_task:
             res = np.empty([0, len(X)])
             for _, estimator in enumerate(self.regr.estimators_):
                 tmp = estimator.predict(X)
@@ -114,18 +113,27 @@ class Predictor():
         else:
             mean = np.empty([len(X), 0])
             std = np.empty([len(X), 0])
-            for t in range(self.epochs):
-                X_t = np.hstack((X, np.ones([len(X), 1])*t))
-                # print('X_t')
-                # print(X_t)
+            if final_only:
+                X = np.hstack((X, np.ones([len(X), 1])*self.epochs))
                 res = np.empty([0, len(X)])
                 for _, estimator in enumerate(self.regr.estimators_):
-                    tmp = estimator.predict(X_t)
+                    tmp = estimator.predict(X)
                     res = np.vstack((res, tmp))
-                mean_t = np.mean(res, axis=0)
-                std_t = np.std(res, axis=0)
-                mean = np.hstack((mean, mean_t.reshape(-1, 1)))
-                std = np.hstack((std, std_t.reshape(-1, 1)))
+                mean = np.mean(res, axis=0)
+                std = np.std(res, axis=0)
+            else:
+                for t in range(self.epochs):
+                    X_t = np.hstack((X, np.ones([len(X), 1])*t))
+                    # print('X_t')
+                    # print(X_t)
+                    res = np.empty([0, len(X)])
+                    for _, estimator in enumerate(self.regr.estimators_):
+                        tmp = estimator.predict(X_t)
+                        res = np.vstack((res, tmp))
+                    mean_t = np.mean(res, axis=0)
+                    std_t = np.std(res, axis=0)
+                    mean = np.hstack((mean, mean_t.reshape(-1, 1)))
+                    std = np.hstack((std, std_t.reshape(-1, 1)))
 
         # print('shape of mean, std:')
         # print(mean.shape)
