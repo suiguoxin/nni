@@ -21,19 +21,9 @@
 util.py
 """
 
-import numpy as np
 from scipy.stats import norm
-from scipy.optimize import minimize
 
 # pylint:disable=invalid-name
-
-def _get_basket(predictor, num_old, num_new):
-    '''
-    get a basket of num_old + num_new canditate by EI
-    '''
-    old_points = []
-    for X in old_points:
-        mean, std = predictor.predict_asymptote_old(X)
 
 
 def ei(mean, std, y_max, xi=0):
@@ -42,16 +32,3 @@ def ei(mean, std, y_max, xi=0):
     '''
     z = (mean - y_max - xi)/std
     return (mean - y_max - xi) * norm.cdf(z) + std * norm.pdf(z)
-
-
-def _ei_ed(x, mean, std, y_max, xi=0):
-    pass
-
-
-def _ig(X, gp):
-    '''
-    calculate information gain of several configutions
-    '''
-    # calculate P of X
-    # ...
-    # TODO: slice sampling

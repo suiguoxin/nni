@@ -193,7 +193,7 @@ def main(params):
     with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())
         # if model saved previously, load it
-        if os.path.exists(checkpoint_file + '.index'): # TODO: find with prefix
+        if os.path.exists(checkpoint_file + '.index'):
             saver.restore(
                 sess, '{0}/model_{1}.ckpt'.format(params['model_dir'], params['parameter_id']))
         for i in range(params['batch_num']):
@@ -254,7 +254,9 @@ if __name__ == '__main__':
         logger.debug(tuner_params)
         tuner_params['batch_num'] = tuner_params['TRIAL_BUDGET'] * 100
         tuner_params['parameter_id'] = tuner_params['PARAMETER_ID']
-        params = vars(get_params())
+        # tuner_params['model_dir'] = '/tmp/tensorflow/mnist/model_data/{}'.format(
+        #    str(time.time())).replace('.', '')
+        params=vars(get_params())
         params.update(tuner_params)
         main(params)
     except Exception as exception:

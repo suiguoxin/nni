@@ -159,6 +159,8 @@ class MTSMAC(MsgDispatcherBase):
         """
         # update target space and fit predictor
         value = extract_scalar_reward(data['value'])
+        if self.optimize_mode == OptimizeMode.Minimize:
+            value = -value
         if data['type'] == 'FINAL' or data['type'] == 'PERIODICAL':
             self._space.register(data['parameter_id'], value)
         else:

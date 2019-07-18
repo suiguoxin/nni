@@ -218,9 +218,9 @@ class TargetSpace():
         Step 2; get a config by 'Information Gain'
         '''
         if self.len >= 3:
-            parameter_id, params = self._select_from_old_demo(predictor)
+            parameter_id, params = self._select_from_old_single(predictor)
         else:
-            params = self._select_from_new_demo(predictor)
+            params = self._select_from_new_single(predictor)
             parameter_id = self.next_param_id
             self.next_param_id += 1
             self.register_new_config(parameter_id, params)
@@ -230,7 +230,7 @@ class TargetSpace():
 
         return parameter_id, parameter_json
 
-    def _select_from_new_demo(self, predictor, num_warmup=50):
+    def _select_from_new_single(self, predictor, num_warmup=50):
         # select from new configs
         # Warm up with random points
         x_tries = [self.random_sample()
@@ -245,7 +245,7 @@ class TargetSpace():
 
         return params
 
-    def _select_from_old_demo(self, predictor):
+    def _select_from_old_single(self, predictor):
         # select from running configs
         # step 1: get vertor of running configs
         params_running = np.empty(shape=(0, self.dim))
@@ -297,6 +297,7 @@ class TargetSpace():
         basket_new = self._get_basket_new(predictor, num_new)
         basket_old = self._get_basket_old(predictor, num_old)
         basket = np.append(basket_new, basket_old)
+
         logger.debug("basket_new %s", basket_new)
         logger.debug("basket_old %s", basket_old)
         logger.debug("basket %s", basket)
