@@ -84,7 +84,7 @@ class MTSMAC(MsgDispatcherBase):
         """
         params, target = self._space.get_train_data()
         if target.shape[0] > 0:
-            logger.info("target shape 0:%s", target.shape[0])
+            logger.info("target shape:%s", target.shape[0])
             self._predictor.fit(params, target)
         for _ in range(data):
             self._request_one_trial_job()
@@ -108,7 +108,7 @@ class MTSMAC(MsgDispatcherBase):
             parameters['PARAMETER_ID'] = parameter_id
         else:
             # generate one trial
-            parameter_id, parameters = self._space.select_config_demo(
+            parameter_id, parameters = self._space.select_config(
                 self._predictor)
             parameters['TRIAL_BUDGET'] = 1
             parameters['PARAMETER_ID'] = parameter_id
@@ -140,6 +140,7 @@ class MTSMAC(MsgDispatcherBase):
             event: the job's state
             hyper_params: the hyperparameters (a string) generated and returned by tuner
         """
+        # TODO: accept only SUCCEED trials
         hyper_params = json_tricks.loads(data['hyper_params'])
         parameter_id = hyper_params['parameter_id']
         self._space.trial_end(parameter_id)

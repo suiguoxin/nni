@@ -114,8 +114,9 @@ class TargetSpace():
                 params = np.vstack((params, item['params']))
                 target = np.append(target, ['new_serial'])
                 target[-1] = item['perf']  # TODO: more pythonic
-        logger.info("params:%s", params)
-        logger.info("target:%s", target)
+        logger.debug("get_train_data:")
+        logger.debug("params:%s", params)
+        logger.debug("target:%s", target)
         return params, target
 
     def params_to_array(self, params):
@@ -269,82 +270,160 @@ class TargetSpace():
 
         return parameter_id, params
 
-    def select_config_draft(self, predictor):
+    def select_config_warmup(self):
+        '''
+        select configs for random warmup
+        '''
+        params = self.random_sample()
+        parameter_id = self.next_param_id
+        self.next_param_id += 1
+
+        self.register_new_config(parameter_id, params)
+
+        parameter_json = self.array_to_params(params)
+        logger.info("Generate paramageter for warm up :\n %s", parameter_json)
+
+        return parameter_id, parameter_json
+
+    def select_config(self, predictor):
         '''
         Algorithm 1 of Freeze-Thaw
         Step 1: get a basket by 'Expected Improvement'
         Step 2: get a config by 'Information Gain'
         '''
         # construct the basket of all configs: [{'params':[], 'mean':, 'std':}, {...}]
-        basket_new = self._get_basket_new(predictor, 3)
-        basket_old = self._get_basket_old(predictor, 10)
+        num_new = 3
+        num_old = 10
+        basket_new = self._get_basket_new(predictor, num_new)
+        basket_old = self._get_basket_old(predictor, num_old)
         basket = np.append(basket_new, basket_old)
+        logger.debug("basket_old %s", basket_old)
+        logger.debug("basket_new %s", basket_new)
+        logger.debug("basket %s", basket)
 
         # vector format of params in the basket
-        params = np.empty(0, len(basket))
-        for item in basket:
-            params = np.vstack((params, item['params']))
+        params = np.empty((0, len(basket[0]['param'])))
+        for i, item in enumerate(basket):
+            params = np.vstack((params, item['param']))
+        logger.debug("params %s", params)
 
         # get P_min and current entropy
         P_min = self._get_P_min(basket)
         H = self._cal_entropy(P_min)
+        logger.debug("P_min %s", P_min)
+        logger.debug("H %s", H)
 
         # get information gain
+        logger.debug("------------fantasize period---------------")
         a = np.empty(len(basket))
         n_fant = 5
         for i, item in enumerate(basket):
-            for _ in range(n_fant):
-                if i < len(basket_old):
+            for j in range(n_fant):
+                logger.debug("fantasize round %s", j)
+                if i < num_new:
                     # fantasize an observation
-                    cur_epoch = len(item['perf'])
-                    mean, std = predictor.predict(item['param'])
-                    obs = self.random_state.normal(
-                        mean[0][cur_epoch], std[0][cur_epoch])
-                    # add fantsized point to training data
-                    X_fant, y_fant = self.get_train_data()
-                    for k, item in enumerate(X_fant):
-                        if np.array_equal(item['param'], X_fant[i]):
-                            y_fant[k].append(obs)
-                else:
-                    # fantasize an observation
-                    mean, std = predictor.predict(item['param'])
+                    mean, std = predictor.predict([item['param']])
+                    logger.debug("mean predicted %s", mean)
+                    logger.debug("std predicted %s", std)
                     obs = self.random_state.normal(mean[0][0], std[0][0])
-
+                    logger.debug("obs %s", obs)
                     # add fantsized point to training data
                     X, y = self.get_train_data()
                     X_fant = np.vstack((X, item['param']))
                     y_fant = np.append(y, ['new_serial'])
                     y_fant[-1] = [obs]
+                else:
+                    # fantasize an observation
+                    cur_epoch = len(item['perf'])
+                    mean, std = predictor.predict([item['param']])
+                    obs = self.random_state.normal(
+                        mean[0][cur_epoch], std[0][cur_epoch])
+                    # add fantsized point to training data
+                    X_fant, y_fant = self.get_train_data()
+                    for k, item in enumerate(X_fant):
+                        if np.array_equal(item['param'], X_fant[k]):
+                            y_fant[k].append(obs)
+
+                logger.debug("X_fant %s", X_fant)
+                logger.debug("y_fant %s", y_fant)
 
                 # conditioned on the observation, re-compute P_min and H
                 # fit a new predictor with fantsized point added in training data
-                predictor_fant = predictor.copy()
+                predictor_fant = Predictor(multi_task=True)
                 predictor_fant.fit(X_fant, y_fant)
                 # re-calculate P_min, H
                 mean, std = predictor_fant.predict(
                     params, final_only=True)
+                logger.debug("mean fantasize %s", mean)
+                logger.debug("std fantasize %s", std)
                 P_min_fant = self._get_P_min(
                     mean=mean, std=std, format='vertor')
                 H_fant = self._cal_entropy(P_min_fant)
+                logger.debug("P_min_fant %s", P_min)
+                logger.debug("H_fant %s", H)
                 # average over n_fant
-                a[i] += H_fant / n_fant
+                a[i] += (H_fant / n_fant)
 
         param_selected = basket[a.argmax()]
+        logger.debug("a %s", a)
+        logger.debug("param_selected %s", param_selected)
 
-        params = param_selected['params']
+        param = param_selected['param']
         if not param_selected['parameter_id']:
             parameter_id = self.next_param_id
             self.next_param_id += 1
-            self.register_new_config(parameter_id, params)
+            self.register_new_config(parameter_id, param)
         else:
             parameter_id = param_selected['parameter_id']
 
-        parameter_json = self.array_to_params(params)
+        parameter_json = self.array_to_params(param)
         logger.info("Generate paramageter :\n %s", parameter_json)
 
         return parameter_id, parameter_json
 
-    # TODO: more pythonic
+    def _get_basket_new(self, predictor, num, num_warmup=100):
+        '''
+        select a basket from new configs
+        '''
+        # Warm up with random points
+        x_tries = [self.random_sample()
+                   for _ in range(int(num_warmup))]
+        mean, std = predictor.predict(x_tries, final_only=True)
+        ys = ei(mean, std, y_max=self._y_max)
+        logger.debug("mean: %s", mean)
+        logger.debug("ys: %s", ys)
+
+        basket_new = []
+        for i, x_i in enumerate(x_tries):
+            basket_new.append(
+                {'param': x_i, 'mean': mean[i], 'std': std[i], 'ei': ys[i]})  # TODO parameter_id = -1 ?
+        # sort basket by ei, from big to small
+        sorted(basket_new, key=lambda item: item['ei'], reverse=True)
+
+        return basket_new[:num]
+
+    def _get_basket_old(self, predictor, num):
+        '''
+        select a basket from running configs
+        '''
+        basket_old = []
+        for item in self.hyper_configs:
+            if item['status'] == 'RUNNING':
+                mean, std = predictor.predict(
+                    [item['params']], final_only=True)
+                ys = ei(mean, std, y_max=self._y_max)
+                basket_old.append(
+                    {'parameter_id': item['parameter_id'], 'param': item['params'], 'mean': mean[0], 'std': std[0], 'ei': ys[0]})
+
+        # sort basket by ei, from big to small
+        sorted(basket_old, key=lambda item: item['ei'], reverse=True)
+
+        if len(basket_old) >= num:
+            return basket_old[:num]
+        else:
+            return basket_old
+
+    # TODO: more pythonic funtion
     def _get_P_min(self, basket=[], mean=[], std=[], format='json'):
         '''
         Parameters
@@ -370,8 +449,8 @@ class TargetSpace():
             P_min = np.zeros(n_params)
             for _ in range(n_monte_carlo):
                 vals = np.empty(n_params)
-                for i, item in enumerate(zip(mean, std)):
-                    vals[i] = self.random_state.normal(mean, std)
+                for i in range(mean.shape[0]):
+                    vals[i] = self.random_state.normal(mean[i], std[i])
                 P_min[vals.argmin()] += 1
 
         P_min /= n_monte_carlo
@@ -391,60 +470,3 @@ class TargetSpace():
         for p in P_min:
             result -= p*np.log(p)
         return result
-
-    def _get_basket_new(self, predictor, num, num_warmup=50):
-        '''
-        select a basket from new configs
-        '''
-        # Warm up with random points
-        x_tries = [self.random_sample()
-                   for _ in range(int(num_warmup))]
-        mean, std = predictor.predict(x_tries, final_only=True)
-        ys = ei(mean, std, y_max=self._y_max)
-
-        basket_new = []
-        for i, x_i in enumerate(x_tries):
-            basket_new.append(
-                {'param': x_i, 'mean': mean[i], 'std': std[i], 'ei': ys[i]})  # TODO parameter_id = -1 ?
-        # sort basket by ei, from big to small
-        sorted(basket_new, key=lambda item: item['ei'], reverse=True)
-        logger.info("basket_new: %s", basket_new[:num])
-
-        return basket_new[:num]
-
-    def _get_basket_old(self, predictor, num):
-        '''
-        select a basket from running configs
-        '''
-        basket_old = []
-        for item in self.hyper_configs:
-            if item['status'] == 'RUNNING':
-                mean, std = predictor.predict(
-                    [item['params']], final_only=True)
-                ys = ei(mean, std, y_max=self._y_max)
-                basket_old.append(
-                    {'parameter_id': item['parameter_id'], 'param': item['params'], 'mean': mean[0], 'std': std[0], 'ei': ys[0]})
-
-        # sort basket by ei, from big to small
-        sorted(basket_old, key=lambda item: item['ei'], reverse=True)
-        logger.info("basket_new: %s", basket_old[:num])
-
-        if len(basket_old) >= num:
-            return basket_old[:num]
-        else:
-            return basket_old
-
-    def select_config_warmup(self):
-        '''
-        select configs for random warmup
-        '''
-        params = self.random_sample()
-        parameter_id = self.next_param_id
-        self.next_param_id += 1
-
-        self.register_new_config(parameter_id, params)
-
-        parameter_json = self.array_to_params(params)
-        logger.info("Generate paramageter for warm up :\n %s", parameter_json)
-
-        return parameter_id, parameter_json

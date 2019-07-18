@@ -88,9 +88,9 @@ class Predictor():
                     X_new = np.vstack((X_new, np.append(X[i], [t])))
                     y_new = np.append(y_new, y[i][t])
 
-        print('shape of new X, y:')
-        print(X_new.shape)
-        print(y_new.shape)
+        # print('shape of new X, y:')
+        # print(X_new.shape)
+        # print(y_new.shape)
 
         return X_new, y_new
 
@@ -110,9 +110,6 @@ class Predictor():
             for _, estimator in enumerate(self.regr.estimators_):
                 tmp = estimator.predict(X)
                 res = np.vstack((res, tmp))
-                # print('tmp, res')
-                # print(tmp)
-                # print(res)
             mean = np.mean(res, axis=0)
             std = np.std(res, axis=0)
             assert (mean == self.regr.predict(X)).all()

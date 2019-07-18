@@ -8,6 +8,7 @@ trainingServicePlatform: local
 searchSpacePath: search_space.json
 #choice: true, false
 useAnnotation: false
+logLevel: 'debug'
 advisor:
   #choice: Hyperband, BOHB, MTSMAC
   builtinAdvisorName: MTSMAC
