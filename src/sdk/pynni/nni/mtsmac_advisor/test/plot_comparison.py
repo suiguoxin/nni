@@ -25,7 +25,7 @@ import json
 import matplotlib.pyplot as plt
 
 # pylint:disable=import-error
-from nni.mtsmac_advisor.test.util import PATH, COLORS
+from nni.mtsmac_advisor.test.util import PATH
 
 
 # pylint:disable=missing-docstring
@@ -33,8 +33,8 @@ from nni.mtsmac_advisor.test.util import PATH, COLORS
 # pylint:disable=invalid-name
 
 
-def plot_rfr():
-    with open('{}/result/experiment.json'.format(PATH)) as json_file:
+def _get_metric_best(file_name):
+    with open('{}/result/{}'.format(PATH, file_name)) as json_file:
         result = json.load(json_file)
         trials = result['trialMessage']
 
@@ -43,19 +43,29 @@ def plot_rfr():
 
         for trial in trials:
             for inter in trial['intermediate']:
-                val = inter['data']
+                val = float(inter['data'])
                 num_epochs += 1
-                if float(val) > float(metric_best[-1]):
+                if val > metric_best[-1]:
                     metric_best.append(val)
                 else:
                     metric_best.append(metric_best[-1])
+    return metric_best
 
-        plt.plot(range(len(metric_best)), metric_best, label='best metric')
 
+def plot_comparison():
+    metric_best_mtsmac = _get_metric_best('experiment_mtsmac.json')
+    plt.plot(range(len(metric_best_mtsmac)),
+             metric_best_mtsmac, label='MTSMAC')
+
+    metric_best_tpe = _get_metric_best('experiment_tpe.json')
+    plt.plot(range(len(metric_best_tpe)), metric_best_tpe, label='TPE')
+
+    plt.xlabel('Epochs')
+    plt.ylabel('Default Metric')
     plt.title('Learning curve MNIST')
     plt.legend()
     plt.savefig('{}/image/res.png'.format(PATH))
     plt.close()
 
 
-plot_rfr()
+plot_comparison()

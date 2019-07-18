@@ -181,6 +181,7 @@ class TargetSpace():
             self.hyper_configs[parameter_id]['status'] = 'FINISH'
             # update internal flag variables
             self._len_completed += 1
+            # TODO: consider inter result
             if self.hyper_configs[parameter_id]['perf'][-1] > self._y_max:
                 self._y_max = self.hyper_configs[parameter_id]['perf'][-1]
 
@@ -321,8 +322,8 @@ class TargetSpace():
 
         X, y = self.get_train_data()
         mean, std = predictor.predict(params)
-        logger.debug("mean predicted %s", mean)
-        logger.debug("std predicted %s", std)
+        #logger.debug("mean predicted %s", mean)
+        #logger.debug("std predicted %s", std)
         for i, item in enumerate(basket):
             logger.debug("fantasize element %s in the basket", i)
             for j in range(n_fant):
@@ -355,8 +356,8 @@ class TargetSpace():
                 # re-calculate P_min, H
                 mean_fant, std_fant = predictor_fant.predict(
                     params, final_only=True)
-                logger.debug("mean fantasize %s", mean)
-                logger.debug("std fantasize %s", std)
+                #logger.debug("mean fantasize %s", mean)
+                #logger.debug("std fantasize %s", std)
                 P_min_fant = self._get_P_min(
                     mean=mean_fant, std=std_fant, form='vertor')
                 H_fant = self._cal_entropy(P_min_fant)
@@ -384,7 +385,7 @@ class TargetSpace():
 
         return parameter_id, parameter_json
 
-    def _get_basket_new(self, predictor, num, num_warmup=100):
+    def _get_basket_new(self, predictor, num, num_warmup=10000):
         '''
         select a basket from new configs
         '''
@@ -393,13 +394,13 @@ class TargetSpace():
                    for _ in range(int(num_warmup))]
         mean, std = predictor.predict(x_tries, final_only=True)
         ys = ei(mean, std, y_max=self._y_max)
-        logger.debug("mean: %s", mean)
-        logger.debug("ys: %s", ys)
+        #logger.debug("mean: %s", mean)
+        #logger.debug("ys: %s", ys)
 
         basket_new = []
         for i, x_i in enumerate(x_tries):
             basket_new.append(
-                {'param': x_i, 'mean': mean[i], 'std': std[i], 'ei': ys[i]})  # TODO parameter_id = -1 ?
+                {'param': x_i, 'mean': mean[i], 'std': std[i], 'ei': ys[i]})
         # sort basket by ei, from big to small
         sorted(basket_new, key=lambda item: item['ei'], reverse=True)
 
@@ -416,7 +417,8 @@ class TargetSpace():
                     [item['params']], final_only=True)
                 ys = ei(mean, std, y_max=self._y_max)
                 basket_old.append(
-                    {'parameter_id': item['parameter_id'], 'param': item['params'], 'perf': item['perf'], 'mean': mean[0], 'std': std[0], 'ei': ys[0]})
+                    {'parameter_id': item['parameter_id'], 'param': item['params'],
+                     'perf': item['perf'], 'mean': mean[0], 'std': std[0], 'ei': ys[0]})
 
         # sort basket by ei, from big to small
         sorted(basket_old, key=lambda item: item['ei'], reverse=True)
@@ -426,7 +428,7 @@ class TargetSpace():
         else:
             return basket_old
 
-    # TODO: more pythonic funtion
+    # TODO: more pythonic
     def _get_P_min(self, basket=[], mean=[], std=[], form='json'):
         '''
         Parameters
@@ -435,7 +437,7 @@ class TargetSpace():
 
         Returns
         -------
-        result: P_min, i.e. [0.1, 0.5, 0.4]
+        result: P_min, i.e. [0.1, 0.5, 0., 0.4]
         '''
         n_monte_carlo = 1000
         if form == 'json':

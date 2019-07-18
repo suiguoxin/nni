@@ -40,7 +40,7 @@ class MTSMAC(MsgDispatcherBase):
     Multi-Task SMAC
     '''
 
-    def __init__(self, optimize_mode='maximize', cold_start_num=1, max_epochs=8):
+    def __init__(self, optimize_mode='maximize', cold_start_num=5, max_epochs=15):
         """
         Parameters
         ----------
