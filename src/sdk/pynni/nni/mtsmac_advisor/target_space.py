@@ -316,7 +316,7 @@ class TargetSpace():
 
         # get information gain
         logger.debug("------------fantasize period---------------")
-        a = np.empty(len(basket))
+        a = np.zeros(len(basket))
         n_fant = 5
 
         X, y = self.get_train_data()
@@ -329,9 +329,7 @@ class TargetSpace():
                 logger.debug("fantasize round %s", j)
                 if i < num_new:
                     # fantasize an observation
-                    #mean, std = predictor.predict([item['param']])
                     obs = self.random_state.normal(mean[i][0], std[i][0])
-                    logger.debug("obs %s", obs)
                     # add fantsized point to fake training data
                     X_fant = np.vstack((X, item['param']))
                     y_fant = np.append(y, ['new_serial'])
@@ -339,10 +337,8 @@ class TargetSpace():
                 else:
                     # fantasize an observation
                     cur_epoch = len(item['perf'])
-                    #mean, std = predictor.predict([item['param']])
                     obs = self.random_state.normal(
                         mean[i][cur_epoch], std[i][cur_epoch])
-                    logger.debug("obs %s", obs)
                     # add fantsized point to fake training data
                     X_fant = X.copy()
                     y_fant = y.copy()
@@ -350,9 +346,7 @@ class TargetSpace():
                         if np.array_equal(item['param'], X_fant[k]):
                             y_fant[k] = y_fant[k].copy()
                             y_fant[k].append(obs)
-
-                logger.debug("X_fant %s", X_fant)
-                logger.debug("y_fant %s", y_fant)
+                            break
 
                 # conditioned on the observation, re-compute P_min and H
                 # fit a new predictor with fantsized point added in training data
@@ -477,5 +471,6 @@ class TargetSpace():
         '''
         result = 0
         for p in P_min:
-            result -= p*np.log(p)
+            if p != 0:  # p is not 0
+                result -= p*np.log(p)
         return result
