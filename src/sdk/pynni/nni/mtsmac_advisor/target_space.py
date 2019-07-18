@@ -297,8 +297,8 @@ class TargetSpace():
         basket_new = self._get_basket_new(predictor, num_new)
         basket_old = self._get_basket_old(predictor, num_old)
         basket = np.append(basket_new, basket_old)
-        logger.debug("basket_old %s", basket_old)
         logger.debug("basket_new %s", basket_new)
+        logger.debug("basket_old %s", basket_old)
         logger.debug("basket %s", basket)
 
         # vector format of params in the basket
@@ -317,31 +317,37 @@ class TargetSpace():
         logger.debug("------------fantasize period---------------")
         a = np.empty(len(basket))
         n_fant = 5
+
+        X, y = self.get_train_data()
+        mean, std = predictor.predict(params)
+        logger.debug("mean predicted %s", mean)
+        logger.debug("std predicted %s", std)
         for i, item in enumerate(basket):
+            logger.debug("fantasize element %s in the basket", i)
             for j in range(n_fant):
                 logger.debug("fantasize round %s", j)
                 if i < num_new:
                     # fantasize an observation
-                    mean, std = predictor.predict([item['param']])
-                    logger.debug("mean predicted %s", mean)
-                    logger.debug("std predicted %s", std)
-                    obs = self.random_state.normal(mean[0][0], std[0][0])
+                    #mean, std = predictor.predict([item['param']])
+                    obs = self.random_state.normal(mean[i][0], std[i][0])
                     logger.debug("obs %s", obs)
-                    # add fantsized point to training data
-                    X, y = self.get_train_data()
+                    # add fantsized point to fake training data
                     X_fant = np.vstack((X, item['param']))
                     y_fant = np.append(y, ['new_serial'])
                     y_fant[-1] = [obs]
                 else:
                     # fantasize an observation
                     cur_epoch = len(item['perf'])
-                    mean, std = predictor.predict([item['param']])
+                    #mean, std = predictor.predict([item['param']])
                     obs = self.random_state.normal(
-                        mean[0][cur_epoch], std[0][cur_epoch])
-                    # add fantsized point to training data
-                    X_fant, y_fant = self.get_train_data()
-                    for k, item in enumerate(X_fant):
+                        mean[i][cur_epoch], std[i][cur_epoch])
+                    logger.debug("obs %s", obs)
+                    # add fantsized point to fake training data
+                    X_fant = X.copy()
+                    y_fant = y.copy()
+                    for k in range(X_fant.shape[0]):
                         if np.array_equal(item['param'], X_fant[k]):
+                            y_fant[k] = y_fant[k].copy()
                             y_fant[k].append(obs)
 
                 logger.debug("X_fant %s", X_fant)
@@ -352,24 +358,26 @@ class TargetSpace():
                 predictor_fant = Predictor(multi_task=True)
                 predictor_fant.fit(X_fant, y_fant)
                 # re-calculate P_min, H
-                mean, std = predictor_fant.predict(
+                mean_fant, std_fant = predictor_fant.predict(
                     params, final_only=True)
                 logger.debug("mean fantasize %s", mean)
                 logger.debug("std fantasize %s", std)
                 P_min_fant = self._get_P_min(
-                    mean=mean, std=std, format='vertor')
+                    mean=mean_fant, std=std_fant, form='vertor')
                 H_fant = self._cal_entropy(P_min_fant)
                 logger.debug("P_min_fant %s", P_min)
                 logger.debug("H_fant %s", H)
                 # average over n_fant
                 a[i] += (H_fant / n_fant)
+                logger.debug(
+                    "hyper_configs at the end of round: \n%s", self.hyper_configs)
 
         param_selected = basket[a.argmax()]
         logger.debug("a %s", a)
         logger.debug("param_selected %s", param_selected)
 
         param = param_selected['param']
-        if not param_selected['parameter_id']:
+        if 'parameter_id' not in param_selected:
             parameter_id = self.next_param_id
             self.next_param_id += 1
             self.register_new_config(parameter_id, param)
@@ -413,7 +421,7 @@ class TargetSpace():
                     [item['params']], final_only=True)
                 ys = ei(mean, std, y_max=self._y_max)
                 basket_old.append(
-                    {'parameter_id': item['parameter_id'], 'param': item['params'], 'mean': mean[0], 'std': std[0], 'ei': ys[0]})
+                    {'parameter_id': item['parameter_id'], 'param': item['params'], 'perf': item['perf'], 'mean': mean[0], 'std': std[0], 'ei': ys[0]})
 
         # sort basket by ei, from big to small
         sorted(basket_old, key=lambda item: item['ei'], reverse=True)
@@ -424,7 +432,7 @@ class TargetSpace():
             return basket_old
 
     # TODO: more pythonic funtion
-    def _get_P_min(self, basket=[], mean=[], std=[], format='json'):
+    def _get_P_min(self, basket=[], mean=[], std=[], form='json'):
         '''
         Parameters
         ----------
@@ -435,7 +443,7 @@ class TargetSpace():
         result: P_min, i.e. [0.1, 0.5, 0.4]
         '''
         n_monte_carlo = 1000
-        if format == 'json':
+        if form == 'json':
             n_params = len(basket)
             P_min = np.zeros(n_params)
             for _ in range(n_monte_carlo):
