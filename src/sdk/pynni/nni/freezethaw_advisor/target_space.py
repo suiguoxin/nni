@@ -330,6 +330,8 @@ class TargetSpace():
             logger.debug("fantasize element %s in the basket", i)
             for j in range(n_fant):
                 logger.debug("fantasize round %s", j)
+                mean_new_fant, std_new_fant = [], []
+                mean_old_fant, std_old_fant = [], []
                 if i < num_new:
                     # fantasize an observation
                     mean, std = predictor.predict_point_new([item['param']])
@@ -344,8 +346,8 @@ class TargetSpace():
                     predictor_fant = Predictor()
                     predictor_fant.fit(X_fant, y_fant)
                     # re-calculate P_min, H
-                    mean_fant, std_fant = predictor_fant.predict_asymptote_new(
-                        params)
+                    mean_new_fant, std_new_fant = predictor_fant.predict_asymptote_new(
+                        params[:num_new])
                 else:
                     # fantasize an observation
                     mean, std = predictor.predict_point_new([item['param']])
@@ -364,11 +366,14 @@ class TargetSpace():
                     predictor_fant = Predictor()
                     predictor_fant.fit(X_fant, y_fant)
                     # re-calculate P_min, H
-                    mean_fant, std_fant = predictor_fant.predict_asymptote_old(
-                        params)
+                    mean_old_fant, std_old_fant = predictor_fant.predict_asymptote_old(
+                        params[num_new:])
 
-                #logger.debug("mean fantasize %s", mean)
-                #logger.debug("std fantasize %s", std)
+                mean_fant = np.append(mean_new_fant, mean_old_fant)
+                std_fant = np.append(std_new_fant, std_old_fant)
+
+                logger.debug("mean fantasize %s", mean)
+                logger.debug("std fantasize %s", std)
                 P_min_fant = self._get_P_min(
                     mean=mean_fant, std=std_fant, form='vertor')
                 H_fant = self._cal_entropy(P_min_fant)
@@ -425,7 +430,7 @@ class TargetSpace():
         for item in self.hyper_configs:
             if item['status'] == 'RUNNING':
                 mean, std = predictor.predict_asymptote_old(
-                    [item['params']], final_only=True)
+                    [item['params']])
                 ys = ei(mean, std, y_max=self._y_max)
                 basket_old.append(
                     {'parameter_id': item['parameter_id'], 'param': item['params'],
