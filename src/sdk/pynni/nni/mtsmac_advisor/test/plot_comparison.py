@@ -49,20 +49,20 @@ def _get_metric_best(file_name):
                     metric_best.append(val)
                 else:
                     metric_best.append(metric_best[-1])
-    return metric_best
+    return metric_best[:1000]
 
 
 def plot_comparison():
-    metric_best_mtsmac = _get_metric_best('experiment_mtsmac.json')
+    metric_best_mtsmac = _get_metric_best('mnist_mtsmac.json')
     plt.plot(range(len(metric_best_mtsmac)),
              metric_best_mtsmac, label='MTSMAC')
 
-    metric_best_tpe = _get_metric_best('experiment_tpe.json')
+    metric_best_tpe = _get_metric_best('mnist_tpe.json')
     plt.plot(range(len(metric_best_tpe)), metric_best_tpe, label='TPE')
 
     plt.xlabel('Epochs')
     plt.ylabel('Default Metric')
-    plt.title('Learning curve MNIST')
+    plt.title('MNIST')
     plt.legend()
     plt.savefig('{}/image/res.png'.format(PATH))
     plt.close()

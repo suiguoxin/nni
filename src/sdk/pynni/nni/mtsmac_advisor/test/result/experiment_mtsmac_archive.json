@@ -1,10 +1,10 @@
 {
     "experimentParameters": {
         "id": "EZ6sD9Qu",
-        "revision": 450,
-        "execDuration": 3426,
+        "revision": 857,
+        "execDuration": 5802,
         "logDir": "/home/v-guosui/nni/experiments/EZ6sD9Qu",
-        "maxSequenceId": 106,
+        "maxSequenceId": 275,
         "params": {
             "authorName": "default",
             "experimentName": "example_mnist_MTSMAC",
@@ -5835,7 +5835,7 @@
         },
         {
             "id": "RPkyP",
-            "status": "RUNNING",
+            "status": "SUCCEEDED",
             "hyperParameters": {
                 "parameter_id": 14,
                 "parameter_source": "algorithm",
@@ -5852,6 +5852,17 @@
             "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/RPkyP",
             "startTime": 1563455014143,
             "sequenceId": 106,
+            "endTime": 1563455033831,
+            "finalMetricData": [
+                {
+                    "timestamp": 1563455033145,
+                    "trialJobId": "RPkyP",
+                    "parameterId": "14",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.9592000246047974"
+                }
+            ],
             "intermediate": [
                 {
                     "timestamp": 1563455024347,
@@ -5860,8 +5871,4655 @@
                     "type": "PERIODICAL",
                     "sequence": 0,
                     "data": "0.9559999704360962"
+                },
+                {
+                    "timestamp": 1563455033145,
+                    "trialJobId": "RPkyP",
+                    "parameterId": "14",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.9592000246047974"
                 }
             ]
+        },
+        {
+            "id": "k0ee2",
+            "status": "SUCCEEDED",
+            "hyperParameters": {
+                "parameter_id": 17,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 8,
+                    "conv_size": 5,
+                    "dropout_rate": 0.6620602041414956,
+                    "hidden_size": 512,
+                    "learning_rate": 0.01,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 17
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/k0ee2",
+            "startTime": 1563455044241,
+            "sequenceId": 107,
+            "endTime": 1563455061025,
+            "finalMetricData": [
+                {
+                    "timestamp": 1563455060363,
+                    "trialJobId": "k0ee2",
+                    "parameterId": "17",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.10100000351667404"
+                }
+            ],
+            "intermediate": [
+                {
+                    "timestamp": 1563455053874,
+                    "trialJobId": "k0ee2",
+                    "parameterId": "17",
+                    "type": "PERIODICAL",
+                    "sequence": 0,
+                    "data": "0.10090000182390213"
+                },
+                {
+                    "timestamp": 1563455060363,
+                    "trialJobId": "k0ee2",
+                    "parameterId": "17",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.10100000351667404"
+                }
+            ]
+        },
+        {
+            "id": "c7tmB",
+            "status": "SUCCEEDED",
+            "hyperParameters": {
+                "parameter_id": 15,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 32,
+                    "conv_size": 3,
+                    "dropout_rate": 0.8231627345855062,
+                    "hidden_size": 1024,
+                    "learning_rate": 0.01,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 15
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/c7tmB",
+            "startTime": 1563455069373,
+            "sequenceId": 108,
+            "endTime": 1563455087293,
+            "finalMetricData": [
+                {
+                    "timestamp": 1563455086563,
+                    "trialJobId": "c7tmB",
+                    "parameterId": "15",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.11349999904632568"
+                }
+            ],
+            "intermediate": [
+                {
+                    "timestamp": 1563455078780,
+                    "trialJobId": "c7tmB",
+                    "parameterId": "15",
+                    "type": "PERIODICAL",
+                    "sequence": 0,
+                    "data": "0.11349999904632568"
+                },
+                {
+                    "timestamp": 1563455086563,
+                    "trialJobId": "c7tmB",
+                    "parameterId": "15",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.11349999904632568"
+                }
+            ]
+        },
+        {
+            "id": "hHccG",
+            "status": "SUCCEEDED",
+            "hyperParameters": {
+                "parameter_id": 19,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.7247208788773434,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 19
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/hHccG",
+            "startTime": 1563455099508,
+            "sequenceId": 109,
+            "endTime": 1563455116789,
+            "finalMetricData": [
+                {
+                    "timestamp": 1563455116100,
+                    "trialJobId": "hHccG",
+                    "parameterId": "19",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.9043999910354614"
+                }
+            ],
+            "intermediate": [
+                {
+                    "timestamp": 1563455108312,
+                    "trialJobId": "hHccG",
+                    "parameterId": "19",
+                    "type": "PERIODICAL",
+                    "sequence": 0,
+                    "data": "0.8467000126838684"
+                },
+                {
+                    "timestamp": 1563455116100,
+                    "trialJobId": "hHccG",
+                    "parameterId": "19",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.9043999910354614"
+                }
+            ]
+        },
+        {
+            "id": "DTUkn",
+            "status": "SUCCEEDED",
+            "hyperParameters": {
+                "parameter_id": 45,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 8,
+                    "conv_size": 5,
+                    "dropout_rate": 0.7952277806765534,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 45
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/DTUkn",
+            "startTime": 1563455124631,
+            "sequenceId": 110,
+            "endTime": 1563455140557,
+            "finalMetricData": [
+                {
+                    "timestamp": 1563455139885,
+                    "trialJobId": "DTUkn",
+                    "parameterId": "45",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.7116000056266785"
+                }
+            ],
+            "intermediate": [
+                {
+                    "timestamp": 1563455133774,
+                    "trialJobId": "DTUkn",
+                    "parameterId": "45",
+                    "type": "PERIODICAL",
+                    "sequence": 0,
+                    "data": "0.1290999948978424"
+                },
+                {
+                    "timestamp": 1563455139885,
+                    "trialJobId": "DTUkn",
+                    "parameterId": "45",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.7116000056266785"
+                }
+            ]
+        },
+        {
+            "id": "lWRhd",
+            "status": "SUCCEEDED",
+            "hyperParameters": {
+                "parameter_id": 46,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 5,
+                    "dropout_rate": 0.6173341462095513,
+                    "hidden_size": 124,
+                    "learning_rate": 0.01,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 46
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/lWRhd",
+            "startTime": 1563455149757,
+            "sequenceId": 111,
+            "endTime": 1563455167632,
+            "finalMetricData": [
+                {
+                    "timestamp": 1563455166941,
+                    "trialJobId": "lWRhd",
+                    "parameterId": "46",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.9161999821662903"
+                }
+            ],
+            "intermediate": [
+                {
+                    "timestamp": 1563455158475,
+                    "trialJobId": "lWRhd",
+                    "parameterId": "46",
+                    "type": "PERIODICAL",
+                    "sequence": 0,
+                    "data": "0.10279999673366547"
+                },
+                {
+                    "timestamp": 1563455166941,
+                    "trialJobId": "lWRhd",
+                    "parameterId": "46",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.9161999821662903"
+                }
+            ]
+        },
+        {
+            "id": "yPXyg",
+            "status": "SUCCEEDED",
+            "hyperParameters": {
+                "parameter_id": 47,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 16,
+                    "conv_size": 2,
+                    "dropout_rate": 0.6759733390619997,
+                    "hidden_size": 1024,
+                    "learning_rate": 0.0001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 47
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/yPXyg",
+            "startTime": 1563455174884,
+            "sequenceId": 112,
+            "endTime": 1563455190894,
+            "finalMetricData": [
+                {
+                    "timestamp": 1563455190268,
+                    "trialJobId": "yPXyg",
+                    "parameterId": "47",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.5245000123977661"
+                }
+            ],
+            "intermediate": [
+                {
+                    "timestamp": 1563455183728,
+                    "trialJobId": "yPXyg",
+                    "parameterId": "47",
+                    "type": "PERIODICAL",
+                    "sequence": 0,
+                    "data": "0.07410000264644623"
+                },
+                {
+                    "timestamp": 1563455190268,
+                    "trialJobId": "yPXyg",
+                    "parameterId": "47",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.5245000123977661"
+                }
+            ]
+        },
+        {
+            "id": "H3vSv",
+            "status": "SUCCEEDED",
+            "hyperParameters": {
+                "parameter_id": 48,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 16,
+                    "conv_size": 3,
+                    "dropout_rate": 0.6497100821735403,
+                    "hidden_size": 124,
+                    "learning_rate": 0.0001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 48
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/H3vSv",
+            "startTime": 1563455200012,
+            "sequenceId": 113,
+            "endTime": 1563455214354,
+            "finalMetricData": [
+                {
+                    "timestamp": 1563455213733,
+                    "trialJobId": "H3vSv",
+                    "parameterId": "48",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.46810001134872437"
+                }
+            ],
+            "intermediate": [
+                {
+                    "timestamp": 1563455208373,
+                    "trialJobId": "H3vSv",
+                    "parameterId": "48",
+                    "type": "PERIODICAL",
+                    "sequence": 0,
+                    "data": "0.08969999849796295"
+                },
+                {
+                    "timestamp": 1563455213733,
+                    "trialJobId": "H3vSv",
+                    "parameterId": "48",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.46810001134872437"
+                }
+            ]
+        },
+        {
+            "id": "fdj1o",
+            "status": "SUCCEEDED",
+            "hyperParameters": {
+                "parameter_id": 19,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.7247208788773434,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 19
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/fdj1o",
+            "startTime": 1563455225130,
+            "sequenceId": 114,
+            "endTime": 1563455242198,
+            "finalMetricData": [
+                {
+                    "timestamp": 1563455241561,
+                    "trialJobId": "fdj1o",
+                    "parameterId": "19",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.9329000115394592"
+                }
+            ],
+            "intermediate": [
+                {
+                    "timestamp": 1563455233688,
+                    "trialJobId": "fdj1o",
+                    "parameterId": "19",
+                    "type": "PERIODICAL",
+                    "sequence": 0,
+                    "data": "0.9039999842643738"
+                },
+                {
+                    "timestamp": 1563455241561,
+                    "trialJobId": "fdj1o",
+                    "parameterId": "19",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.9329000115394592"
+                }
+            ]
+        },
+        {
+            "id": "xRv2m",
+            "status": "SUCCEEDED",
+            "hyperParameters": {
+                "parameter_id": 18,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 8,
+                    "conv_size": 2,
+                    "dropout_rate": 0.6338527262717382,
+                    "hidden_size": 1024,
+                    "learning_rate": 0.0001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 18
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/xRv2m",
+            "startTime": 1563455250213,
+            "sequenceId": 115,
+            "endTime": 1563455266933,
+            "finalMetricData": [
+                {
+                    "timestamp": 1563455266275,
+                    "trialJobId": "xRv2m",
+                    "parameterId": "18",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.7069000005722046"
+                }
+            ],
+            "intermediate": [
+                {
+                    "timestamp": 1563455259303,
+                    "trialJobId": "xRv2m",
+                    "parameterId": "18",
+                    "type": "PERIODICAL",
+                    "sequence": 0,
+                    "data": "0.517799973487854"
+                },
+                {
+                    "timestamp": 1563455266275,
+                    "trialJobId": "xRv2m",
+                    "parameterId": "18",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.7069000005722046"
+                }
+            ]
+        },
+        {
+            "id": "V9FQT",
+            "status": "SUCCEEDED",
+            "hyperParameters": {
+                "parameter_id": 49,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 32,
+                    "conv_size": 2,
+                    "dropout_rate": 0.7102923435766527,
+                    "hidden_size": 124,
+                    "learning_rate": 0.01,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 49
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/V9FQT",
+            "startTime": 1563455275330,
+            "sequenceId": 116,
+            "endTime": 1563455291431,
+            "finalMetricData": [
+                {
+                    "timestamp": 1563455290778,
+                    "trialJobId": "V9FQT",
+                    "parameterId": "49",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.76910001039505"
+                }
+            ],
+            "intermediate": [
+                {
+                    "timestamp": 1563455284831,
+                    "trialJobId": "V9FQT",
+                    "parameterId": "49",
+                    "type": "PERIODICAL",
+                    "sequence": 0,
+                    "data": "0.10320000350475311"
+                },
+                {
+                    "timestamp": 1563455290778,
+                    "trialJobId": "V9FQT",
+                    "parameterId": "49",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.76910001039505"
+                }
+            ]
+        },
+        {
+            "id": "pAAWK",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/pAAWK",
+            "startTime": 1563455298944,
+            "sequenceId": 117,
+            "endTime": 1563455300465,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/pAAWK/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "sqan4",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/sqan4",
+            "startTime": 1563455309015,
+            "sequenceId": 118,
+            "endTime": 1563455310589,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/sqan4/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "aIe2J",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/aIe2J",
+            "startTime": 1563455319136,
+            "sequenceId": 119,
+            "endTime": 1563455320710,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/aIe2J/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "tD4Yb",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/tD4Yb",
+            "startTime": 1563455329229,
+            "sequenceId": 120,
+            "endTime": 1563455330800,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/tD4Yb/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "zksmG",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/zksmG",
+            "startTime": 1563455339288,
+            "sequenceId": 121,
+            "endTime": 1563455340925,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/zksmG/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "gEhG1",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/gEhG1",
+            "startTime": 1563455349376,
+            "sequenceId": 122,
+            "endTime": 1563455351035,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/gEhG1/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "GdM1H",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/GdM1H",
+            "startTime": 1563455359427,
+            "sequenceId": 123,
+            "endTime": 1563455361115,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/GdM1H/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "TMoFs",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/TMoFs",
+            "startTime": 1563455369487,
+            "sequenceId": 124,
+            "endTime": 1563455371265,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/TMoFs/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "XNsnm",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/XNsnm",
+            "startTime": 1563455379549,
+            "sequenceId": 125,
+            "endTime": 1563455381382,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/XNsnm/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "fuMzH",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/fuMzH",
+            "startTime": 1563455389615,
+            "sequenceId": 126,
+            "endTime": 1563455391503,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/fuMzH/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "p1KuT",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/p1KuT",
+            "startTime": 1563455399736,
+            "sequenceId": 127,
+            "endTime": 1563455401593,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/p1KuT/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "zQZtw",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/zQZtw",
+            "startTime": 1563455409851,
+            "sequenceId": 128,
+            "endTime": 1563455411711,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/zQZtw/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "yGoQt",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/yGoQt",
+            "startTime": 1563455419990,
+            "sequenceId": 129,
+            "endTime": 1563455421820,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/yGoQt/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "In31s",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 18,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 8,
+                    "conv_size": 2,
+                    "dropout_rate": 0.6338527262717382,
+                    "hidden_size": 1024,
+                    "learning_rate": 0.0001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 18
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/In31s",
+            "startTime": 1563455430080,
+            "sequenceId": 130,
+            "endTime": 1563455431955,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/In31s/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "rh7BW",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/rh7BW",
+            "startTime": 1563455440147,
+            "sequenceId": 131,
+            "endTime": 1563455442059,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/rh7BW/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "h8svU",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 9,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 3,
+                    "dropout_rate": 0.7008248572975792,
+                    "hidden_size": 1024,
+                    "learning_rate": 0.01,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 9
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/h8svU",
+            "startTime": 1563455450228,
+            "sequenceId": 132,
+            "endTime": 1563455452212,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/h8svU/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "cEDka",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/cEDka",
+            "startTime": 1563455460314,
+            "sequenceId": 133,
+            "endTime": 1563455462298,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/cEDka/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "V2z3s",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/V2z3s",
+            "startTime": 1563455470408,
+            "sequenceId": 134,
+            "endTime": 1563455472424,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/V2z3s/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "eIJbX",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/eIJbX",
+            "startTime": 1563455480531,
+            "sequenceId": 135,
+            "endTime": 1563455482524,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/eIJbX/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "wdamQ",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/wdamQ",
+            "startTime": 1563455490616,
+            "sequenceId": 136,
+            "endTime": 1563455492619,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/wdamQ/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "Onq89",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 9,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 3,
+                    "dropout_rate": 0.7008248572975792,
+                    "hidden_size": 1024,
+                    "learning_rate": 0.01,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 9
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/Onq89",
+            "startTime": 1563455500674,
+            "sequenceId": 137,
+            "endTime": 1563455502733,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/Onq89/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "aKPkS",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/aKPkS",
+            "startTime": 1563455510749,
+            "sequenceId": 138,
+            "endTime": 1563455512810,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/aKPkS/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "lh4vS",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 17,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 8,
+                    "conv_size": 5,
+                    "dropout_rate": 0.6620602041414956,
+                    "hidden_size": 512,
+                    "learning_rate": 0.01,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 17
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/lh4vS",
+            "startTime": 1563455520807,
+            "sequenceId": 139,
+            "endTime": 1563455522903,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/lh4vS/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "Ip5IJ",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/Ip5IJ",
+            "startTime": 1563455530900,
+            "sequenceId": 140,
+            "endTime": 1563455533025,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/Ip5IJ/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "S0tiy",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 9,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 3,
+                    "dropout_rate": 0.7008248572975792,
+                    "hidden_size": 1024,
+                    "learning_rate": 0.01,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 9
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/S0tiy",
+            "startTime": 1563455540973,
+            "sequenceId": 141,
+            "endTime": 1563455543157,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/S0tiy/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "ebB1O",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/ebB1O",
+            "startTime": 1563455551033,
+            "sequenceId": 142,
+            "endTime": 1563455553369,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/ebB1O/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "xWpJZ",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/xWpJZ",
+            "startTime": 1563455561134,
+            "sequenceId": 143,
+            "endTime": 1563455563508,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/xWpJZ/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "svTAr",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/svTAr",
+            "startTime": 1563455571209,
+            "sequenceId": 144,
+            "endTime": 1563455573650,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/svTAr/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "Xq9El",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/Xq9El",
+            "startTime": 1563455581303,
+            "sequenceId": 145,
+            "endTime": 1563455583781,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/Xq9El/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "PnD6k",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 9,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 3,
+                    "dropout_rate": 0.7008248572975792,
+                    "hidden_size": 1024,
+                    "learning_rate": 0.01,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 9
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/PnD6k",
+            "startTime": 1563455591405,
+            "sequenceId": 146,
+            "endTime": 1563455593904,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/PnD6k/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "Uu031",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/Uu031",
+            "startTime": 1563455601475,
+            "sequenceId": 147,
+            "endTime": 1563455604042,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/Uu031/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "kAOQR",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/kAOQR",
+            "startTime": 1563455611562,
+            "sequenceId": 148,
+            "endTime": 1563455614190,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/kAOQR/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "vePlg",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/vePlg",
+            "startTime": 1563455621658,
+            "sequenceId": 149,
+            "endTime": 1563455624290,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/vePlg/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "BE0fF",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 9,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 3,
+                    "dropout_rate": 0.7008248572975792,
+                    "hidden_size": 1024,
+                    "learning_rate": 0.01,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 9
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/BE0fF",
+            "startTime": 1563455631779,
+            "sequenceId": 150,
+            "endTime": 1563455634404,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/BE0fF/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "QMgFk",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 9,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 3,
+                    "dropout_rate": 0.7008248572975792,
+                    "hidden_size": 1024,
+                    "learning_rate": 0.01,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 9
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/QMgFk",
+            "startTime": 1563455641900,
+            "sequenceId": 151,
+            "endTime": 1563455644505,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/QMgFk/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "Icbta",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/Icbta",
+            "startTime": 1563455651992,
+            "sequenceId": 152,
+            "endTime": 1563455654591,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/Icbta/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "j72XY",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/j72XY",
+            "startTime": 1563455662058,
+            "sequenceId": 153,
+            "endTime": 1563455664718,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/j72XY/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "MyaRY",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 17,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 8,
+                    "conv_size": 5,
+                    "dropout_rate": 0.6620602041414956,
+                    "hidden_size": 512,
+                    "learning_rate": 0.01,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 17
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/MyaRY",
+            "startTime": 1563455672124,
+            "sequenceId": 154,
+            "endTime": 1563455674823,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/MyaRY/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "mD9g5",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 9,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 3,
+                    "dropout_rate": 0.7008248572975792,
+                    "hidden_size": 1024,
+                    "learning_rate": 0.01,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 9
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/mD9g5",
+            "startTime": 1563455682209,
+            "sequenceId": 155,
+            "endTime": 1563455684938,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/mD9g5/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "TEMj9",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/TEMj9",
+            "startTime": 1563455692282,
+            "sequenceId": 156,
+            "endTime": 1563455695386,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/TEMj9/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "Fr3Gn",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/Fr3Gn",
+            "startTime": 1563455702350,
+            "sequenceId": 157,
+            "endTime": 1563455705281,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/Fr3Gn/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "ep5X5",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 18,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 8,
+                    "conv_size": 2,
+                    "dropout_rate": 0.6338527262717382,
+                    "hidden_size": 1024,
+                    "learning_rate": 0.0001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 18
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/ep5X5",
+            "startTime": 1563455712403,
+            "sequenceId": 158,
+            "endTime": 1563455715424,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/ep5X5/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "jUnmM",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 18,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 8,
+                    "conv_size": 2,
+                    "dropout_rate": 0.6338527262717382,
+                    "hidden_size": 1024,
+                    "learning_rate": 0.0001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 18
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/jUnmM",
+            "startTime": 1563455722530,
+            "sequenceId": 159,
+            "endTime": 1563455725517,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/jUnmM/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "NyHMi",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/NyHMi",
+            "startTime": 1563455732622,
+            "sequenceId": 160,
+            "endTime": 1563455735637,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/NyHMi/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "XDeur",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/XDeur",
+            "startTime": 1563455742734,
+            "sequenceId": 161,
+            "endTime": 1563455745734,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/XDeur/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "Y9WLD",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/Y9WLD",
+            "startTime": 1563455752807,
+            "sequenceId": 162,
+            "endTime": 1563455755861,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/Y9WLD/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "vlbqL",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 9,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 3,
+                    "dropout_rate": 0.7008248572975792,
+                    "hidden_size": 1024,
+                    "learning_rate": 0.01,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 9
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/vlbqL",
+            "startTime": 1563455762903,
+            "sequenceId": 163,
+            "endTime": 1563455765957,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/vlbqL/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "VLtur",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/VLtur",
+            "startTime": 1563455772957,
+            "sequenceId": 164,
+            "endTime": 1563455776057,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/VLtur/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "rF0yD",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/rF0yD",
+            "startTime": 1563455783018,
+            "sequenceId": 165,
+            "endTime": 1563455786132,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/rF0yD/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "XX0vL",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/XX0vL",
+            "startTime": 1563455793113,
+            "sequenceId": 166,
+            "endTime": 1563455796258,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/XX0vL/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "dW6UI",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/dW6UI",
+            "startTime": 1563455803216,
+            "sequenceId": 167,
+            "endTime": 1563455806392,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/dW6UI/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "O63o6",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/O63o6",
+            "startTime": 1563455813277,
+            "sequenceId": 168,
+            "endTime": 1563455816547,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/O63o6/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "t12lU",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/t12lU",
+            "startTime": 1563455823376,
+            "sequenceId": 169,
+            "endTime": 1563455826666,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/t12lU/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "ryxOG",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/ryxOG",
+            "startTime": 1563455833528,
+            "sequenceId": 170,
+            "endTime": 1563455836777,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/ryxOG/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "udd3v",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/udd3v",
+            "startTime": 1563455843634,
+            "sequenceId": 171,
+            "endTime": 1563455846911,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/udd3v/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "cD0P4",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/cD0P4",
+            "startTime": 1563455853773,
+            "sequenceId": 172,
+            "endTime": 1563455856992,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/cD0P4/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "AWZyG",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 9,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 3,
+                    "dropout_rate": 0.7008248572975792,
+                    "hidden_size": 1024,
+                    "learning_rate": 0.01,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 9
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/AWZyG",
+            "startTime": 1563455863859,
+            "sequenceId": 173,
+            "endTime": 1563455867110,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/AWZyG/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "CS08K",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/CS08K",
+            "startTime": 1563455873925,
+            "sequenceId": 174,
+            "endTime": 1563455877231,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/CS08K/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "smgcl",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/smgcl",
+            "startTime": 1563455883976,
+            "sequenceId": 175,
+            "endTime": 1563455887326,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/smgcl/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "XXdji",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 9,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 3,
+                    "dropout_rate": 0.7008248572975792,
+                    "hidden_size": 1024,
+                    "learning_rate": 0.01,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 9
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/XXdji",
+            "startTime": 1563455894124,
+            "sequenceId": 176,
+            "endTime": 1563455897433,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/XXdji/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "GOjRu",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/GOjRu",
+            "startTime": 1563455904209,
+            "sequenceId": 177,
+            "endTime": 1563455907541,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/GOjRu/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "aZM0H",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/aZM0H",
+            "startTime": 1563455914257,
+            "sequenceId": 178,
+            "endTime": 1563455917679,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/aZM0H/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "XHvUC",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/XHvUC",
+            "startTime": 1563455924338,
+            "sequenceId": 179,
+            "endTime": 1563455927873,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/XHvUC/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "BOdAZ",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/BOdAZ",
+            "startTime": 1563455934429,
+            "sequenceId": 180,
+            "endTime": 1563455938040,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/BOdAZ/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "uR0yH",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/uR0yH",
+            "startTime": 1563455944618,
+            "sequenceId": 181,
+            "endTime": 1563455948205,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/uR0yH/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "WrGCP",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 9,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 3,
+                    "dropout_rate": 0.7008248572975792,
+                    "hidden_size": 1024,
+                    "learning_rate": 0.01,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 9
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/WrGCP",
+            "startTime": 1563455954775,
+            "sequenceId": 182,
+            "endTime": 1563455958355,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/WrGCP/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "cf9Cr",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/cf9Cr",
+            "startTime": 1563455965054,
+            "sequenceId": 183,
+            "endTime": 1563455968521,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/cf9Cr/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "g93Cr",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/g93Cr",
+            "startTime": 1563455975323,
+            "sequenceId": 184,
+            "endTime": 1563455979062,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/g93Cr/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "qpAmm",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/qpAmm",
+            "startTime": 1563455985389,
+            "sequenceId": 185,
+            "endTime": 1563455989870,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/qpAmm/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "tYXBL",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 17,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 8,
+                    "conv_size": 5,
+                    "dropout_rate": 0.6620602041414956,
+                    "hidden_size": 512,
+                    "learning_rate": 0.01,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 17
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/tYXBL",
+            "startTime": 1563455995465,
+            "sequenceId": 186,
+            "endTime": 1563456000070,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/tYXBL/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "fQi6B",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/fQi6B",
+            "startTime": 1563456010532,
+            "sequenceId": 187,
+            "endTime": 1563456015229,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/fQi6B/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "sQI6i",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 9,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 3,
+                    "dropout_rate": 0.7008248572975792,
+                    "hidden_size": 1024,
+                    "learning_rate": 0.01,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 9
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/sQI6i",
+            "startTime": 1563456025611,
+            "sequenceId": 188,
+            "endTime": 1563456030399,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/sQI6i/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "RHip9",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 9,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 3,
+                    "dropout_rate": 0.7008248572975792,
+                    "hidden_size": 1024,
+                    "learning_rate": 0.01,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 9
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/RHip9",
+            "startTime": 1563456040918,
+            "sequenceId": 189,
+            "endTime": 1563456041140,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/RHip9/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "TAG7e",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/TAG7e",
+            "startTime": 1563456056159,
+            "sequenceId": 190,
+            "endTime": 1563456061089,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/TAG7e/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "DyK3U",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/DyK3U",
+            "startTime": 1563456066291,
+            "sequenceId": 191,
+            "endTime": 1563456071204,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/DyK3U/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "SWR6Z",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 9,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 3,
+                    "dropout_rate": 0.7008248572975792,
+                    "hidden_size": 1024,
+                    "learning_rate": 0.01,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 9
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/SWR6Z",
+            "startTime": 1563456081415,
+            "sequenceId": 192,
+            "endTime": 1563456086306,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/SWR6Z/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "h6cmD",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/h6cmD",
+            "startTime": 1563456091560,
+            "sequenceId": 193,
+            "endTime": 1563456096415,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/h6cmD/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "WBYsj",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 9,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 3,
+                    "dropout_rate": 0.7008248572975792,
+                    "hidden_size": 1024,
+                    "learning_rate": 0.01,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 9
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/WBYsj",
+            "startTime": 1563456106630,
+            "sequenceId": 194,
+            "endTime": 1563456111545,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/WBYsj/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "fc77W",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 17,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 8,
+                    "conv_size": 5,
+                    "dropout_rate": 0.6620602041414956,
+                    "hidden_size": 512,
+                    "learning_rate": 0.01,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 17
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/fc77W",
+            "startTime": 1563456116763,
+            "sequenceId": 195,
+            "endTime": 1563456121602,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/fc77W/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "hBITI",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/hBITI",
+            "startTime": 1563456126816,
+            "sequenceId": 196,
+            "endTime": 1563456131784,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/hBITI/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "mO2Rc",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/mO2Rc",
+            "startTime": 1563456136897,
+            "sequenceId": 197,
+            "endTime": 1563456141863,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/mO2Rc/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "iN5zZ",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 18,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 8,
+                    "conv_size": 2,
+                    "dropout_rate": 0.6338527262717382,
+                    "hidden_size": 1024,
+                    "learning_rate": 0.0001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 18
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/iN5zZ",
+            "startTime": 1563456147079,
+            "sequenceId": 198,
+            "endTime": 1563456152040,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/iN5zZ/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "QAZmO",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/QAZmO",
+            "startTime": 1563456157178,
+            "sequenceId": 199,
+            "endTime": 1563456162196,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/QAZmO/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "EN2zF",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 18,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 8,
+                    "conv_size": 2,
+                    "dropout_rate": 0.6338527262717382,
+                    "hidden_size": 1024,
+                    "learning_rate": 0.0001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 18
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/EN2zF",
+            "startTime": 1563456167274,
+            "sequenceId": 200,
+            "endTime": 1563456172741,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/EN2zF/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "TtO3v",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/TtO3v",
+            "startTime": 1563456182419,
+            "sequenceId": 201,
+            "endTime": 1563456182933,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/TtO3v/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "j9WSI",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/j9WSI",
+            "startTime": 1563456192746,
+            "sequenceId": 202,
+            "endTime": 1563456193109,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/j9WSI/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "uGvYq",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 9,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 3,
+                    "dropout_rate": 0.7008248572975792,
+                    "hidden_size": 1024,
+                    "learning_rate": 0.01,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 9
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/uGvYq",
+            "startTime": 1563456203169,
+            "sequenceId": 203,
+            "endTime": 1563456208295,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/uGvYq/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "tIYnM",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/tIYnM",
+            "startTime": 1563456213362,
+            "sequenceId": 204,
+            "endTime": 1563456218839,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/tIYnM/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "jwyE6",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/jwyE6",
+            "startTime": 1563456228516,
+            "sequenceId": 205,
+            "endTime": 1563456228893,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/jwyE6/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "pjHiX",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 17,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 8,
+                    "conv_size": 5,
+                    "dropout_rate": 0.6620602041414956,
+                    "hidden_size": 512,
+                    "learning_rate": 0.01,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 17
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/pjHiX",
+            "startTime": 1563456238616,
+            "sequenceId": 206,
+            "endTime": 1563456239048,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/pjHiX/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "K6f41",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 9,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 3,
+                    "dropout_rate": 0.7008248572975792,
+                    "hidden_size": 1024,
+                    "learning_rate": 0.01,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 9
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/K6f41",
+            "startTime": 1563456248740,
+            "sequenceId": 207,
+            "endTime": 1563456249262,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/K6f41/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "R35ds",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/R35ds",
+            "startTime": 1563456258902,
+            "sequenceId": 208,
+            "endTime": 1563456259362,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/R35ds/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "CUg5g",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/CUg5g",
+            "startTime": 1563456269107,
+            "sequenceId": 209,
+            "endTime": 1563456269530,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/CUg5g/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "Vx44k",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/Vx44k",
+            "startTime": 1563456279246,
+            "sequenceId": 210,
+            "endTime": 1563456279913,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/Vx44k/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "AGHzk",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/AGHzk",
+            "startTime": 1563456289299,
+            "sequenceId": 211,
+            "endTime": 1563456290052,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/AGHzk/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "jvV30",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/jvV30",
+            "startTime": 1563456299402,
+            "sequenceId": 212,
+            "endTime": 1563456300171,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/jvV30/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "neRk6",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 18,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 8,
+                    "conv_size": 2,
+                    "dropout_rate": 0.6338527262717382,
+                    "hidden_size": 1024,
+                    "learning_rate": 0.0001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 18
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/neRk6",
+            "startTime": 1563456309479,
+            "sequenceId": 213,
+            "endTime": 1563456310269,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/neRk6/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "bCG5r",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/bCG5r",
+            "startTime": 1563456319542,
+            "sequenceId": 214,
+            "endTime": 1563456320565,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/bCG5r/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "WPmyu",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/WPmyu",
+            "startTime": 1563456334640,
+            "sequenceId": 215,
+            "endTime": 1563456335665,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/WPmyu/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "QtGOY",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/QtGOY",
+            "startTime": 1563456344926,
+            "sequenceId": 216,
+            "endTime": 1563456345777,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/QtGOY/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "UqFeY",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 9,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 3,
+                    "dropout_rate": 0.7008248572975792,
+                    "hidden_size": 1024,
+                    "learning_rate": 0.01,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 9
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/UqFeY",
+            "startTime": 1563456355334,
+            "sequenceId": 217,
+            "endTime": 1563456355928,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/UqFeY/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "Jn6Ly",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 9,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 3,
+                    "dropout_rate": 0.7008248572975792,
+                    "hidden_size": 1024,
+                    "learning_rate": 0.01,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 9
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/Jn6Ly",
+            "startTime": 1563456365399,
+            "sequenceId": 218,
+            "endTime": 1563456366231,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/Jn6Ly/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "oaz57",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/oaz57",
+            "startTime": 1563456375722,
+            "sequenceId": 219,
+            "endTime": 1563456376721,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/oaz57/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "qOhje",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/qOhje",
+            "startTime": 1563456385790,
+            "sequenceId": 220,
+            "endTime": 1563456386785,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/qOhje/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "Ni6EP",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/Ni6EP",
+            "startTime": 1563456395946,
+            "sequenceId": 221,
+            "endTime": 1563456397763,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/Ni6EP/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "MJ13F",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/MJ13F",
+            "startTime": 1563456406084,
+            "sequenceId": 222,
+            "endTime": 1563456407744,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/MJ13F/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "okvpj",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 9,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 3,
+                    "dropout_rate": 0.7008248572975792,
+                    "hidden_size": 1024,
+                    "learning_rate": 0.01,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 9
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/okvpj",
+            "startTime": 1563456416357,
+            "sequenceId": 223,
+            "endTime": 1563456418322,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/okvpj/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "uSmBp",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/uSmBp",
+            "startTime": 1563456426435,
+            "sequenceId": 224,
+            "endTime": 1563456428480,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/uSmBp/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "h84Pq",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/h84Pq",
+            "startTime": 1563456436547,
+            "sequenceId": 225,
+            "endTime": 1563456438580,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/h84Pq/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "s1Fjk",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/s1Fjk",
+            "startTime": 1563456446646,
+            "sequenceId": 226,
+            "endTime": 1563456448681,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/s1Fjk/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "vizhx",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/vizhx",
+            "startTime": 1563456456710,
+            "sequenceId": 227,
+            "endTime": 1563456459321,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/vizhx/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "iigvl",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 9,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 3,
+                    "dropout_rate": 0.7008248572975792,
+                    "hidden_size": 1024,
+                    "learning_rate": 0.01,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 9
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/iigvl",
+            "startTime": 1563456466807,
+            "sequenceId": 228,
+            "endTime": 1563456469356,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/iigvl/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "kJBMk",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/kJBMk",
+            "startTime": 1563456476996,
+            "sequenceId": 229,
+            "endTime": 1563456479457,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/kJBMk/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "HRl1f",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/HRl1f",
+            "startTime": 1563456487098,
+            "sequenceId": 230,
+            "endTime": 1563456489642,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/HRl1f/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "UdltK",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/UdltK",
+            "startTime": 1563456497156,
+            "sequenceId": 231,
+            "endTime": 1563456499882,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/UdltK/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "Jarcx",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 9,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 3,
+                    "dropout_rate": 0.7008248572975792,
+                    "hidden_size": 1024,
+                    "learning_rate": 0.01,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 9
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/Jarcx",
+            "startTime": 1563456512245,
+            "sequenceId": 232,
+            "endTime": 1563456515358,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/Jarcx/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "MlBVn",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/MlBVn",
+            "startTime": 1563456522344,
+            "sequenceId": 233,
+            "endTime": 1563456525470,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/MlBVn/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "CGSSl",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/CGSSl",
+            "startTime": 1563456532481,
+            "sequenceId": 234,
+            "endTime": 1563456535670,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/CGSSl/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "xtRUR",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 18,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 8,
+                    "conv_size": 2,
+                    "dropout_rate": 0.6338527262717382,
+                    "hidden_size": 1024,
+                    "learning_rate": 0.0001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 18
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/xtRUR",
+            "startTime": 1563456542651,
+            "sequenceId": 235,
+            "endTime": 1563456546199,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/xtRUR/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "l8Xsq",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 10,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 16,
+                    "conv_size": 3,
+                    "dropout_rate": 0.5392443975540949,
+                    "hidden_size": 512,
+                    "learning_rate": 0.1,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 10
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/l8Xsq",
+            "startTime": 1563456552740,
+            "sequenceId": 236,
+            "endTime": 1563456556292,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/l8Xsq/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "CQfN6",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/CQfN6",
+            "startTime": 1563456562912,
+            "sequenceId": 237,
+            "endTime": 1563456566470,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/CQfN6/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "fFL3u",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 9,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 3,
+                    "dropout_rate": 0.7008248572975792,
+                    "hidden_size": 1024,
+                    "learning_rate": 0.01,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 9
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/fFL3u",
+            "startTime": 1563456573277,
+            "sequenceId": 238,
+            "endTime": 1563456576954,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/fFL3u/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "zfqQl",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/zfqQl",
+            "startTime": 1563456583380,
+            "sequenceId": 239,
+            "endTime": 1563456587103,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/zfqQl/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "SQlEA",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/SQlEA",
+            "startTime": 1563456593588,
+            "sequenceId": 240,
+            "endTime": 1563456597752,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/SQlEA/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "kxmGB",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/kxmGB",
+            "startTime": 1563456603672,
+            "sequenceId": 241,
+            "endTime": 1563456607854,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/kxmGB/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "LCzOF",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/LCzOF",
+            "startTime": 1563456613757,
+            "sequenceId": 242,
+            "endTime": 1563456617817,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/LCzOF/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "yLBUD",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/yLBUD",
+            "startTime": 1563456623851,
+            "sequenceId": 243,
+            "endTime": 1563456627904,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/yLBUD/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "aHVRd",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/aHVRd",
+            "startTime": 1563456633910,
+            "sequenceId": 244,
+            "endTime": 1563456638001,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/aHVRd/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "VV2Vk",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/VV2Vk",
+            "startTime": 1563456643969,
+            "sequenceId": 245,
+            "endTime": 1563456648113,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/VV2Vk/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "QBCNM",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/QBCNM",
+            "startTime": 1563456654030,
+            "sequenceId": 246,
+            "endTime": 1563456658265,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/QBCNM/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "jqrnf",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/jqrnf",
+            "startTime": 1563456664241,
+            "sequenceId": 247,
+            "endTime": 1563456668939,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/jqrnf/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "GXEZN",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/GXEZN",
+            "startTime": 1563456674605,
+            "sequenceId": 248,
+            "endTime": 1563456679073,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/GXEZN/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "LxKhB",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/LxKhB",
+            "startTime": 1563456684674,
+            "sequenceId": 249,
+            "endTime": 1563456689144,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/LxKhB/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "F9pC3",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 9,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 3,
+                    "dropout_rate": 0.7008248572975792,
+                    "hidden_size": 1024,
+                    "learning_rate": 0.01,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 9
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/F9pC3",
+            "startTime": 1563456694744,
+            "sequenceId": 250,
+            "endTime": 1563456699374,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/F9pC3/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "i4QA7",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/i4QA7",
+            "startTime": 1563456704825,
+            "sequenceId": 251,
+            "endTime": 1563456709493,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/i4QA7/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "JOETS",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/JOETS",
+            "startTime": 1563456714919,
+            "sequenceId": 252,
+            "endTime": 1563456719736,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/JOETS/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "nFC00",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/nFC00",
+            "startTime": 1563456725330,
+            "sequenceId": 253,
+            "endTime": 1563456729936,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/nFC00/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "W5XYg",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/W5XYg",
+            "startTime": 1563456735512,
+            "sequenceId": 254,
+            "endTime": 1563456740041,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/W5XYg/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "URNR8",
+            "status": "FAILED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/URNR8",
+            "startTime": 1563456745642,
+            "sequenceId": 255,
+            "endTime": 1563456750112,
+            "stderrPath": "file:/localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/URNR8/stderr",
+            "intermediate": []
+        },
+        {
+            "id": "AcvWj",
+            "status": "SUCCEEDED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/AcvWj",
+            "startTime": 1563456765829,
+            "sequenceId": 256,
+            "endTime": 1563456794364,
+            "finalMetricData": [
+                {
+                    "timestamp": 1563456793362,
+                    "trialJobId": "AcvWj",
+                    "parameterId": "7",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.9442999958992004"
+                }
+            ],
+            "intermediate": [
+                {
+                    "timestamp": 1563456779870,
+                    "trialJobId": "AcvWj",
+                    "parameterId": "7",
+                    "type": "PERIODICAL",
+                    "sequence": 0,
+                    "data": "0.9316999912261963"
+                },
+                {
+                    "timestamp": 1563456793362,
+                    "trialJobId": "AcvWj",
+                    "parameterId": "7",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.9442999958992004"
+                }
+            ]
+        },
+        {
+            "id": "j99K5",
+            "status": "SUCCEEDED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/j99K5",
+            "startTime": 1563456805963,
+            "sequenceId": 257,
+            "endTime": 1563456824353,
+            "finalMetricData": [
+                {
+                    "timestamp": 1563456823605,
+                    "trialJobId": "j99K5",
+                    "parameterId": "7",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.9550999999046326"
+                }
+            ],
+            "intermediate": [
+                {
+                    "timestamp": 1563456814887,
+                    "trialJobId": "j99K5",
+                    "parameterId": "7",
+                    "type": "PERIODICAL",
+                    "sequence": 0,
+                    "data": "0.9448000192642212"
+                },
+                {
+                    "timestamp": 1563456823605,
+                    "trialJobId": "j99K5",
+                    "parameterId": "7",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.9550999999046326"
+                }
+            ]
+        },
+        {
+            "id": "J8b5T",
+            "status": "SUCCEEDED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/J8b5T",
+            "startTime": 1563456836147,
+            "sequenceId": 258,
+            "endTime": 1563456861851,
+            "finalMetricData": [
+                {
+                    "timestamp": 1563456860652,
+                    "trialJobId": "J8b5T",
+                    "parameterId": "7",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.95660001039505"
+                }
+            ],
+            "intermediate": [
+                {
+                    "timestamp": 1563456849120,
+                    "trialJobId": "J8b5T",
+                    "parameterId": "7",
+                    "type": "PERIODICAL",
+                    "sequence": 0,
+                    "data": "0.954800009727478"
+                },
+                {
+                    "timestamp": 1563456860652,
+                    "trialJobId": "J8b5T",
+                    "parameterId": "7",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.95660001039505"
+                }
+            ]
+        },
+        {
+            "id": "k3HfV",
+            "status": "SUCCEEDED",
+            "hyperParameters": {
+                "parameter_id": 50,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 16,
+                    "conv_size": 2,
+                    "dropout_rate": 0.6798758018844013,
+                    "hidden_size": 1024,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 50
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/k3HfV",
+            "startTime": 1563456871358,
+            "sequenceId": 259,
+            "endTime": 1563456896064,
+            "finalMetricData": [
+                {
+                    "timestamp": 1563456894840,
+                    "trialJobId": "k3HfV",
+                    "parameterId": "50",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.8145999908447266"
+                }
+            ],
+            "intermediate": [
+                {
+                    "timestamp": 1563456884697,
+                    "trialJobId": "k3HfV",
+                    "parameterId": "50",
+                    "type": "PERIODICAL",
+                    "sequence": 0,
+                    "data": "0.11349999904632568"
+                },
+                {
+                    "timestamp": 1563456894840,
+                    "trialJobId": "k3HfV",
+                    "parameterId": "50",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.8145999908447266"
+                }
+            ]
+        },
+        {
+            "id": "GpXbZ",
+            "status": "SUCCEEDED",
+            "hyperParameters": {
+                "parameter_id": 51,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 3,
+                    "dropout_rate": 0.7724906998527412,
+                    "hidden_size": 1024,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 51
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/GpXbZ",
+            "startTime": 1563456906686,
+            "sequenceId": 260,
+            "endTime": 1563456934759,
+            "finalMetricData": [
+                {
+                    "timestamp": 1563456933529,
+                    "trialJobId": "GpXbZ",
+                    "parameterId": "51",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.9380000233650208"
+                }
+            ],
+            "intermediate": [
+                {
+                    "timestamp": 1563456919646,
+                    "trialJobId": "GpXbZ",
+                    "parameterId": "51",
+                    "type": "PERIODICAL",
+                    "sequence": 0,
+                    "data": "0.10189999639987946"
+                },
+                {
+                    "timestamp": 1563456933529,
+                    "trialJobId": "GpXbZ",
+                    "parameterId": "51",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.9380000233650208"
+                }
+            ]
+        },
+        {
+            "id": "jvSHJ",
+            "status": "SUCCEEDED",
+            "hyperParameters": {
+                "parameter_id": 17,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 8,
+                    "conv_size": 5,
+                    "dropout_rate": 0.6620602041414956,
+                    "hidden_size": 512,
+                    "learning_rate": 0.01,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 17
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/jvSHJ",
+            "startTime": 1563456946841,
+            "sequenceId": 261,
+            "endTime": 1563456970148,
+            "finalMetricData": [
+                {
+                    "timestamp": 1563456969159,
+                    "trialJobId": "jvSHJ",
+                    "parameterId": "17",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.11349999904632568"
+                }
+            ],
+            "intermediate": [
+                {
+                    "timestamp": 1563456960416,
+                    "trialJobId": "jvSHJ",
+                    "parameterId": "17",
+                    "type": "PERIODICAL",
+                    "sequence": 0,
+                    "data": "0.10100000351667404"
+                },
+                {
+                    "timestamp": 1563456969159,
+                    "trialJobId": "jvSHJ",
+                    "parameterId": "17",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.11349999904632568"
+                }
+            ]
+        },
+        {
+            "id": "ydj7O",
+            "status": "SUCCEEDED",
+            "hyperParameters": {
+                "parameter_id": 13,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 16,
+                    "conv_size": 3,
+                    "dropout_rate": 0.8427247760309362,
+                    "hidden_size": 124,
+                    "learning_rate": 0.01,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 13
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/ydj7O",
+            "startTime": 1563456982046,
+            "sequenceId": 262,
+            "endTime": 1563457002541,
+            "finalMetricData": [
+                {
+                    "timestamp": 1563457001885,
+                    "trialJobId": "ydj7O",
+                    "parameterId": "13",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.11349999904632568"
+                }
+            ],
+            "intermediate": [
+                {
+                    "timestamp": 1563456995031,
+                    "trialJobId": "ydj7O",
+                    "parameterId": "13",
+                    "type": "PERIODICAL",
+                    "sequence": 0,
+                    "data": "0.10090000182390213"
+                },
+                {
+                    "timestamp": 1563457001885,
+                    "trialJobId": "ydj7O",
+                    "parameterId": "13",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.11349999904632568"
+                }
+            ]
+        },
+        {
+            "id": "Bri4F",
+            "status": "SUCCEEDED",
+            "hyperParameters": {
+                "parameter_id": 52,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 32,
+                    "conv_size": 2,
+                    "dropout_rate": 0.6582624662199965,
+                    "hidden_size": 512,
+                    "learning_rate": 0.1,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 52
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/Bri4F",
+            "startTime": 1563457012192,
+            "sequenceId": 263,
+            "endTime": 1563457036230,
+            "finalMetricData": [
+                {
+                    "timestamp": 1563457035280,
+                    "trialJobId": "Bri4F",
+                    "parameterId": "52",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.10320000350475311"
+                }
+            ],
+            "intermediate": [
+                {
+                    "timestamp": 1563457024971,
+                    "trialJobId": "Bri4F",
+                    "parameterId": "52",
+                    "type": "PERIODICAL",
+                    "sequence": 0,
+                    "data": "0.10320000350475311"
+                },
+                {
+                    "timestamp": 1563457035280,
+                    "trialJobId": "Bri4F",
+                    "parameterId": "52",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.10320000350475311"
+                }
+            ]
+        },
+        {
+            "id": "yer5g",
+            "status": "SUCCEEDED",
+            "hyperParameters": {
+                "parameter_id": 53,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 8,
+                    "conv_size": 3,
+                    "dropout_rate": 0.7807535593185908,
+                    "hidden_size": 1024,
+                    "learning_rate": 0.0001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 53
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/yer5g",
+            "startTime": 1563457047435,
+            "sequenceId": 264,
+            "endTime": 1563457073071,
+            "finalMetricData": [
+                {
+                    "timestamp": 1563457071887,
+                    "trialJobId": "yer5g",
+                    "parameterId": "53",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.4359000027179718"
+                }
+            ],
+            "intermediate": [
+                {
+                    "timestamp": 1563457060823,
+                    "trialJobId": "yer5g",
+                    "parameterId": "53",
+                    "type": "PERIODICAL",
+                    "sequence": 0,
+                    "data": "0.09769999980926514"
+                },
+                {
+                    "timestamp": 1563457071887,
+                    "trialJobId": "yer5g",
+                    "parameterId": "53",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.4359000027179718"
+                }
+            ]
+        },
+        {
+            "id": "NKuDv",
+            "status": "SUCCEEDED",
+            "hyperParameters": {
+                "parameter_id": 18,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 8,
+                    "conv_size": 2,
+                    "dropout_rate": 0.6338527262717382,
+                    "hidden_size": 1024,
+                    "learning_rate": 0.0001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 18
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/NKuDv",
+            "startTime": 1563457082653,
+            "sequenceId": 265,
+            "endTime": 1563457107501,
+            "finalMetricData": [
+                {
+                    "timestamp": 1563457106543,
+                    "trialJobId": "NKuDv",
+                    "parameterId": "18",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.6952000260353088"
+                }
+            ],
+            "intermediate": [
+                {
+                    "timestamp": 1563457096260,
+                    "trialJobId": "NKuDv",
+                    "parameterId": "18",
+                    "type": "PERIODICAL",
+                    "sequence": 0,
+                    "data": "0.6929000020027161"
+                },
+                {
+                    "timestamp": 1563457106543,
+                    "trialJobId": "NKuDv",
+                    "parameterId": "18",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.6952000260353088"
+                }
+            ]
+        },
+        {
+            "id": "SExR4",
+            "status": "SUCCEEDED",
+            "hyperParameters": {
+                "parameter_id": 54,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 8,
+                    "conv_size": 7,
+                    "dropout_rate": 0.7340290110561869,
+                    "hidden_size": 1024,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 54
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/SExR4",
+            "startTime": 1563457117886,
+            "sequenceId": 266,
+            "endTime": 1563457142345,
+            "finalMetricData": [
+                {
+                    "timestamp": 1563457141266,
+                    "trialJobId": "SExR4",
+                    "parameterId": "54",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.840399980545044"
+                }
+            ],
+            "intermediate": [
+                {
+                    "timestamp": 1563457131697,
+                    "trialJobId": "SExR4",
+                    "parameterId": "54",
+                    "type": "PERIODICAL",
+                    "sequence": 0,
+                    "data": "0.10599999874830246"
+                },
+                {
+                    "timestamp": 1563457141266,
+                    "trialJobId": "SExR4",
+                    "parameterId": "54",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.840399980545044"
+                }
+            ]
+        },
+        {
+            "id": "RYCap",
+            "status": "SUCCEEDED",
+            "hyperParameters": {
+                "parameter_id": 55,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 3,
+                    "dropout_rate": 0.8037066288966547,
+                    "hidden_size": 512,
+                    "learning_rate": 0.1,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 55
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/RYCap",
+            "startTime": 1563457153059,
+            "sequenceId": 267,
+            "endTime": 1563457175524,
+            "finalMetricData": [
+                {
+                    "timestamp": 1563457174634,
+                    "trialJobId": "RYCap",
+                    "parameterId": "55",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.10100000351667404"
+                }
+            ],
+            "intermediate": [
+                {
+                    "timestamp": 1563457162277,
+                    "trialJobId": "RYCap",
+                    "parameterId": "55",
+                    "type": "PERIODICAL",
+                    "sequence": 0,
+                    "data": "0.0982000008225441"
+                },
+                {
+                    "timestamp": 1563457174634,
+                    "trialJobId": "RYCap",
+                    "parameterId": "55",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.10100000351667404"
+                }
+            ]
+        },
+        {
+            "id": "Hkayo",
+            "status": "SUCCEEDED",
+            "hyperParameters": {
+                "parameter_id": 17,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 8,
+                    "conv_size": 5,
+                    "dropout_rate": 0.6620602041414956,
+                    "hidden_size": 512,
+                    "learning_rate": 0.01,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 17
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/Hkayo",
+            "startTime": 1563457183206,
+            "sequenceId": 268,
+            "endTime": 1563457206960,
+            "finalMetricData": [
+                {
+                    "timestamp": 1563457205918,
+                    "trialJobId": "Hkayo",
+                    "parameterId": "17",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.10100000351667404"
+                }
+            ],
+            "intermediate": [
+                {
+                    "timestamp": 1563457196266,
+                    "trialJobId": "Hkayo",
+                    "parameterId": "17",
+                    "type": "PERIODICAL",
+                    "sequence": 0,
+                    "data": "0.11349999904632568"
+                },
+                {
+                    "timestamp": 1563457205918,
+                    "trialJobId": "Hkayo",
+                    "parameterId": "17",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.10100000351667404"
+                }
+            ]
+        },
+        {
+            "id": "ggYWJ",
+            "status": "SUCCEEDED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/ggYWJ",
+            "startTime": 1563457213366,
+            "sequenceId": 269,
+            "endTime": 1563457243351,
+            "finalMetricData": [
+                {
+                    "timestamp": 1563457242249,
+                    "trialJobId": "ggYWJ",
+                    "parameterId": "7",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.9635000228881836"
+                }
+            ],
+            "intermediate": [
+                {
+                    "timestamp": 1563457228726,
+                    "trialJobId": "ggYWJ",
+                    "parameterId": "7",
+                    "type": "PERIODICAL",
+                    "sequence": 0,
+                    "data": "0.9562000036239624"
+                },
+                {
+                    "timestamp": 1563457242249,
+                    "trialJobId": "ggYWJ",
+                    "parameterId": "7",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.9635000228881836"
+                }
+            ]
+        },
+        {
+            "id": "g5yHk",
+            "status": "SUCCEEDED",
+            "hyperParameters": {
+                "parameter_id": 13,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 16,
+                    "conv_size": 3,
+                    "dropout_rate": 0.8427247760309362,
+                    "hidden_size": 124,
+                    "learning_rate": 0.01,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 13
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/g5yHk",
+            "startTime": 1563457253615,
+            "sequenceId": 270,
+            "endTime": 1563457274872,
+            "finalMetricData": [
+                {
+                    "timestamp": 1563457273837,
+                    "trialJobId": "g5yHk",
+                    "parameterId": "13",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.11349999904632568"
+                }
+            ],
+            "intermediate": [
+                {
+                    "timestamp": 1563457265637,
+                    "trialJobId": "g5yHk",
+                    "parameterId": "13",
+                    "type": "PERIODICAL",
+                    "sequence": 0,
+                    "data": "0.11349999904632568"
+                },
+                {
+                    "timestamp": 1563457273837,
+                    "trialJobId": "g5yHk",
+                    "parameterId": "13",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.11349999904632568"
+                }
+            ]
+        },
+        {
+            "id": "ylxz7",
+            "status": "SUCCEEDED",
+            "hyperParameters": {
+                "parameter_id": 19,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.7247208788773434,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 19
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/ylxz7",
+            "startTime": 1563457289203,
+            "sequenceId": 271,
+            "endTime": 1563457314067,
+            "finalMetricData": [
+                {
+                    "timestamp": 1563457313043,
+                    "trialJobId": "ylxz7",
+                    "parameterId": "19",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.939300000667572"
+                }
+            ],
+            "intermediate": [
+                {
+                    "timestamp": 1563457301087,
+                    "trialJobId": "ylxz7",
+                    "parameterId": "19",
+                    "type": "PERIODICAL",
+                    "sequence": 0,
+                    "data": "0.932200014591217"
+                },
+                {
+                    "timestamp": 1563457313043,
+                    "trialJobId": "ylxz7",
+                    "parameterId": "19",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.939300000667572"
+                }
+            ]
+        },
+        {
+            "id": "htDlg",
+            "status": "SUCCEEDED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 64,
+                    "conv_size": 2,
+                    "dropout_rate": 0.8149265765449847,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/htDlg",
+            "startTime": 1563457324373,
+            "sequenceId": 272,
+            "endTime": 1563457349193,
+            "finalMetricData": [
+                {
+                    "timestamp": 1563457348552,
+                    "trialJobId": "htDlg",
+                    "parameterId": "7",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.9645000100135803"
+                }
+            ],
+            "intermediate": [
+                {
+                    "timestamp": 1563457336433,
+                    "trialJobId": "htDlg",
+                    "parameterId": "7",
+                    "type": "PERIODICAL",
+                    "sequence": 0,
+                    "data": "0.9642000198364258"
+                },
+                {
+                    "timestamp": 1563457348552,
+                    "trialJobId": "htDlg",
+                    "parameterId": "7",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.9645000100135803"
+                }
+            ]
+        },
+        {
+            "id": "vo1Nb",
+            "status": "SUCCEEDED",
+            "hyperParameters": {
+                "parameter_id": 13,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 16,
+                    "conv_size": 3,
+                    "dropout_rate": 0.8427247760309362,
+                    "hidden_size": 124,
+                    "learning_rate": 0.01,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 13
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/vo1Nb",
+            "startTime": 1563457359490,
+            "sequenceId": 273,
+            "endTime": 1563457377672,
+            "finalMetricData": [
+                {
+                    "timestamp": 1563457376649,
+                    "trialJobId": "vo1Nb",
+                    "parameterId": "13",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.10100000351667404"
+                }
+            ],
+            "intermediate": [
+                {
+                    "timestamp": 1563457369543,
+                    "trialJobId": "vo1Nb",
+                    "parameterId": "13",
+                    "type": "PERIODICAL",
+                    "sequence": 0,
+                    "data": "0.11349999904632568"
+                },
+                {
+                    "timestamp": 1563457376649,
+                    "trialJobId": "vo1Nb",
+                    "parameterId": "13",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.10100000351667404"
+                }
+            ]
+        },
+        {
+            "id": "hqG0z",
+            "status": "SUCCEEDED",
+            "hyperParameters": {
+                "parameter_id": 56,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 16,
+                    "conv_size": 3,
+                    "dropout_rate": 0.877194496966256,
+                    "hidden_size": 124,
+                    "learning_rate": 0.01,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 56
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/hqG0z",
+            "startTime": 1563457390149,
+            "sequenceId": 274,
+            "endTime": 1563457413257,
+            "finalMetricData": [
+                {
+                    "timestamp": 1563457412133,
+                    "trialJobId": "hqG0z",
+                    "parameterId": "56",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.5723999738693237"
+                }
+            ],
+            "intermediate": [
+                {
+                    "timestamp": 1563457403775,
+                    "trialJobId": "hqG0z",
+                    "parameterId": "56",
+                    "type": "PERIODICAL",
+                    "sequence": 0,
+                    "data": "0.10100000351667404"
+                },
+                {
+                    "timestamp": 1563457412133,
+                    "trialJobId": "hqG0z",
+                    "parameterId": "56",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.5723999738693237"
+                }
+            ]
+        },
+        {
+            "id": "GomtO",
+            "status": "WAITING",
+            "hyperParameters": {
+                "parameter_id": 57,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 32,
+                    "conv_size": 3,
+                    "dropout_rate": 0.6157466542736161,
+                    "hidden_size": 512,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 57
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/EZ6sD9Qu/trials/GomtO",
+            "startTime": 1563457421682,
+            "sequenceId": 275,
+            "intermediate": []
         }
     ]
 }
