@@ -25,10 +25,10 @@ import logging
 import numpy as np
 import nni.parameter_expressions as parameter_expressions
 
-from nni.mtsmac_advisor.util import ei
-from nni.mtsmac_advisor.predictor import Predictor
+from nni.freezethaw_advisor.util import ei
+from nni.freezethaw_advisor.predictor import Predictor
 
-logger = logging.getLogger("MTSMAC_Advisor_AutoML")
+logger = logging.getLogger("FREEZE_THAW_Advisor_AutoML")
 
 # pylint:disable=invalid-name
 
@@ -236,7 +236,7 @@ class TargetSpace():
         # Warm up with random points
         x_tries = [self.random_sample()
                    for _ in range(int(num_warmup))]
-        mean_tries, std_tries = predictor.predict(x_tries, final_only=True)
+        mean_tries, std_tries = predictor.predict_asymptote_new(x_tries)
         ys = ei(mean_tries, std_tries, y_max=self._y_max)
         params = x_tries[ys.argmax()]
         max_ei = ys.max()
@@ -257,8 +257,9 @@ class TargetSpace():
                 params_running = np.vstack((params_running, item['params']))
         if params_running.shape[0] > 0:
             # step 2: predict
-            mean_tries, std_tries = predictor.predict(
-                params_running, final_only=True)
+            #TODO: check
+            mean_tries, std_tries = predictor.predict_asymptote_new(
+                params_running)
             ys = ei(mean_tries, std_tries, y_max=self._y_max)
             params = params_running[ys.argmax()]
             max_ei = ys.max()
@@ -323,7 +324,6 @@ class TargetSpace():
         n_fant = 5
 
         X, y = self.get_train_data()
-        mean, std = predictor.predict(params)
         #logger.debug("mean predicted %s", mean)
         #logger.debug("std predicted %s", std)
         for i, item in enumerate(basket):
@@ -332,16 +332,25 @@ class TargetSpace():
                 logger.debug("fantasize round %s", j)
                 if i < num_new:
                     # fantasize an observation
-                    obs = self.random_state.normal(mean[i][0], std[i][0])
+                    mean, std = predictor.predict_point_new([item['param']])
+                    obs = self.random_state.normal(mean[0], std[0])
                     # add fantsized point to fake training data
                     X_fant = np.vstack((X, item['param']))
                     y_fant = np.append(y, ['new_serial'])
                     y_fant[-1] = [obs]
+
+                    # conditioned on the observation, re-compute P_min and H
+                    # fit a new predictor with fantsized point added in training data
+                    predictor_fant = Predictor()
+                    predictor_fant.fit(X_fant, y_fant)
+                    # re-calculate P_min, H
+                    mean_fant, std_fant = predictor_fant.predict_asymptote_new(
+                        params)
                 else:
                     # fantasize an observation
-                    cur_epoch = len(item['perf'])
+                    mean, std = predictor.predict_point_new([item['param']])
                     obs = self.random_state.normal(
-                        mean[i][cur_epoch], std[i][cur_epoch])
+                        mean[0], std[0])
                     # add fantsized point to fake training data
                     X_fant = X.copy()
                     y_fant = y.copy()
@@ -350,14 +359,14 @@ class TargetSpace():
                             y_fant[k] = y_fant[k].copy()
                             y_fant[k].append(obs)
                             break
+                    # conditioned on the observation, re-compute P_min and H
+                    # fit a new predictor with fantsized point added in training data
+                    predictor_fant = Predictor()
+                    predictor_fant.fit(X_fant, y_fant)
+                    # re-calculate P_min, H
+                    mean_fant, std_fant = predictor_fant.predict_asymptote_old(
+                        params)
 
-                # conditioned on the observation, re-compute P_min and H
-                # fit a new predictor with fantsized point added in training data
-                predictor_fant = Predictor(multi_task=True)
-                predictor_fant.fit(X_fant, y_fant)
-                # re-calculate P_min, H
-                mean_fant, std_fant = predictor_fant.predict(
-                    params, final_only=True)
                 #logger.debug("mean fantasize %s", mean)
                 #logger.debug("std fantasize %s", std)
                 P_min_fant = self._get_P_min(
@@ -394,7 +403,7 @@ class TargetSpace():
         # Warm up with random points
         x_tries = [self.random_sample()
                    for _ in range(int(num_warmup))]
-        mean, std = predictor.predict(x_tries, final_only=True)
+        mean, std = predictor.predict_asymptote_new(x_tries)
         ys = ei(mean, std, y_max=self._y_max)
         #logger.debug("mean: %s", mean)
         #logger.debug("ys: %s", ys)
@@ -415,7 +424,7 @@ class TargetSpace():
         basket_old = []
         for item in self.hyper_configs:
             if item['status'] == 'RUNNING':
-                mean, std = predictor.predict(
+                mean, std = predictor.predict_asymptote_old(
                     [item['params']], final_only=True)
                 ys = ei(mean, std, y_max=self._y_max)
                 basket_old.append(

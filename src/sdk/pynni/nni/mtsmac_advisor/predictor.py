@@ -103,7 +103,7 @@ class Predictor():
 
         Returns
         -------
-        result : if multi_task && !final_only, mean, std of shape(len(X), len(epochs)) ; else shape(len(X),)
+        result : numpy array,  if multi_task && !final_only, mean, std of shape(len(X), len(epochs)) ; else shape(len(X),)
         """
         if not self.multi_task:
             res = np.empty([0, len(X)])
