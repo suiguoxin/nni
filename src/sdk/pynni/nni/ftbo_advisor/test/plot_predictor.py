@@ -26,9 +26,9 @@ import matplotlib.pyplot as plt
 
 from sklearn.gaussian_process.kernels import Matern
 
-from nni.freezethaw_advisor.predictor import Predictor
-from nni.freezethaw_advisor.test.util import PATH, COLORS
-from nni.freezethaw_advisor.test.util import create_fake_data_expdacay, create_fake_data_expdacay_diff_length, create_fake_data_mnist_diff_length
+from nni.ftbo_advisor.predictor import Predictor
+from nni.ftbo_advisor.test.util import PATH, COLORS
+from nni.ftbo_advisor.test.util import create_fake_data_expdacay, create_fake_data_expdacay_diff_length, create_fake_data_mnist_diff_length
 
 # pylint:disable=missing-docstring
 # pylint:disable=no-member

@@ -25,8 +25,8 @@ import logging
 import numpy as np
 import nni.parameter_expressions as parameter_expressions
 
-from nni.freezethaw_advisor.util import ei
-from nni.freezethaw_advisor.predictor import Predictor
+from nni.ftbo_advisor.util import ei
+from nni.ftbo_advisor.predictor import Predictor
 
 logger = logging.getLogger("FREEZE_THAW_Advisor_AutoML")
 
@@ -43,10 +43,10 @@ class TargetSpace():
         Parameters
         ----------
         search_space : dict
-                example: search_space = {
-                        "dropout_rate":{"_type":"uniform","_value":[0.5,0.9]},q
-                        "conv_size":{"_type":"choice","_value":[2,3,5,7]}
-                        }
+        i.e. : search_space = {
+                "dropout_rate":{"_type":"uniform","_value":[0.5,0.9]},
+                "conv_size":{"_type":"choice","_value":[2,3,5,7]}
+                }
 
         random_state : int, RandomState, or None
             optionally specify a seed for a random number generator
@@ -260,7 +260,6 @@ class TargetSpace():
         logger.debug("------------fantasize period---------------")
         a = np.zeros(len(basket))
         n_fant = 5
-
         X, y = self.get_train_data()
         for i, item in enumerate(basket):
             logger.debug("fantasize element %s in the basket", i)
@@ -276,7 +275,6 @@ class TargetSpace():
                     X_fant = np.vstack((X, item['param']))
                     y_fant = np.append(y, ['new_serial'])
                     y_fant[-1] = [obs]
-
                     # conditioned on the observation, re-compute P_min and H
                     # fit a new predictor with fantsized point added in training data
                     predictor_fant = Predictor()
@@ -316,8 +314,6 @@ class TargetSpace():
                 logger.debug("H_fant %s", H)
                 # average over n_fant
                 a[i] += (H_fant / n_fant)
-                logger.debug(
-                    "hyper_configs at the end of round: \n%s", self.hyper_configs)
 
         param_selected = basket[a.argmax()]
         logger.debug("a %s", a)

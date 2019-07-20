@@ -43,10 +43,10 @@ class TargetSpace():
         Parameters
         ----------
         search_space : dict
-                example: search_space = {
-                        "dropout_rate":{"_type":"uniform","_value":[0.5,0.9]},q
-                        "conv_size":{"_type":"choice","_value":[2,3,5,7]}
-                        }
+        i.e. : search_space = {
+                "dropout_rate":{"_type":"uniform","_value":[0.5,0.9]},
+                "conv_size":{"_type":"choice","_value":[2,3,5,7]}
+                }
 
         random_state : int, RandomState, or None
             optionally specify a seed for a random number generator
@@ -260,7 +260,6 @@ class TargetSpace():
         logger.debug("------------fantasize period---------------")
         a = np.zeros(len(basket))
         n_fant = 5
-
         X, y = self.get_train_data()
         mean, std = predictor.predict(params)
         #logger.debug("mean predicted %s", mean)
@@ -305,8 +304,6 @@ class TargetSpace():
                 logger.debug("H_fant %s", H)
                 # average over n_fant
                 a[i] += (H_fant / n_fant)
-                logger.debug(
-                    "hyper_configs at the end of round: \n%s", self.hyper_configs)
 
         param_selected = basket[a.argmax()]
         logger.debug("a %s", a)

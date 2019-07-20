@@ -27,11 +27,11 @@ from sklearn.gaussian_process import GaussianProcessRegressor
 
 import matplotlib.pyplot as plt
 
-from nni.freezethaw_advisor.kernels import KTC
-from nni.freezethaw_advisor.predictor import Predictor
+from nni.ftbo_advisor.kernels import KTC
+from nni.ftbo_advisor.predictor import Predictor
 
-from nni.freezethaw_advisor.test.util import PATH, COLORS
-from nni.freezethaw_advisor.test.util import create_fake_data_expdacay
+from nni.ftbo_advisor.test.util import PATH, COLORS
+from nni.ftbo_advisor.test.util import create_fake_data_expdacay
 
 
 # pylint:disable=missing-docstring

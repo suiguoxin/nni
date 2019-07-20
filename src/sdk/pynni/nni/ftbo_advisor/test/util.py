@@ -27,7 +27,7 @@ import numpy as np
 # pylint:disable=no-member
 # pylint:disable=invalid-name
 
-PATH = './src/sdk/pynni/nni/freezethaw_advisor/test'
+PATH = './src/sdk/pynni/nni/ftbo_advisor/test'
 COLORS = ['b', 'g', 'r', 'y', 'm']
 
 

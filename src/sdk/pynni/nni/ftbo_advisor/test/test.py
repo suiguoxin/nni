@@ -27,9 +27,9 @@ from scipy.linalg import block_diag
 
 from sklearn.gaussian_process.kernels import Matern, WhiteKernel
 
-from nni.freezethaw_advisor.kernels import KTC
-from nni.freezethaw_advisor.predictor import Predictor
-from nni.freezethaw_advisor.test.util import create_fake_data_simple
+from nni.ftbo_advisor.kernels import KTC
+from nni.ftbo_advisor.predictor import Predictor
+from nni.ftbo_advisor.test.util import create_fake_data_simple
 
 
 # pylint:disable=missing-docstring

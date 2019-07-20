@@ -18,7 +18,7 @@
 # DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 """
-freezethaw_advisor.py
+ftbo_advisor.py
 """
 
 import logging
@@ -29,10 +29,10 @@ from nni.protocol import CommandType, send
 from nni.msg_dispatcher_base import MsgDispatcherBase
 from nni.utils import OptimizeMode, extract_scalar_reward
 
-from nni.freezethaw_advisor.predictor import Predictor
-from nni.freezethaw_advisor.target_space import TargetSpace
+from nni.ftbo_advisor.predictor import Predictor
+from nni.ftbo_advisor.target_space import TargetSpace
 
-logger = logging.getLogger("FreezeThaw_Advisor_AutoML")
+logger = logging.getLogger("ftbo_advisor_AutoML")
 
 
 class FreezeThaw(MsgDispatcherBase):

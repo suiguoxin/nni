@@ -65,7 +65,7 @@ AdvisorModuleName = {
     'Hyperband': 'nni.hyperband_advisor.hyperband_advisor',
     'BOHB': 'nni.bohb_advisor.bohb_advisor',
     'MTSMAC': 'nni.mtsmac_advisor.mtsmac_advisor',
-    'FTBO': 'nni.freezethaw_advisor.freezethaw_advisor'
+    'FTBO': 'nni.ftbo_advisor.ftbo_advisor'
 }
 
 AdvisorClassName = {
