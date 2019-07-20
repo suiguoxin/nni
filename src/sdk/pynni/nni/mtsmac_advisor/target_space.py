@@ -262,8 +262,8 @@ class TargetSpace():
         n_fant = 5
         X, y = self.get_train_data()
         mean, std = predictor.predict(params)
-        #logger.debug("mean predicted %s", mean)
-        #logger.debug("std predicted %s", std)
+        # logger.debug("mean predicted %s", mean)
+        # logger.debug("std predicted %s", std)
         for i, item in enumerate(basket):
             logger.debug("fantasize element %s in the basket", i)
             for j in range(n_fant):
@@ -296,8 +296,9 @@ class TargetSpace():
                 # re-calculate P_min, H
                 mean_fant, std_fant = predictor_fant.predict(
                     params, final_only=True)
-                #logger.debug("mean fantasize %s", mean)
-                #logger.debug("std fantasize %s", std)
+                
+                # logger.debug("mean fantasize %s", mean)
+                # logger.debug("std fantasize %s", std)
                 P_min_fant = self._get_P_min(mean_fant, std_fant)
                 H_fant = self._cal_entropy(P_min_fant)
                 logger.debug("P_min_fant %s", P_min)
@@ -328,16 +329,52 @@ class TargetSpace():
 
         Returns
         -------
-        basket_new: [{'parameter_id','param':[], 'mean':, 'std': , 'ei': }, {...}]
+        basket_new: list, i.e. [{'parameter_id','param':[], 'mean':, 'std': , 'ei': }, {...}]
         '''
         # Warm up with random points
         x_tries = [self.random_sample()
                    for _ in range(int(num_warmup))]
         mean, std = predictor.predict(x_tries, final_only=True)
         ys = ei(mean, std, y_max=self._y_max)
-        #logger.debug("mean: %s", mean)
-        #logger.debug("ys: %s", ys)
 
+        x_tries = [x for x, _ in sorted(
+            zip(x_tries, ys), key=lambda pair: pair[1], reverse=True)]
+        sorted(ys, reverse=True)
+
+        # local search with the 10 top random points
+        start_points = x_tries[:10]
+        acq_val_incumbent = ys[:10]
+
+        logger.debug("start_points: %s", start_points)
+        logger.debug("acq_val_incumbent: %s", acq_val_incumbent)
+        max_steps = 10
+        for i, start_point in enumerate(start_points):
+            logger.debug("start_point : %s", start_point)
+            incumbent = start_point
+            acq_val = acq_val_incumbent[i]
+            changed_inc = False
+            for _ in range(max_steps):
+                all_neighbours = self._get_one_exchange_neighbourhoods(
+                    incumbent)
+                mean, std = predictor.predict(all_neighbours, final_only=True)
+                ys_neighbours = ei(mean, std, y_max=self._y_max)
+
+                if max(ys) >= acq_val_incumbent[i]:
+                    # restart from the better neigobour next step
+                    incumbent = all_neighbours[ys_neighbours.argmax()]
+                    acq_val = max(ys)
+                    changed_inc = True
+                else:
+                    # stop the local search once none of the neighbours of the start point has larger EI
+                    break
+            if changed_inc:
+                logger.debug("------------neighbour found: %s", incumbent)
+                x_tries.append(incumbent)
+                ys = np.append(ys, acq_val)
+
+        # re-comput mean std for all the 10010 new points
+        mean, std = predictor.predict(x_tries, final_only=True)
+              
         basket_new = []
         for i, x_i in enumerate(x_tries):
             basket_new.append(
@@ -346,6 +383,57 @@ class TargetSpace():
         sorted(basket_new, key=lambda item: item['ei'], reverse=True)
 
         return basket_new[:num]
+
+    def _get_one_exchange_neighbourhoods(self, param):
+        '''get neighbours of a parameter_id
+        Parameters
+        ----------
+        param: list
+
+        i.e. search_space = {
+                "dropout_rate":{"_type":"uniform","_value":[0.5,0.9]},
+                "conv_size":{"_type":"choice","_value":[2,3,5,7]}
+                }
+        Returns
+        -------
+        neighbours: list of params
+        '''
+
+        neighbours = np.empty(shape=(0, len(param)))
+        for i, _bound in enumerate(self._bounds):
+            if _bound['_type'] == 'choice':
+                idx = _bound['_value'].index(param[i])
+                length = len(_bound['_value'])
+                # find index of the neighbours
+                idx_neighbours = []
+                if 0 <= (idx-1) <= (length-1):
+                    idx_neighbours.append(idx-1)
+                if 0 <= (idx+1) <= (length-1):
+                    idx_neighbours.append(idx+1)
+                for idx_neighbour in idx_neighbours:
+                    neighbour = param.copy()
+                    neighbour[i] = _bound['_value'][idx_neighbour]
+                    # logger.debug("neighbour found: %s", neighbour)
+                    neighbours = np.vstack((neighbours, neighbour))
+            elif _bound['_type'] == 'uniform':
+                std = (_bound['_value'][1] - _bound['_value'][0]) * 0.2
+                for _ in range(4):
+                    while True:
+                        ele_fant = self.random_state.normal(param[i], std)
+                        if _bound['_value'][0] <= ele_fant <= _bound['_value'][1]:
+                            break
+                    neighbour = param.copy()
+                    neighbour[i] = ele_fant
+                    # logger.debug("neighbour found: %s", neighbour)
+                    neighbours = np.vstack((neighbours, neighbour))
+            else:
+                raise ValueError(
+                    "only choice, uniform suported for the moment")
+
+        logger.debug(
+            "neighbours found for param%s: \n %s", param, neighbours)
+
+        return neighbours
 
     def _get_basket_old(self, predictor, num):
         '''
