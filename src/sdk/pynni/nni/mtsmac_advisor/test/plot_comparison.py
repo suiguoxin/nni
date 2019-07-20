@@ -63,6 +63,9 @@ def plot_comparison():
     metric_best_tpe = _get_metric_best('mnist_ftbo.json')
     plt.plot(range(len(metric_best_tpe)), metric_best_tpe, label='FTBO')
 
+    metric_best_tpe = _get_metric_best('mnist_ftbo2.json')
+    plt.plot(range(len(metric_best_tpe)), metric_best_tpe, label='FTBO')
+
     plt.xlabel('Epochs')
     plt.ylabel('Default Metric')
     plt.title('MNIST')

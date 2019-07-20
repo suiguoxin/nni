@@ -37,7 +37,6 @@ from .kernels import KTC
 
 # pylint:disable=invalid-name
 # pylint:disable=attribute-defined-outside-init
-# TODO: inv ? choleskey
 
 
 class Predictor():
@@ -45,7 +44,13 @@ class Predictor():
     Freeze-Thaw Bayesian Optimization: Two Step Gaussian Process Predictor
     """
 
-    def __init__(self, alpha=1e-10, optimizer="fmin_l_bfgs_b", n_restarts_optimizer=0, normalize_y=False, copy_X_train=True, random_state=None):
+    def __init__(self,
+                 alpha=1e-10,
+                 optimizer="fmin_l_bfgs_b",
+                 n_restarts_optimizer=0,
+                 normalize_y=False,
+                 copy_X_train=True,
+                 random_state=None):
         """
         Parameters
         ----------
@@ -87,13 +92,9 @@ class Predictor():
             [self.kernel_as_.bounds, self.kernel_tc_.bounds])
         '''
         print('self.kernel_as_')
-        print(self.kernel_as_)
         print('self.kernel_as_.theta')
-        print(self.kernel_as_.theta)
         print('self.theta')
-        print(self.theta)
         print('self.bounds')
-        print(self.bounds)
         '''
         self._rng = check_random_state(self.random_state)
 
@@ -185,9 +186,9 @@ class Predictor():
         # Precompute quantities required for predictions which are independent of actual query points
         # Posterior distribution : P(f|y, X) = N(f;mu, C)
         # C， Equation 13(18)
-        self.C = np.linalg.inv(np.linalg.inv(self.K_x) + self.Lambda)
+        self.C = np.linalg.inv(self.K_x_inv + self.Lambda)
         # Check if any of the variances is negative because of numerical issues. If yes: set the variance to 0.
-        C_negative = self.C < 0
+        C_negative = self.C <= 0
         if np.any(C_negative):
             warnings.warn("Predicted variances smaller than 0. "
                           "Setting those variances to 0.")
@@ -201,7 +202,7 @@ class Predictor():
 
     def __pre_compute(self):
         '''
-        Precompute gamma, Lambda, K_x, K_t
+        Precompute gamma, Lambda, K_x, K_t, save in self.
         '''
         O = block_diag(*[np.ones((len(self.y_train_[i]), 1))
                          for i in range(self.y_train_.shape[0])])
@@ -272,7 +273,7 @@ class Predictor():
         K_x_s = self.kernel_as_(self.X_train_, X)  # TODO: why not inverse ?
         K_x_s_trans = np.transpose(K_x_s)
 
-        tmp = np.matmul(K_x_s_trans, np.linalg.inv(self.K_x))
+        tmp = np.matmul(K_x_s_trans, self.K_x_inv)
         f_mean = np.matmul(tmp, self.mu - self.mean_prior)
 
         tmp = np.matmul(np.transpose(K_x_s), np.linalg.inv(
@@ -409,8 +410,9 @@ class Predictor():
                 y_flatten_demean), K_t_inv, y_flatten_demean])
         #print('log_likelihood step 1:', log_likelihood)
 
-        log_likelihood += 0.5 * reduce(np.matmul, [np.transpose(gamma), np.linalg.inv(
-            np.linalg.inv(K_x)+Lambda), gamma])
+        log_likelihood += 0.5 * \
+            reduce(np.matmul, [np.transpose(gamma),
+                               np.linalg.inv(K_x_inv+Lambda), gamma])
         #print('log_likelihood step 2:', log_likelihood)
 
         _, tmp_0 = np.linalg.slogdet(np.linalg.inv(K_x)+Lambda)

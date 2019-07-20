@@ -254,9 +254,7 @@ if __name__ == '__main__':
         logger.debug(tuner_params)
         tuner_params['batch_num'] = tuner_params['TRIAL_BUDGET'] * 100
         tuner_params['parameter_id'] = tuner_params['PARAMETER_ID']
-        # tuner_params['model_dir'] = '/tmp/tensorflow/mnist/model_data/{}'.format(
-        #    str(time.time())).replace('.', '')
-        params=vars(get_params())
+        params = vars(get_params())
         params.update(tuner_params)
         main(params)
     except Exception as exception:

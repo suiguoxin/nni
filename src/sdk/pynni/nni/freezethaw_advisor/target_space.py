@@ -212,68 +212,6 @@ class TargetSpace():
 
         return params
 
-    def select_config_demo(self, predictor):
-        '''
-        function to find the maximum of the acquisition function.
-        Step 1: get a basket by 'Expected Improvement'
-        Step 2; get a config by 'Information Gain'
-        '''
-        if self.len >= 3:
-            parameter_id, params = self._select_from_old_single(predictor)
-        else:
-            params = self._select_from_new_single(predictor)
-            parameter_id = self.next_param_id
-            self.next_param_id += 1
-            self.register_new_config(parameter_id, params)
-
-        parameter_json = self.array_to_params(params)
-        logger.info("Generate paramageter :\n %s", parameter_json)
-
-        return parameter_id, parameter_json
-
-    def _select_from_new_single(self, predictor, num_warmup=50):
-        # select from new configs
-        # Warm up with random points
-        x_tries = [self.random_sample()
-                   for _ in range(int(num_warmup))]
-        mean_tries, std_tries = predictor.predict_asymptote_new(x_tries)
-        ys = ei(mean_tries, std_tries, y_max=self._y_max)
-        params = x_tries[ys.argmax()]
-        max_ei = ys.max()
-
-        logger.info(
-            "New configs proposed, ei: %s", max_ei)
-
-        return params
-
-    def _select_from_old_single(self, predictor):
-        '''
-        select from running configs
-        '''
-        # step 1: get vertor of running configs
-        params_running = np.empty(shape=(0, self.dim))
-        for item in self.hyper_configs:
-            if item['status'] == 'RUNNING':
-                params_running = np.vstack((params_running, item['params']))
-        if params_running.shape[0] > 0:
-            # step 2: predict
-            #TODO: check
-            mean_tries, std_tries = predictor.predict_asymptote_new(
-                params_running)
-            ys = ei(mean_tries, std_tries, y_max=self._y_max)
-            params = params_running[ys.argmax()]
-            max_ei = ys.max()
-            # find the original parameter_id TODO:more pythonic
-            parameter_id = 0
-            for item in self.hyper_configs:
-                if np.array_equal(item['params'], params):
-                    parameter_id = item['parameter_id']
-                    break
-            logger.info(
-                "Old configs proposed, parameter_id: %s, ei: %s", parameter_id, max_ei)
-
-        return parameter_id, params
-
     def select_config_warmup(self):
         '''
         select configs for random warmup
@@ -295,7 +233,7 @@ class TargetSpace():
         Step 1: get a basket by 'Expected Improvement'
         Step 2: get a config by 'Information Gain'
         '''
-        # construct the basket of all configs: [{'params':[], 'mean':, 'std':}, {...}]
+        # construct the basket of all configs
         num_new = 3
         num_old = 10
         basket_new = self._get_basket_new(predictor, num_new)
@@ -313,7 +251,7 @@ class TargetSpace():
         logger.debug("params %s", params)
 
         # get P_min and current entropy
-        P_min = self._get_P_min(basket)
+        P_min = self._get_P_min_basket(basket)
         H = self._cal_entropy(P_min)
         logger.debug("P_min %s", P_min)
         logger.debug("H %s", H)
@@ -324,8 +262,6 @@ class TargetSpace():
         n_fant = 5
 
         X, y = self.get_train_data()
-        #logger.debug("mean predicted %s", mean)
-        #logger.debug("std predicted %s", std)
         for i, item in enumerate(basket):
             logger.debug("fantasize element %s in the basket", i)
             for j in range(n_fant):
@@ -352,7 +288,7 @@ class TargetSpace():
                     # fantasize an observation
                     mean, std = predictor.predict_point_new([item['param']])
                     obs = self.random_state.normal(
-                        mean[0], std[0])
+                        mean[0], abs(std[0]))
                     # add fantsized point to fake training data
                     X_fant = X.copy()
                     y_fant = y.copy()
@@ -372,10 +308,9 @@ class TargetSpace():
                 mean_fant = np.append(mean_new_fant, mean_old_fant)
                 std_fant = np.append(std_new_fant, std_old_fant)
 
-                logger.debug("mean fantasize %s", mean)
-                logger.debug("std fantasize %s", std)
-                P_min_fant = self._get_P_min(
-                    mean=mean_fant, std=std_fant, form='vertor')
+                logger.debug("mean fantasize %s", mean_fant)
+                logger.debug("std fantasize %s", std_fant)
+                P_min_fant = self._get_P_min(mean_fant, std_fant)
                 H_fant = self._cal_entropy(P_min_fant)
                 logger.debug("P_min_fant %s", P_min)
                 logger.debug("H_fant %s", H)
@@ -404,6 +339,10 @@ class TargetSpace():
     def _get_basket_new(self, predictor, num, num_warmup=10000):
         '''
         select a basket from new configs
+
+        Returns
+        -------
+        basket_new: [{'parameter_id','param':[], 'mean':, 'std': , 'ei': }, {...}]
         '''
         # Warm up with random points
         x_tries = [self.random_sample()
@@ -425,6 +364,10 @@ class TargetSpace():
     def _get_basket_old(self, predictor, num):
         '''
         select a basket from running configs
+
+        Returns
+        -------
+        basket_old: [{'parameter_id': ,'param':[], 'perf': , 'mean':, 'std': , 'ei'}, {...}]
         '''
         basket_old = []
         for item in self.hyper_configs:
@@ -444,8 +387,7 @@ class TargetSpace():
         else:
             return basket_old
 
-    # TODO: more pythonic
-    def _get_P_min(self, basket=[], mean=[], std=[], form='json'):
+    def _get_P_min_basket(self, basket):
         '''
         Parameters
         ----------
@@ -455,24 +397,33 @@ class TargetSpace():
         -------
         result: P_min, i.e. [0.1, 0.5, 0., 0.4]
         '''
+        mean = []
+        std = []
+        for item in basket:
+            mean.append(item['mean'])
+            std.append(item['std'])
+
+        return self._get_P_min(mean, std)
+
+    def _get_P_min(self, mean, std):
+        '''
+        Parameters
+        ----------
+        mean: list, i.e. [0.4, 0.8 0.1, 0.6]
+        std: list, i.e. [0.4, 0.3, 0.2, 0.6]
+
+        Returns
+        -------
+        result: P_min, i.e. [0.1, 0.5, 0., 0.4]
+        '''
         n_monte_carlo = 1000
-        if form == 'json':
-            n_params = len(basket)
-            P_min = np.zeros(n_params)
-            for _ in range(n_monte_carlo):
-                vals = np.empty(n_params)
-                for i, item in enumerate(basket):
-                    vals[i] = self.random_state.normal(
-                        item['mean'], item['std'])
-                P_min[vals.argmin()] += 1
-        else:
-            n_params = len(mean)
-            P_min = np.zeros(n_params)
-            for _ in range(n_monte_carlo):
-                vals = np.empty(n_params)
-                for i in range(mean.shape[0]):
-                    vals[i] = self.random_state.normal(mean[i], std[i])
-                P_min[vals.argmin()] += 1
+        n_params = len(mean)
+        P_min = np.zeros(n_params)
+        for _ in range(n_monte_carlo):
+            vals = np.empty(n_params)
+            for i in range(n_params):
+                vals[i] = self.random_state.normal(mean[i], std[i])
+            P_min[vals.argmin()] += 1
 
         P_min /= n_monte_carlo
         return P_min
