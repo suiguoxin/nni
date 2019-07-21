@@ -49,13 +49,17 @@ def _get_metric_best(file_name):
                     metric_best.append(val)
                 else:
                     metric_best.append(metric_best[-1])
-    return metric_best[:1000]
+    return metric_best[:500]
 
 
 def plot_comparison():
     metric_best_mtsmac = _get_metric_best('mnist_mtsmac.json')
     plt.plot(range(len(metric_best_mtsmac)),
              metric_best_mtsmac, label='MTSMAC')
+
+    metric_best_mtsmac = _get_metric_best('mnist_mtsmac2.json')
+    plt.plot(range(len(metric_best_mtsmac)),
+             metric_best_mtsmac, label='MTSMAC2')
 
     metric_best_tpe = _get_metric_best('mnist_tpe.json')
     plt.plot(range(len(metric_best_tpe)), metric_best_tpe, label='TPE')
