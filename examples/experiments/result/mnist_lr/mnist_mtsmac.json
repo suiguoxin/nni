@@ -1,0 +1,2195 @@
+{
+    "experimentParameters": {
+        "id": "IKZHy3zy",
+        "revision": 82,
+        "execDuration": 570,
+        "logDir": "/home/v-guosui/nni/experiments/IKZHy3zy",
+        "maxSequenceId": 23,
+        "params": {
+            "authorName": "default",
+            "experimentName": "example_mnist_MTSMAC",
+            "trialConcurrency": 1,
+            "maxExecDuration": 360000,
+            "maxTrialNum": 500,
+            "searchSpace": {
+                "constraints_weights": {
+                    "_type": "uniform",
+                    "_value": [
+                        0.1,
+                        20
+                    ]
+                },
+                "l2_norm": {
+                    "_type": "uniform",
+                    "_value": [
+                        0,
+                        1
+                    ]
+                },
+                "batch_size": {
+                    "_type": "choice",
+                    "_value": [
+                        8,
+                        16,
+                        32,
+                        64,
+                        128,
+                        256,
+                        512,
+                        1024,
+                        2048
+                    ]
+                },
+                "dropout_rate": {
+                    "_type": "uniform",
+                    "_value": [
+                        0,
+                        0.75
+                    ]
+                },
+                "learning_rate": {
+                    "_type": "choice",
+                    "_value": [
+                        0.000001,
+                        0.00001,
+                        0.0001,
+                        0.001,
+                        0.01,
+                        0.1
+                    ]
+                }
+            },
+            "trainingServicePlatform": "local",
+            "advisor": {
+                "builtinAdvisorName": "MTSMAC",
+                "classArgs": {
+                    "optimize_mode": "maximize"
+                },
+                "className": "MTSMAC",
+                "checkpointDir": "/home/v-guosui/nni/experiments/IKZHy3zy/checkpoint"
+            },
+            "versionCheck": true,
+            "clusterMetaData": [
+                {
+                    "key": "codeDir",
+                    "value": "/mnt/c/Users/v-guosui/Desktop/nni/examples/experiments/."
+                },
+                {
+                    "key": "command",
+                    "value": "python3 mnist_lr_mtsmac.py"
+                }
+            ]
+        },
+        "startTime": 1563803627606
+    },
+    "trialMessage": [
+        {
+            "id": "um5Ma",
+            "status": "SUCCEEDED",
+            "hyperParameters": {
+                "parameter_id": 0,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 1024,
+                    "constraints_weights": 7.086456501799,
+                    "dropout_rate": 0.5967759350357839,
+                    "l2_norm": 0.13945133915534513,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 25,
+                    "PARAMETER_ID": 0
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/IKZHy3zy/trials/um5Ma",
+            "startTime": 1563803637736,
+            "sequenceId": 0,
+            "endTime": 1563803679817,
+            "finalMetricData": [
+                {
+                    "timestamp": 1563803679245,
+                    "trialJobId": "um5Ma",
+                    "parameterId": "0",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.6272000074386597"
+                }
+            ],
+            "intermediate": [
+                {
+                    "timestamp": 1563803642993,
+                    "trialJobId": "um5Ma",
+                    "parameterId": "0",
+                    "type": "PERIODICAL",
+                    "sequence": 0,
+                    "data": "0.09780000150203705"
+                },
+                {
+                    "timestamp": 1563803644309,
+                    "trialJobId": "um5Ma",
+                    "parameterId": "0",
+                    "type": "PERIODICAL",
+                    "sequence": 1,
+                    "data": "0.35670000314712524"
+                },
+                {
+                    "timestamp": 1563803645814,
+                    "trialJobId": "um5Ma",
+                    "parameterId": "0",
+                    "type": "PERIODICAL",
+                    "sequence": 2,
+                    "data": "0.45829999446868896"
+                },
+                {
+                    "timestamp": 1563803647314,
+                    "trialJobId": "um5Ma",
+                    "parameterId": "0",
+                    "type": "PERIODICAL",
+                    "sequence": 3,
+                    "data": "0.5454999804496765"
+                },
+                {
+                    "timestamp": 1563803649001,
+                    "trialJobId": "um5Ma",
+                    "parameterId": "0",
+                    "type": "PERIODICAL",
+                    "sequence": 4,
+                    "data": "0.5799000263214111"
+                },
+                {
+                    "timestamp": 1563803650590,
+                    "trialJobId": "um5Ma",
+                    "parameterId": "0",
+                    "type": "PERIODICAL",
+                    "sequence": 5,
+                    "data": "0.6273000240325928"
+                },
+                {
+                    "timestamp": 1563803651964,
+                    "trialJobId": "um5Ma",
+                    "parameterId": "0",
+                    "type": "PERIODICAL",
+                    "sequence": 6,
+                    "data": "0.629800021648407"
+                },
+                {
+                    "timestamp": 1563803653323,
+                    "trialJobId": "um5Ma",
+                    "parameterId": "0",
+                    "type": "PERIODICAL",
+                    "sequence": 7,
+                    "data": "0.6259999871253967"
+                },
+                {
+                    "timestamp": 1563803654573,
+                    "trialJobId": "um5Ma",
+                    "parameterId": "0",
+                    "type": "PERIODICAL",
+                    "sequence": 8,
+                    "data": "0.6254000067710876"
+                },
+                {
+                    "timestamp": 1563803655959,
+                    "trialJobId": "um5Ma",
+                    "parameterId": "0",
+                    "type": "PERIODICAL",
+                    "sequence": 9,
+                    "data": "0.6262999773025513"
+                },
+                {
+                    "timestamp": 1563803657302,
+                    "trialJobId": "um5Ma",
+                    "parameterId": "0",
+                    "type": "PERIODICAL",
+                    "sequence": 10,
+                    "data": "0.6273000240325928"
+                },
+                {
+                    "timestamp": 1563803658662,
+                    "trialJobId": "um5Ma",
+                    "parameterId": "0",
+                    "type": "PERIODICAL",
+                    "sequence": 11,
+                    "data": "0.6266000270843506"
+                },
+                {
+                    "timestamp": 1563803660110,
+                    "trialJobId": "um5Ma",
+                    "parameterId": "0",
+                    "type": "PERIODICAL",
+                    "sequence": 12,
+                    "data": "0.6219000220298767"
+                },
+                {
+                    "timestamp": 1563803661537,
+                    "trialJobId": "um5Ma",
+                    "parameterId": "0",
+                    "type": "PERIODICAL",
+                    "sequence": 13,
+                    "data": "0.6284000277519226"
+                },
+                {
+                    "timestamp": 1563803662962,
+                    "trialJobId": "um5Ma",
+                    "parameterId": "0",
+                    "type": "PERIODICAL",
+                    "sequence": 14,
+                    "data": "0.6238999962806702"
+                },
+                {
+                    "timestamp": 1563803664285,
+                    "trialJobId": "um5Ma",
+                    "parameterId": "0",
+                    "type": "PERIODICAL",
+                    "sequence": 15,
+                    "data": "0.6274999976158142"
+                },
+                {
+                    "timestamp": 1563803665752,
+                    "trialJobId": "um5Ma",
+                    "parameterId": "0",
+                    "type": "PERIODICAL",
+                    "sequence": 16,
+                    "data": "0.6219000220298767"
+                },
+                {
+                    "timestamp": 1563803667239,
+                    "trialJobId": "um5Ma",
+                    "parameterId": "0",
+                    "type": "PERIODICAL",
+                    "sequence": 17,
+                    "data": "0.6244999766349792"
+                },
+                {
+                    "timestamp": 1563803668699,
+                    "trialJobId": "um5Ma",
+                    "parameterId": "0",
+                    "type": "PERIODICAL",
+                    "sequence": 18,
+                    "data": "0.6258999705314636"
+                },
+                {
+                    "timestamp": 1563803670155,
+                    "trialJobId": "um5Ma",
+                    "parameterId": "0",
+                    "type": "PERIODICAL",
+                    "sequence": 19,
+                    "data": "0.6248999834060669"
+                },
+                {
+                    "timestamp": 1563803671630,
+                    "trialJobId": "um5Ma",
+                    "parameterId": "0",
+                    "type": "PERIODICAL",
+                    "sequence": 20,
+                    "data": "0.6290000081062317"
+                },
+                {
+                    "timestamp": 1563803673350,
+                    "trialJobId": "um5Ma",
+                    "parameterId": "0",
+                    "type": "PERIODICAL",
+                    "sequence": 21,
+                    "data": "0.6207000017166138"
+                },
+                {
+                    "timestamp": 1563803674742,
+                    "trialJobId": "um5Ma",
+                    "parameterId": "0",
+                    "type": "PERIODICAL",
+                    "sequence": 22,
+                    "data": "0.6237000226974487"
+                },
+                {
+                    "timestamp": 1563803676230,
+                    "trialJobId": "um5Ma",
+                    "parameterId": "0",
+                    "type": "PERIODICAL",
+                    "sequence": 23,
+                    "data": "0.6218000054359436"
+                },
+                {
+                    "timestamp": 1563803677784,
+                    "trialJobId": "um5Ma",
+                    "parameterId": "0",
+                    "type": "PERIODICAL",
+                    "sequence": 24,
+                    "data": "0.6237999796867371"
+                },
+                {
+                    "timestamp": 1563803679245,
+                    "trialJobId": "um5Ma",
+                    "parameterId": "0",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.6272000074386597"
+                }
+            ]
+        },
+        {
+            "id": "s1K6s",
+            "status": "SUCCEEDED",
+            "hyperParameters": {
+                "parameter_id": 1,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 256,
+                    "constraints_weights": 8.20993836347454,
+                    "dropout_rate": 0.4344908033215155,
+                    "l2_norm": 0.7834999430070761,
+                    "learning_rate": 0.000001,
+                    "TRIAL_BUDGET": 25,
+                    "PARAMETER_ID": 1
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/IKZHy3zy/trials/s1K6s",
+            "startTime": 1563803692900,
+            "sequenceId": 1,
+            "endTime": 1563803714806,
+            "finalMetricData": [
+                {
+                    "timestamp": 1563803714173,
+                    "trialJobId": "s1K6s",
+                    "parameterId": "1",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.05820000171661377"
+                }
+            ],
+            "intermediate": [
+                {
+                    "timestamp": 1563803698115,
+                    "trialJobId": "s1K6s",
+                    "parameterId": "1",
+                    "type": "PERIODICAL",
+                    "sequence": 0,
+                    "data": "0.058400001376867294"
+                },
+                {
+                    "timestamp": 1563803698650,
+                    "trialJobId": "s1K6s",
+                    "parameterId": "1",
+                    "type": "PERIODICAL",
+                    "sequence": 1,
+                    "data": "0.05849999934434891"
+                },
+                {
+                    "timestamp": 1563803699192,
+                    "trialJobId": "s1K6s",
+                    "parameterId": "1",
+                    "type": "PERIODICAL",
+                    "sequence": 2,
+                    "data": "0.05829999968409538"
+                },
+                {
+                    "timestamp": 1563803699903,
+                    "trialJobId": "s1K6s",
+                    "parameterId": "1",
+                    "type": "PERIODICAL",
+                    "sequence": 3,
+                    "data": "0.05829999968409538"
+                },
+                {
+                    "timestamp": 1563803700430,
+                    "trialJobId": "s1K6s",
+                    "parameterId": "1",
+                    "type": "PERIODICAL",
+                    "sequence": 4,
+                    "data": "0.058400001376867294"
+                },
+                {
+                    "timestamp": 1563803701160,
+                    "trialJobId": "s1K6s",
+                    "parameterId": "1",
+                    "type": "PERIODICAL",
+                    "sequence": 5,
+                    "data": "0.058400001376867294"
+                },
+                {
+                    "timestamp": 1563803701703,
+                    "trialJobId": "s1K6s",
+                    "parameterId": "1",
+                    "type": "PERIODICAL",
+                    "sequence": 6,
+                    "data": "0.05829999968409538"
+                },
+                {
+                    "timestamp": 1563803702448,
+                    "trialJobId": "s1K6s",
+                    "parameterId": "1",
+                    "type": "PERIODICAL",
+                    "sequence": 7,
+                    "data": "0.05820000171661377"
+                },
+                {
+                    "timestamp": 1563803702993,
+                    "trialJobId": "s1K6s",
+                    "parameterId": "1",
+                    "type": "PERIODICAL",
+                    "sequence": 8,
+                    "data": "0.05829999968409538"
+                },
+                {
+                    "timestamp": 1563803703750,
+                    "trialJobId": "s1K6s",
+                    "parameterId": "1",
+                    "type": "PERIODICAL",
+                    "sequence": 9,
+                    "data": "0.05820000171661377"
+                },
+                {
+                    "timestamp": 1563803704329,
+                    "trialJobId": "s1K6s",
+                    "parameterId": "1",
+                    "type": "PERIODICAL",
+                    "sequence": 10,
+                    "data": "0.05810000002384186"
+                },
+                {
+                    "timestamp": 1563803705042,
+                    "trialJobId": "s1K6s",
+                    "parameterId": "1",
+                    "type": "PERIODICAL",
+                    "sequence": 11,
+                    "data": "0.057999998331069946"
+                },
+                {
+                    "timestamp": 1563803705571,
+                    "trialJobId": "s1K6s",
+                    "parameterId": "1",
+                    "type": "PERIODICAL",
+                    "sequence": 12,
+                    "data": "0.057999998331069946"
+                },
+                {
+                    "timestamp": 1563803706286,
+                    "trialJobId": "s1K6s",
+                    "parameterId": "1",
+                    "type": "PERIODICAL",
+                    "sequence": 13,
+                    "data": "0.05810000002384186"
+                },
+                {
+                    "timestamp": 1563803706806,
+                    "trialJobId": "s1K6s",
+                    "parameterId": "1",
+                    "type": "PERIODICAL",
+                    "sequence": 14,
+                    "data": "0.05810000002384186"
+                },
+                {
+                    "timestamp": 1563803707322,
+                    "trialJobId": "s1K6s",
+                    "parameterId": "1",
+                    "type": "PERIODICAL",
+                    "sequence": 15,
+                    "data": "0.05810000002384186"
+                },
+                {
+                    "timestamp": 1563803708067,
+                    "trialJobId": "s1K6s",
+                    "parameterId": "1",
+                    "type": "PERIODICAL",
+                    "sequence": 16,
+                    "data": "0.057999998331069946"
+                },
+                {
+                    "timestamp": 1563803708597,
+                    "trialJobId": "s1K6s",
+                    "parameterId": "1",
+                    "type": "PERIODICAL",
+                    "sequence": 17,
+                    "data": "0.057999998331069946"
+                },
+                {
+                    "timestamp": 1563803709311,
+                    "trialJobId": "s1K6s",
+                    "parameterId": "1",
+                    "type": "PERIODICAL",
+                    "sequence": 18,
+                    "data": "0.057999998331069946"
+                },
+                {
+                    "timestamp": 1563803710041,
+                    "trialJobId": "s1K6s",
+                    "parameterId": "1",
+                    "type": "PERIODICAL",
+                    "sequence": 19,
+                    "data": "0.05810000002384186"
+                },
+                {
+                    "timestamp": 1563803711013,
+                    "trialJobId": "s1K6s",
+                    "parameterId": "1",
+                    "type": "PERIODICAL",
+                    "sequence": 20,
+                    "data": "0.057999998331069946"
+                },
+                {
+                    "timestamp": 1563803711569,
+                    "trialJobId": "s1K6s",
+                    "parameterId": "1",
+                    "type": "PERIODICAL",
+                    "sequence": 21,
+                    "data": "0.057999998331069946"
+                },
+                {
+                    "timestamp": 1563803712306,
+                    "trialJobId": "s1K6s",
+                    "parameterId": "1",
+                    "type": "PERIODICAL",
+                    "sequence": 22,
+                    "data": "0.05810000002384186"
+                },
+                {
+                    "timestamp": 1563803712827,
+                    "trialJobId": "s1K6s",
+                    "parameterId": "1",
+                    "type": "PERIODICAL",
+                    "sequence": 23,
+                    "data": "0.05810000002384186"
+                },
+                {
+                    "timestamp": 1563803713574,
+                    "trialJobId": "s1K6s",
+                    "parameterId": "1",
+                    "type": "PERIODICAL",
+                    "sequence": 24,
+                    "data": "0.05810000002384186"
+                },
+                {
+                    "timestamp": 1563803714173,
+                    "trialJobId": "s1K6s",
+                    "parameterId": "1",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.05820000171661377"
+                }
+            ]
+        },
+        {
+            "id": "z7vfD",
+            "status": "SUCCEEDED",
+            "hyperParameters": {
+                "parameter_id": 2,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 32,
+                    "constraints_weights": 13.162021902549444,
+                    "dropout_rate": 0.416029800547309,
+                    "l2_norm": 0.47197147373744686,
+                    "learning_rate": 0.000001,
+                    "TRIAL_BUDGET": 25,
+                    "PARAMETER_ID": 2
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/IKZHy3zy/trials/z7vfD",
+            "startTime": 1563803728007,
+            "sequenceId": 2,
+            "endTime": 1563803742512,
+            "finalMetricData": [
+                {
+                    "timestamp": 1563803741921,
+                    "trialJobId": "z7vfD",
+                    "parameterId": "2",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.13040000200271606"
+                }
+            ],
+            "intermediate": [
+                {
+                    "timestamp": 1563803733446,
+                    "trialJobId": "z7vfD",
+                    "parameterId": "2",
+                    "type": "PERIODICAL",
+                    "sequence": 0,
+                    "data": "0.12950000166893005"
+                },
+                {
+                    "timestamp": 1563803733785,
+                    "trialJobId": "z7vfD",
+                    "parameterId": "2",
+                    "type": "PERIODICAL",
+                    "sequence": 1,
+                    "data": "0.12950000166893005"
+                },
+                {
+                    "timestamp": 1563803734134,
+                    "trialJobId": "z7vfD",
+                    "parameterId": "2",
+                    "type": "PERIODICAL",
+                    "sequence": 2,
+                    "data": "0.12950000166893005"
+                },
+                {
+                    "timestamp": 1563803734543,
+                    "trialJobId": "z7vfD",
+                    "parameterId": "2",
+                    "type": "PERIODICAL",
+                    "sequence": 3,
+                    "data": "0.12950000166893005"
+                },
+                {
+                    "timestamp": 1563803734890,
+                    "trialJobId": "z7vfD",
+                    "parameterId": "2",
+                    "type": "PERIODICAL",
+                    "sequence": 4,
+                    "data": "0.12950000166893005"
+                },
+                {
+                    "timestamp": 1563803735240,
+                    "trialJobId": "z7vfD",
+                    "parameterId": "2",
+                    "type": "PERIODICAL",
+                    "sequence": 5,
+                    "data": "0.12950000166893005"
+                },
+                {
+                    "timestamp": 1563803735560,
+                    "trialJobId": "z7vfD",
+                    "parameterId": "2",
+                    "type": "PERIODICAL",
+                    "sequence": 6,
+                    "data": "0.12950000166893005"
+                },
+                {
+                    "timestamp": 1563803735887,
+                    "trialJobId": "z7vfD",
+                    "parameterId": "2",
+                    "type": "PERIODICAL",
+                    "sequence": 7,
+                    "data": "0.12950000166893005"
+                },
+                {
+                    "timestamp": 1563803736244,
+                    "trialJobId": "z7vfD",
+                    "parameterId": "2",
+                    "type": "PERIODICAL",
+                    "sequence": 8,
+                    "data": "0.12939999997615814"
+                },
+                {
+                    "timestamp": 1563803736569,
+                    "trialJobId": "z7vfD",
+                    "parameterId": "2",
+                    "type": "PERIODICAL",
+                    "sequence": 9,
+                    "data": "0.12950000166893005"
+                },
+                {
+                    "timestamp": 1563803736916,
+                    "trialJobId": "z7vfD",
+                    "parameterId": "2",
+                    "type": "PERIODICAL",
+                    "sequence": 10,
+                    "data": "0.12970000505447388"
+                },
+                {
+                    "timestamp": 1563803737253,
+                    "trialJobId": "z7vfD",
+                    "parameterId": "2",
+                    "type": "PERIODICAL",
+                    "sequence": 11,
+                    "data": "0.1298000067472458"
+                },
+                {
+                    "timestamp": 1563803737572,
+                    "trialJobId": "z7vfD",
+                    "parameterId": "2",
+                    "type": "PERIODICAL",
+                    "sequence": 12,
+                    "data": "0.12970000505447388"
+                },
+                {
+                    "timestamp": 1563803737896,
+                    "trialJobId": "z7vfD",
+                    "parameterId": "2",
+                    "type": "PERIODICAL",
+                    "sequence": 13,
+                    "data": "0.1298999935388565"
+                },
+                {
+                    "timestamp": 1563803738208,
+                    "trialJobId": "z7vfD",
+                    "parameterId": "2",
+                    "type": "PERIODICAL",
+                    "sequence": 14,
+                    "data": "0.1298999935388565"
+                },
+                {
+                    "timestamp": 1563803738516,
+                    "trialJobId": "z7vfD",
+                    "parameterId": "2",
+                    "type": "PERIODICAL",
+                    "sequence": 15,
+                    "data": "0.1298000067472458"
+                },
+                {
+                    "timestamp": 1563803738824,
+                    "trialJobId": "z7vfD",
+                    "parameterId": "2",
+                    "type": "PERIODICAL",
+                    "sequence": 16,
+                    "data": "0.1298000067472458"
+                },
+                {
+                    "timestamp": 1563803739141,
+                    "trialJobId": "z7vfD",
+                    "parameterId": "2",
+                    "type": "PERIODICAL",
+                    "sequence": 17,
+                    "data": "0.1298999935388565"
+                },
+                {
+                    "timestamp": 1563803739619,
+                    "trialJobId": "z7vfD",
+                    "parameterId": "2",
+                    "type": "PERIODICAL",
+                    "sequence": 18,
+                    "data": "0.12999999523162842"
+                },
+                {
+                    "timestamp": 1563803739922,
+                    "trialJobId": "z7vfD",
+                    "parameterId": "2",
+                    "type": "PERIODICAL",
+                    "sequence": 19,
+                    "data": "0.13009999692440033"
+                },
+                {
+                    "timestamp": 1563803740224,
+                    "trialJobId": "z7vfD",
+                    "parameterId": "2",
+                    "type": "PERIODICAL",
+                    "sequence": 20,
+                    "data": "0.13019999861717224"
+                },
+                {
+                    "timestamp": 1563803740523,
+                    "trialJobId": "z7vfD",
+                    "parameterId": "2",
+                    "type": "PERIODICAL",
+                    "sequence": 21,
+                    "data": "0.13019999861717224"
+                },
+                {
+                    "timestamp": 1563803740832,
+                    "trialJobId": "z7vfD",
+                    "parameterId": "2",
+                    "type": "PERIODICAL",
+                    "sequence": 22,
+                    "data": "0.13019999861717224"
+                },
+                {
+                    "timestamp": 1563803741179,
+                    "trialJobId": "z7vfD",
+                    "parameterId": "2",
+                    "type": "PERIODICAL",
+                    "sequence": 23,
+                    "data": "0.13050000369548798"
+                },
+                {
+                    "timestamp": 1563803741545,
+                    "trialJobId": "z7vfD",
+                    "parameterId": "2",
+                    "type": "PERIODICAL",
+                    "sequence": 24,
+                    "data": "0.13050000369548798"
+                },
+                {
+                    "timestamp": 1563803741921,
+                    "trialJobId": "z7vfD",
+                    "parameterId": "2",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.13040000200271606"
+                }
+            ]
+        },
+        {
+            "id": "NaaN4",
+            "status": "SUCCEEDED",
+            "hyperParameters": {
+                "parameter_id": 3,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 256,
+                    "constraints_weights": 3.7506106588507815,
+                    "dropout_rate": 0.2572046440503108,
+                    "l2_norm": 0.59128695154451,
+                    "learning_rate": 0.01,
+                    "TRIAL_BUDGET": 25,
+                    "PARAMETER_ID": 3
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/IKZHy3zy/trials/NaaN4",
+            "startTime": 1563803753124,
+            "sequenceId": 3,
+            "endTime": 1563803773566,
+            "finalMetricData": [
+                {
+                    "timestamp": 1563803772991,
+                    "trialJobId": "NaaN4",
+                    "parameterId": "3",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.2766000032424927"
+                }
+            ],
+            "intermediate": [
+                {
+                    "timestamp": 1563803758494,
+                    "trialJobId": "NaaN4",
+                    "parameterId": "3",
+                    "type": "PERIODICAL",
+                    "sequence": 0,
+                    "data": "0.08479999750852585"
+                },
+                {
+                    "timestamp": 1563803759019,
+                    "trialJobId": "NaaN4",
+                    "parameterId": "3",
+                    "type": "PERIODICAL",
+                    "sequence": 1,
+                    "data": "0.24140000343322754"
+                },
+                {
+                    "timestamp": 1563803759576,
+                    "trialJobId": "NaaN4",
+                    "parameterId": "3",
+                    "type": "PERIODICAL",
+                    "sequence": 2,
+                    "data": "0.2775000035762787"
+                },
+                {
+                    "timestamp": 1563803760291,
+                    "trialJobId": "NaaN4",
+                    "parameterId": "3",
+                    "type": "PERIODICAL",
+                    "sequence": 3,
+                    "data": "0.29019999504089355"
+                },
+                {
+                    "timestamp": 1563803760820,
+                    "trialJobId": "NaaN4",
+                    "parameterId": "3",
+                    "type": "PERIODICAL",
+                    "sequence": 4,
+                    "data": "0.28700000047683716"
+                },
+                {
+                    "timestamp": 1563803761540,
+                    "trialJobId": "NaaN4",
+                    "parameterId": "3",
+                    "type": "PERIODICAL",
+                    "sequence": 5,
+                    "data": "0.2732999920845032"
+                },
+                {
+                    "timestamp": 1563803762033,
+                    "trialJobId": "NaaN4",
+                    "parameterId": "3",
+                    "type": "PERIODICAL",
+                    "sequence": 6,
+                    "data": "0.2867000102996826"
+                },
+                {
+                    "timestamp": 1563803762711,
+                    "trialJobId": "NaaN4",
+                    "parameterId": "3",
+                    "type": "PERIODICAL",
+                    "sequence": 7,
+                    "data": "0.2939999997615814"
+                },
+                {
+                    "timestamp": 1563803763198,
+                    "trialJobId": "NaaN4",
+                    "parameterId": "3",
+                    "type": "PERIODICAL",
+                    "sequence": 8,
+                    "data": "0.2939000129699707"
+                },
+                {
+                    "timestamp": 1563803763886,
+                    "trialJobId": "NaaN4",
+                    "parameterId": "3",
+                    "type": "PERIODICAL",
+                    "sequence": 9,
+                    "data": "0.2833000123500824"
+                },
+                {
+                    "timestamp": 1563803764380,
+                    "trialJobId": "NaaN4",
+                    "parameterId": "3",
+                    "type": "PERIODICAL",
+                    "sequence": 10,
+                    "data": "0.29919999837875366"
+                },
+                {
+                    "timestamp": 1563803765056,
+                    "trialJobId": "NaaN4",
+                    "parameterId": "3",
+                    "type": "PERIODICAL",
+                    "sequence": 11,
+                    "data": "0.289900004863739"
+                },
+                {
+                    "timestamp": 1563803765545,
+                    "trialJobId": "NaaN4",
+                    "parameterId": "3",
+                    "type": "PERIODICAL",
+                    "sequence": 12,
+                    "data": "0.2646999955177307"
+                },
+                {
+                    "timestamp": 1563803766202,
+                    "trialJobId": "NaaN4",
+                    "parameterId": "3",
+                    "type": "PERIODICAL",
+                    "sequence": 13,
+                    "data": "0.29919999837875366"
+                },
+                {
+                    "timestamp": 1563803766681,
+                    "trialJobId": "NaaN4",
+                    "parameterId": "3",
+                    "type": "PERIODICAL",
+                    "sequence": 14,
+                    "data": "0.25859999656677246"
+                },
+                {
+                    "timestamp": 1563803767184,
+                    "trialJobId": "NaaN4",
+                    "parameterId": "3",
+                    "type": "PERIODICAL",
+                    "sequence": 15,
+                    "data": "0.28519999980926514"
+                },
+                {
+                    "timestamp": 1563803767830,
+                    "trialJobId": "NaaN4",
+                    "parameterId": "3",
+                    "type": "PERIODICAL",
+                    "sequence": 16,
+                    "data": "0.25940001010894775"
+                },
+                {
+                    "timestamp": 1563803768317,
+                    "trialJobId": "NaaN4",
+                    "parameterId": "3",
+                    "type": "PERIODICAL",
+                    "sequence": 17,
+                    "data": "0.29589998722076416"
+                },
+                {
+                    "timestamp": 1563803768986,
+                    "trialJobId": "NaaN4",
+                    "parameterId": "3",
+                    "type": "PERIODICAL",
+                    "sequence": 18,
+                    "data": "0.3041999936103821"
+                },
+                {
+                    "timestamp": 1563803769473,
+                    "trialJobId": "NaaN4",
+                    "parameterId": "3",
+                    "type": "PERIODICAL",
+                    "sequence": 19,
+                    "data": "0.2892000079154968"
+                },
+                {
+                    "timestamp": 1563803770132,
+                    "trialJobId": "NaaN4",
+                    "parameterId": "3",
+                    "type": "PERIODICAL",
+                    "sequence": 20,
+                    "data": "0.2727999985218048"
+                },
+                {
+                    "timestamp": 1563803770620,
+                    "trialJobId": "NaaN4",
+                    "parameterId": "3",
+                    "type": "PERIODICAL",
+                    "sequence": 21,
+                    "data": "0.28060001134872437"
+                },
+                {
+                    "timestamp": 1563803771280,
+                    "trialJobId": "NaaN4",
+                    "parameterId": "3",
+                    "type": "PERIODICAL",
+                    "sequence": 22,
+                    "data": "0.29350000619888306"
+                },
+                {
+                    "timestamp": 1563803771769,
+                    "trialJobId": "NaaN4",
+                    "parameterId": "3",
+                    "type": "PERIODICAL",
+                    "sequence": 23,
+                    "data": "0.2791999876499176"
+                },
+                {
+                    "timestamp": 1563803772452,
+                    "trialJobId": "NaaN4",
+                    "parameterId": "3",
+                    "type": "PERIODICAL",
+                    "sequence": 24,
+                    "data": "0.2865000069141388"
+                },
+                {
+                    "timestamp": 1563803772991,
+                    "trialJobId": "NaaN4",
+                    "parameterId": "3",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.2766000032424927"
+                }
+            ]
+        },
+        {
+            "id": "gabiI",
+            "status": "SUCCEEDED",
+            "hyperParameters": {
+                "parameter_id": 4,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 16,
+                    "constraints_weights": 19.289073349166515,
+                    "dropout_rate": 0.45004630251675065,
+                    "l2_norm": 0.022843396637743818,
+                    "learning_rate": 0.1,
+                    "TRIAL_BUDGET": 25,
+                    "PARAMETER_ID": 4
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/IKZHy3zy/trials/gabiI",
+            "startTime": 1563803788242,
+            "sequenceId": 4,
+            "endTime": 1563803802556,
+            "finalMetricData": [
+                {
+                    "timestamp": 1563803801954,
+                    "trialJobId": "gabiI",
+                    "parameterId": "4",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.3621000051498413"
+                }
+            ],
+            "intermediate": [
+                {
+                    "timestamp": 1563803793641,
+                    "trialJobId": "gabiI",
+                    "parameterId": "4",
+                    "type": "PERIODICAL",
+                    "sequence": 0,
+                    "data": "0.17419999837875366"
+                },
+                {
+                    "timestamp": 1563803793986,
+                    "trialJobId": "gabiI",
+                    "parameterId": "4",
+                    "type": "PERIODICAL",
+                    "sequence": 1,
+                    "data": "0.38989999890327454"
+                },
+                {
+                    "timestamp": 1563803794296,
+                    "trialJobId": "gabiI",
+                    "parameterId": "4",
+                    "type": "PERIODICAL",
+                    "sequence": 2,
+                    "data": "0.21369999647140503"
+                },
+                {
+                    "timestamp": 1563803794621,
+                    "trialJobId": "gabiI",
+                    "parameterId": "4",
+                    "type": "PERIODICAL",
+                    "sequence": 3,
+                    "data": "0.4004000127315521"
+                },
+                {
+                    "timestamp": 1563803794946,
+                    "trialJobId": "gabiI",
+                    "parameterId": "4",
+                    "type": "PERIODICAL",
+                    "sequence": 4,
+                    "data": "0.2858000099658966"
+                },
+                {
+                    "timestamp": 1563803795262,
+                    "trialJobId": "gabiI",
+                    "parameterId": "4",
+                    "type": "PERIODICAL",
+                    "sequence": 5,
+                    "data": "0.2401999980211258"
+                },
+                {
+                    "timestamp": 1563803795591,
+                    "trialJobId": "gabiI",
+                    "parameterId": "4",
+                    "type": "PERIODICAL",
+                    "sequence": 6,
+                    "data": "0.36809998750686646"
+                },
+                {
+                    "timestamp": 1563803795908,
+                    "trialJobId": "gabiI",
+                    "parameterId": "4",
+                    "type": "PERIODICAL",
+                    "sequence": 7,
+                    "data": "0.3801000118255615"
+                },
+                {
+                    "timestamp": 1563803796224,
+                    "trialJobId": "gabiI",
+                    "parameterId": "4",
+                    "type": "PERIODICAL",
+                    "sequence": 8,
+                    "data": "0.2971000075340271"
+                },
+                {
+                    "timestamp": 1563803796542,
+                    "trialJobId": "gabiI",
+                    "parameterId": "4",
+                    "type": "PERIODICAL",
+                    "sequence": 9,
+                    "data": "0.41780000925064087"
+                },
+                {
+                    "timestamp": 1563803796863,
+                    "trialJobId": "gabiI",
+                    "parameterId": "4",
+                    "type": "PERIODICAL",
+                    "sequence": 10,
+                    "data": "0.3691999912261963"
+                },
+                {
+                    "timestamp": 1563803797182,
+                    "trialJobId": "gabiI",
+                    "parameterId": "4",
+                    "type": "PERIODICAL",
+                    "sequence": 11,
+                    "data": "0.2953999936580658"
+                },
+                {
+                    "timestamp": 1563803797530,
+                    "trialJobId": "gabiI",
+                    "parameterId": "4",
+                    "type": "PERIODICAL",
+                    "sequence": 12,
+                    "data": "0.4147000014781952"
+                },
+                {
+                    "timestamp": 1563803797874,
+                    "trialJobId": "gabiI",
+                    "parameterId": "4",
+                    "type": "PERIODICAL",
+                    "sequence": 13,
+                    "data": "0.28529998660087585"
+                },
+                {
+                    "timestamp": 1563803798195,
+                    "trialJobId": "gabiI",
+                    "parameterId": "4",
+                    "type": "PERIODICAL",
+                    "sequence": 14,
+                    "data": "0.20080000162124634"
+                },
+                {
+                    "timestamp": 1563803798562,
+                    "trialJobId": "gabiI",
+                    "parameterId": "4",
+                    "type": "PERIODICAL",
+                    "sequence": 15,
+                    "data": "0.4212000072002411"
+                },
+                {
+                    "timestamp": 1563803798913,
+                    "trialJobId": "gabiI",
+                    "parameterId": "4",
+                    "type": "PERIODICAL",
+                    "sequence": 16,
+                    "data": "0.38989999890327454"
+                },
+                {
+                    "timestamp": 1563803799238,
+                    "trialJobId": "gabiI",
+                    "parameterId": "4",
+                    "type": "PERIODICAL",
+                    "sequence": 17,
+                    "data": "0.34619998931884766"
+                },
+                {
+                    "timestamp": 1563803799583,
+                    "trialJobId": "gabiI",
+                    "parameterId": "4",
+                    "type": "PERIODICAL",
+                    "sequence": 18,
+                    "data": "0.36340001225471497"
+                },
+                {
+                    "timestamp": 1563803799912,
+                    "trialJobId": "gabiI",
+                    "parameterId": "4",
+                    "type": "PERIODICAL",
+                    "sequence": 19,
+                    "data": "0.25369998812675476"
+                },
+                {
+                    "timestamp": 1563803800267,
+                    "trialJobId": "gabiI",
+                    "parameterId": "4",
+                    "type": "PERIODICAL",
+                    "sequence": 20,
+                    "data": "0.2517000138759613"
+                },
+                {
+                    "timestamp": 1563803800609,
+                    "trialJobId": "gabiI",
+                    "parameterId": "4",
+                    "type": "PERIODICAL",
+                    "sequence": 21,
+                    "data": "0.28839999437332153"
+                },
+                {
+                    "timestamp": 1563803800942,
+                    "trialJobId": "gabiI",
+                    "parameterId": "4",
+                    "type": "PERIODICAL",
+                    "sequence": 22,
+                    "data": "0.2930999994277954"
+                },
+                {
+                    "timestamp": 1563803801270,
+                    "trialJobId": "gabiI",
+                    "parameterId": "4",
+                    "type": "PERIODICAL",
+                    "sequence": 23,
+                    "data": "0.4049000144004822"
+                },
+                {
+                    "timestamp": 1563803801591,
+                    "trialJobId": "gabiI",
+                    "parameterId": "4",
+                    "type": "PERIODICAL",
+                    "sequence": 24,
+                    "data": "0.3522000014781952"
+                },
+                {
+                    "timestamp": 1563803801954,
+                    "trialJobId": "gabiI",
+                    "parameterId": "4",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.3621000051498413"
+                }
+            ]
+        },
+        {
+            "id": "Ie02H",
+            "status": "SUCCEEDED",
+            "hyperParameters": {
+                "parameter_id": 5,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 1024,
+                    "constraints_weights": 6.968020567230106,
+                    "dropout_rate": 0.6695254565443083,
+                    "l2_norm": 0.1572171594226237,
+                    "learning_rate": 0.000001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 5
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/IKZHy3zy/trials/Ie02H",
+            "startTime": 1563803813377,
+            "sequenceId": 5,
+            "endTime": 1563803821297,
+            "finalMetricData": [
+                {
+                    "timestamp": 1563803820727,
+                    "trialJobId": "Ie02H",
+                    "parameterId": "5",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.0860000029206276"
+                }
+            ],
+            "intermediate": [
+                {
+                    "timestamp": 1563803819443,
+                    "trialJobId": "Ie02H",
+                    "parameterId": "5",
+                    "type": "PERIODICAL",
+                    "sequence": 0,
+                    "data": "0.08579999953508377"
+                },
+                {
+                    "timestamp": 1563803820727,
+                    "trialJobId": "Ie02H",
+                    "parameterId": "5",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.0860000029206276"
+                }
+            ]
+        },
+        {
+            "id": "gNGoM",
+            "status": "SUCCEEDED",
+            "hyperParameters": {
+                "parameter_id": 6,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 1024,
+                    "constraints_weights": 3.9903974377851315,
+                    "dropout_rate": 0.7023477636720746,
+                    "l2_norm": 0.36830731246419846,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 6
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/IKZHy3zy/trials/gNGoM",
+            "startTime": 1563803833495,
+            "sequenceId": 6,
+            "endTime": 1563803841018,
+            "finalMetricData": [
+                {
+                    "timestamp": 1563803840355,
+                    "trialJobId": "gNGoM",
+                    "parameterId": "6",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.26899999380111694"
+                }
+            ],
+            "intermediate": [
+                {
+                    "timestamp": 1563803838918,
+                    "trialJobId": "gNGoM",
+                    "parameterId": "6",
+                    "type": "PERIODICAL",
+                    "sequence": 0,
+                    "data": "0.09480000287294388"
+                },
+                {
+                    "timestamp": 1563803840355,
+                    "trialJobId": "gNGoM",
+                    "parameterId": "6",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.26899999380111694"
+                }
+            ]
+        },
+        {
+            "id": "jdQzS",
+            "status": "SUCCEEDED",
+            "hyperParameters": {
+                "parameter_id": 6,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 1024,
+                    "constraints_weights": 3.9903974377851315,
+                    "dropout_rate": 0.7023477636720746,
+                    "l2_norm": 0.36830731246419846,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 6
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/IKZHy3zy/trials/jdQzS",
+            "startTime": 1563803853606,
+            "sequenceId": 7,
+            "endTime": 1563803860727,
+            "finalMetricData": [
+                {
+                    "timestamp": 1563803860116,
+                    "trialJobId": "jdQzS",
+                    "parameterId": "6",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.34049999713897705"
+                }
+            ],
+            "intermediate": [
+                {
+                    "timestamp": 1563803858656,
+                    "trialJobId": "jdQzS",
+                    "parameterId": "6",
+                    "type": "PERIODICAL",
+                    "sequence": 0,
+                    "data": "0.14839999377727509"
+                },
+                {
+                    "timestamp": 1563803860116,
+                    "trialJobId": "jdQzS",
+                    "parameterId": "6",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.34049999713897705"
+                }
+            ]
+        },
+        {
+            "id": "FH6Uq",
+            "status": "SUCCEEDED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 1024,
+                    "constraints_weights": 7.973893767034392,
+                    "dropout_rate": 0.7470274128377079,
+                    "l2_norm": 0.1806350475173446,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/IKZHy3zy/trials/FH6Uq",
+            "startTime": 1563803873835,
+            "sequenceId": 8,
+            "endTime": 1563803905539,
+            "finalMetricData": [
+                {
+                    "timestamp": 1563803904873,
+                    "trialJobId": "FH6Uq",
+                    "parameterId": "7",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.35089999437332153"
+                }
+            ],
+            "intermediate": [
+                {
+                    "timestamp": 1563803903503,
+                    "trialJobId": "FH6Uq",
+                    "parameterId": "7",
+                    "type": "PERIODICAL",
+                    "sequence": 0,
+                    "data": "0.07909999787807465"
+                },
+                {
+                    "timestamp": 1563803904873,
+                    "trialJobId": "FH6Uq",
+                    "parameterId": "7",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.35089999437332153"
+                }
+            ]
+        },
+        {
+            "id": "XHDWH",
+            "status": "SUCCEEDED",
+            "hyperParameters": {
+                "parameter_id": 8,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 1024,
+                    "constraints_weights": 18.940420069005786,
+                    "dropout_rate": 0.730424348155326,
+                    "l2_norm": 0.1540520511535236,
+                    "learning_rate": 0.01,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 8
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/IKZHy3zy/trials/XHDWH",
+            "startTime": 1563803918958,
+            "sequenceId": 9,
+            "endTime": 1563803925619,
+            "finalMetricData": [
+                {
+                    "timestamp": 1563803925095,
+                    "trialJobId": "XHDWH",
+                    "parameterId": "8",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.6075999736785889"
+                }
+            ],
+            "intermediate": [
+                {
+                    "timestamp": 1563803923863,
+                    "trialJobId": "XHDWH",
+                    "parameterId": "8",
+                    "type": "PERIODICAL",
+                    "sequence": 0,
+                    "data": "0.10339999943971634"
+                },
+                {
+                    "timestamp": 1563803925095,
+                    "trialJobId": "XHDWH",
+                    "parameterId": "8",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.6075999736785889"
+                }
+            ]
+        },
+        {
+            "id": "zwZ2t",
+            "status": "SUCCEEDED",
+            "hyperParameters": {
+                "parameter_id": 9,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 2048,
+                    "constraints_weights": 5.319571069270509,
+                    "dropout_rate": 0.6790434298785113,
+                    "l2_norm": 0.14979757758087842,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 9
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/IKZHy3zy/trials/zwZ2t",
+            "startTime": 1563803939064,
+            "sequenceId": 10,
+            "endTime": 1563803948763,
+            "finalMetricData": [
+                {
+                    "timestamp": 1563803948044,
+                    "trialJobId": "zwZ2t",
+                    "parameterId": "9",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.5049999952316284"
+                }
+            ],
+            "intermediate": [
+                {
+                    "timestamp": 1563803945071,
+                    "trialJobId": "zwZ2t",
+                    "parameterId": "9",
+                    "type": "PERIODICAL",
+                    "sequence": 0,
+                    "data": "0.07289999723434448"
+                },
+                {
+                    "timestamp": 1563803948044,
+                    "trialJobId": "zwZ2t",
+                    "parameterId": "9",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.5049999952316284"
+                }
+            ]
+        },
+        {
+            "id": "vQFJE",
+            "status": "SUCCEEDED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 1024,
+                    "constraints_weights": 7.973893767034392,
+                    "dropout_rate": 0.7470274128377079,
+                    "l2_norm": 0.1806350475173446,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/IKZHy3zy/trials/vQFJE",
+            "startTime": 1563803959163,
+            "sequenceId": 11,
+            "endTime": 1563803965892,
+            "finalMetricData": [
+                {
+                    "timestamp": 1563803965259,
+                    "trialJobId": "vQFJE",
+                    "parameterId": "7",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.32100000977516174"
+                }
+            ],
+            "intermediate": [
+                {
+                    "timestamp": 1563803963845,
+                    "trialJobId": "vQFJE",
+                    "parameterId": "7",
+                    "type": "PERIODICAL",
+                    "sequence": 0,
+                    "data": "0.1316000074148178"
+                },
+                {
+                    "timestamp": 1563803965259,
+                    "trialJobId": "vQFJE",
+                    "parameterId": "7",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.32100000977516174"
+                }
+            ]
+        },
+        {
+            "id": "qXJRr",
+            "status": "SUCCEEDED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 1024,
+                    "constraints_weights": 7.973893767034392,
+                    "dropout_rate": 0.7470274128377079,
+                    "l2_norm": 0.1806350475173446,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/IKZHy3zy/trials/qXJRr",
+            "startTime": 1563803979298,
+            "sequenceId": 12,
+            "endTime": 1563803987789,
+            "finalMetricData": [
+                {
+                    "timestamp": 1563803987121,
+                    "trialJobId": "qXJRr",
+                    "parameterId": "7",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.3653999865055084"
+                }
+            ],
+            "intermediate": [
+                {
+                    "timestamp": 1563803985556,
+                    "trialJobId": "qXJRr",
+                    "parameterId": "7",
+                    "type": "PERIODICAL",
+                    "sequence": 0,
+                    "data": "0.11869999766349792"
+                },
+                {
+                    "timestamp": 1563803987121,
+                    "trialJobId": "qXJRr",
+                    "parameterId": "7",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.3653999865055084"
+                }
+            ]
+        },
+        {
+            "id": "nPVnb",
+            "status": "SUCCEEDED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 1024,
+                    "constraints_weights": 7.973893767034392,
+                    "dropout_rate": 0.7470274128377079,
+                    "l2_norm": 0.1806350475173446,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/IKZHy3zy/trials/nPVnb",
+            "startTime": 1563803999421,
+            "sequenceId": 13,
+            "endTime": 1563804007896,
+            "finalMetricData": [
+                {
+                    "timestamp": 1563804007256,
+                    "trialJobId": "nPVnb",
+                    "parameterId": "7",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.39239999651908875"
+                }
+            ],
+            "intermediate": [
+                {
+                    "timestamp": 1563804005726,
+                    "trialJobId": "nPVnb",
+                    "parameterId": "7",
+                    "type": "PERIODICAL",
+                    "sequence": 0,
+                    "data": "0.09149999916553497"
+                },
+                {
+                    "timestamp": 1563804007256,
+                    "trialJobId": "nPVnb",
+                    "parameterId": "7",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.39239999651908875"
+                }
+            ]
+        },
+        {
+            "id": "DSKgH",
+            "status": "SUCCEEDED",
+            "hyperParameters": {
+                "parameter_id": 6,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 1024,
+                    "constraints_weights": 3.9903974377851315,
+                    "dropout_rate": 0.7023477636720746,
+                    "l2_norm": 0.36830731246419846,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 6
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/IKZHy3zy/trials/DSKgH",
+            "startTime": 1563804019529,
+            "sequenceId": 14,
+            "endTime": 1563804027047,
+            "finalMetricData": [
+                {
+                    "timestamp": 1563804026395,
+                    "trialJobId": "DSKgH",
+                    "parameterId": "6",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.3889999985694885"
+                }
+            ],
+            "intermediate": [
+                {
+                    "timestamp": 1563804024979,
+                    "trialJobId": "DSKgH",
+                    "parameterId": "6",
+                    "type": "PERIODICAL",
+                    "sequence": 0,
+                    "data": "0.15520000457763672"
+                },
+                {
+                    "timestamp": 1563804026395,
+                    "trialJobId": "DSKgH",
+                    "parameterId": "6",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.3889999985694885"
+                }
+            ]
+        },
+        {
+            "id": "grXdH",
+            "status": "SUCCEEDED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 1024,
+                    "constraints_weights": 7.973893767034392,
+                    "dropout_rate": 0.7470274128377079,
+                    "l2_norm": 0.1806350475173446,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/IKZHy3zy/trials/grXdH",
+            "startTime": 1563804039662,
+            "sequenceId": 15,
+            "endTime": 1563804046982,
+            "finalMetricData": [
+                {
+                    "timestamp": 1563804046431,
+                    "trialJobId": "grXdH",
+                    "parameterId": "7",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.34689998626708984"
+                }
+            ],
+            "intermediate": [
+                {
+                    "timestamp": 1563804045161,
+                    "trialJobId": "grXdH",
+                    "parameterId": "7",
+                    "type": "PERIODICAL",
+                    "sequence": 0,
+                    "data": "0.1340000033378601"
+                },
+                {
+                    "timestamp": 1563804046431,
+                    "trialJobId": "grXdH",
+                    "parameterId": "7",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.34689998626708984"
+                }
+            ]
+        },
+        {
+            "id": "wHNjb",
+            "status": "SUCCEEDED",
+            "hyperParameters": {
+                "parameter_id": 8,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 1024,
+                    "constraints_weights": 18.940420069005786,
+                    "dropout_rate": 0.730424348155326,
+                    "l2_norm": 0.1540520511535236,
+                    "learning_rate": 0.01,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 8
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/IKZHy3zy/trials/wHNjb",
+            "startTime": 1563804059763,
+            "sequenceId": 16,
+            "endTime": 1563804067075,
+            "finalMetricData": [
+                {
+                    "timestamp": 1563804066460,
+                    "trialJobId": "wHNjb",
+                    "parameterId": "8",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.5630000233650208"
+                }
+            ],
+            "intermediate": [
+                {
+                    "timestamp": 1563804065106,
+                    "trialJobId": "wHNjb",
+                    "parameterId": "8",
+                    "type": "PERIODICAL",
+                    "sequence": 0,
+                    "data": "0.06920000165700912"
+                },
+                {
+                    "timestamp": 1563804066460,
+                    "trialJobId": "wHNjb",
+                    "parameterId": "8",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.5630000233650208"
+                }
+            ]
+        },
+        {
+            "id": "N56hg",
+            "status": "SUCCEEDED",
+            "hyperParameters": {
+                "parameter_id": 9,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 2048,
+                    "constraints_weights": 5.319571069270509,
+                    "dropout_rate": 0.6790434298785113,
+                    "l2_norm": 0.14979757758087842,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 9
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/IKZHy3zy/trials/N56hg",
+            "startTime": 1563804079888,
+            "sequenceId": 17,
+            "endTime": 1563804088797,
+            "finalMetricData": [
+                {
+                    "timestamp": 1563804088198,
+                    "trialJobId": "N56hg",
+                    "parameterId": "9",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.3937000036239624"
+                }
+            ],
+            "intermediate": [
+                {
+                    "timestamp": 1563804085399,
+                    "trialJobId": "N56hg",
+                    "parameterId": "9",
+                    "type": "PERIODICAL",
+                    "sequence": 0,
+                    "data": "0.0697999969124794"
+                },
+                {
+                    "timestamp": 1563804088198,
+                    "trialJobId": "N56hg",
+                    "parameterId": "9",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.3937000036239624"
+                }
+            ]
+        },
+        {
+            "id": "fSR2n",
+            "status": "SUCCEEDED",
+            "hyperParameters": {
+                "parameter_id": 9,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 2048,
+                    "constraints_weights": 5.319571069270509,
+                    "dropout_rate": 0.6790434298785113,
+                    "l2_norm": 0.14979757758087842,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 9
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/IKZHy3zy/trials/fSR2n",
+            "startTime": 1563804100000,
+            "sequenceId": 18,
+            "endTime": 1563804108092,
+            "finalMetricData": [
+                {
+                    "timestamp": 1563804107552,
+                    "trialJobId": "fSR2n",
+                    "parameterId": "9",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.4287000000476837"
+                }
+            ],
+            "intermediate": [
+                {
+                    "timestamp": 1563804105275,
+                    "trialJobId": "fSR2n",
+                    "parameterId": "9",
+                    "type": "PERIODICAL",
+                    "sequence": 0,
+                    "data": "0.12139999866485596"
+                },
+                {
+                    "timestamp": 1563804107552,
+                    "trialJobId": "fSR2n",
+                    "parameterId": "9",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.4287000000476837"
+                }
+            ]
+        },
+        {
+            "id": "CRveF",
+            "status": "SUCCEEDED",
+            "hyperParameters": {
+                "parameter_id": 9,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 2048,
+                    "constraints_weights": 5.319571069270509,
+                    "dropout_rate": 0.6790434298785113,
+                    "l2_norm": 0.14979757758087842,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 9
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/IKZHy3zy/trials/CRveF",
+            "startTime": 1563804120120,
+            "sequenceId": 19,
+            "endTime": 1563804128311,
+            "finalMetricData": [
+                {
+                    "timestamp": 1563804127790,
+                    "trialJobId": "CRveF",
+                    "parameterId": "9",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.3874000012874603"
+                }
+            ],
+            "intermediate": [
+                {
+                    "timestamp": 1563804125377,
+                    "trialJobId": "CRveF",
+                    "parameterId": "9",
+                    "type": "PERIODICAL",
+                    "sequence": 0,
+                    "data": "0.10509999841451645"
+                },
+                {
+                    "timestamp": 1563804127790,
+                    "trialJobId": "CRveF",
+                    "parameterId": "9",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.3874000012874603"
+                }
+            ]
+        },
+        {
+            "id": "FaE4m",
+            "status": "SUCCEEDED",
+            "hyperParameters": {
+                "parameter_id": 9,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 2048,
+                    "constraints_weights": 5.319571069270509,
+                    "dropout_rate": 0.6790434298785113,
+                    "l2_norm": 0.14979757758087842,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 9
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/IKZHy3zy/trials/FaE4m",
+            "startTime": 1563804140240,
+            "sequenceId": 20,
+            "endTime": 1563804148413,
+            "finalMetricData": [
+                {
+                    "timestamp": 1563804147822,
+                    "trialJobId": "FaE4m",
+                    "parameterId": "9",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.4311999976634979"
+                }
+            ],
+            "intermediate": [
+                {
+                    "timestamp": 1563804145021,
+                    "trialJobId": "FaE4m",
+                    "parameterId": "9",
+                    "type": "PERIODICAL",
+                    "sequence": 0,
+                    "data": "0.08839999884366989"
+                },
+                {
+                    "timestamp": 1563804147822,
+                    "trialJobId": "FaE4m",
+                    "parameterId": "9",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.4311999976634979"
+                }
+            ]
+        },
+        {
+            "id": "Mnpez",
+            "status": "SUCCEEDED",
+            "hyperParameters": {
+                "parameter_id": 6,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 1024,
+                    "constraints_weights": 3.9903974377851315,
+                    "dropout_rate": 0.7023477636720746,
+                    "l2_norm": 0.36830731246419846,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 6
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/IKZHy3zy/trials/Mnpez",
+            "startTime": 1563804160405,
+            "sequenceId": 21,
+            "endTime": 1563804167465,
+            "finalMetricData": [
+                {
+                    "timestamp": 1563804166904,
+                    "trialJobId": "Mnpez",
+                    "parameterId": "6",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.3172000050544739"
+                }
+            ],
+            "intermediate": [
+                {
+                    "timestamp": 1563804165556,
+                    "trialJobId": "Mnpez",
+                    "parameterId": "6",
+                    "type": "PERIODICAL",
+                    "sequence": 0,
+                    "data": "0.0568000003695488"
+                },
+                {
+                    "timestamp": 1563804166904,
+                    "trialJobId": "Mnpez",
+                    "parameterId": "6",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.3172000050544739"
+                }
+            ]
+        },
+        {
+            "id": "u825x",
+            "status": "SUCCEEDED",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 1024,
+                    "constraints_weights": 7.973893767034392,
+                    "dropout_rate": 0.7470274128377079,
+                    "l2_norm": 0.1806350475173446,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/IKZHy3zy/trials/u825x",
+            "startTime": 1563804180526,
+            "sequenceId": 22,
+            "endTime": 1563804187997,
+            "finalMetricData": [
+                {
+                    "timestamp": 1563804187444,
+                    "trialJobId": "u825x",
+                    "parameterId": "7",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.38670000433921814"
+                }
+            ],
+            "intermediate": [
+                {
+                    "timestamp": 1563804186138,
+                    "trialJobId": "u825x",
+                    "parameterId": "7",
+                    "type": "PERIODICAL",
+                    "sequence": 0,
+                    "data": "0.08139999955892563"
+                },
+                {
+                    "timestamp": 1563804187444,
+                    "trialJobId": "u825x",
+                    "parameterId": "7",
+                    "type": "FINAL",
+                    "sequence": 0,
+                    "data": "0.38670000433921814"
+                }
+            ]
+        },
+        {
+            "id": "nIpVk",
+            "status": "WAITING",
+            "hyperParameters": {
+                "parameter_id": 7,
+                "parameter_source": "algorithm",
+                "parameters": {
+                    "batch_size": 1024,
+                    "constraints_weights": 7.973893767034392,
+                    "dropout_rate": 0.7470274128377079,
+                    "l2_norm": 0.1806350475173446,
+                    "learning_rate": 0.001,
+                    "TRIAL_BUDGET": 1,
+                    "PARAMETER_ID": 7
+                }
+            },
+            "logPath": "file://localhost:/home/v-guosui/nni/experiments/IKZHy3zy/trials/nIpVk",
+            "startTime": 1563804196012,
+            "sequenceId": 23,
+            "intermediate": []
+        }
+    ]
+}

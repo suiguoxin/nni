@@ -171,6 +171,9 @@ class TargetSpace():
         insert a result into target space
         '''
         self.hyper_configs[parameter_id]['perf'].append(value)
+        # TODO: check
+        if value > self._y_max:
+            self._y_max = value
 
     def trial_end(self, parameter_id):
         '''
@@ -181,9 +184,6 @@ class TargetSpace():
             self.hyper_configs[parameter_id]['status'] = 'FINISH'
             # update internal flag variables
             self._len_completed += 1
-            # TODO: consider inter result
-            if self.hyper_configs[parameter_id]['perf'][-1] > self._y_max:
-                self._y_max = self.hyper_configs[parameter_id]['perf'][-1]
 
     def random_sample(self):
         """
@@ -296,7 +296,7 @@ class TargetSpace():
                 # re-calculate P_min, H
                 mean_fant, std_fant = predictor_fant.predict(
                     params, final_only=True)
-                
+
                 # logger.debug("mean fantasize %s", mean)
                 # logger.debug("std fantasize %s", std)
                 P_min_fant = self._get_P_min(mean_fant, std_fant)
@@ -374,7 +374,7 @@ class TargetSpace():
 
         # re-comput mean std for all the 10010 new points
         mean, std = predictor.predict(x_tries, final_only=True)
-              
+
         basket_new = []
         for i, x_i in enumerate(x_tries):
             basket_new.append(

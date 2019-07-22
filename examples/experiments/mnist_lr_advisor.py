@@ -23,12 +23,12 @@ class MnistNetwork(object):
 
     def __init__(self,
                  learning_rate,
-                 norm_constraint,
+                 constraints_weights,
                  l2_norm,
                  x_dim=784,
                  y_dim=10):
 
-        self.norm_constraint = norm_constraint
+        self.constraints_weights = constraints_weights
         self.l2_norm = l2_norm
         self.learning_rate = learning_rate
         self.x_dim = x_dim
@@ -47,24 +47,26 @@ class MnistNetwork(object):
         '''
         Building network for mnist
         '''
-        # First layer
+
+        # Dropout
+        with tf.name_scope('dropout'):
+            layer_1_out = tf.nn.dropout(self.images, self.keep_prob)
+
+        # Linear Regression layer
         with tf.name_scope('lr'):
             W = weight_variable([self.x_dim, self.y_dim])
             b = bias_variable([10])
-            h = tf.nn.softmax(tf.matmul(self.images, W) + b)
 
-        # Dropout - controls the complexity of the model, prevents co-adaptation of features.
-        with tf.name_scope('dropout'):
-            y = tf.nn.dropout(h, self.keep_prob)
+            W_clip = tf.clip_by_norm(W, self.constraints_weights)
+            y = tf.nn.softmax(tf.matmul(layer_1_out, W_clip) + b)
 
         with tf.name_scope('loss'):
             cross_entropy = tf.reduce_mean(
                 tf.nn.softmax_cross_entropy_with_logits(labels=self.labels, logits=y))
-            constraints_weights = tf.norm(W)
-            l2_loss = tf.nn.l2_loss(W) + tf.nn.l2_loss(b)
+            l2_loss = tf.multiply(self.l2_norm, tf.nn.l2_loss(W))
         with tf.name_scope('adam_optimizer'):
             self.train_step = tf.train.AdamOptimizer(
-                self.learning_rate).minimize(cross_entropy + self.norm_constraint*constraints_weights + self.l2_norm*l2_loss)
+                self.learning_rate).minimize(cross_entropy + l2_loss)
 
         with tf.name_scope('accuracy'):
             correct_prediction = tf.equal(
@@ -106,7 +108,7 @@ def main(params):
 
     # Create the model
     # Build the graph for the deep net
-    mnist_network = MnistNetwork(norm_constraint=params['norm_constraint'],
+    mnist_network = MnistNetwork(constraints_weights=params['constraints_weights'],
                                  l2_norm=params['l2_norm'],
                                  learning_rate=params['learning_rate'])
     mnist_network.build_network()
@@ -153,7 +155,7 @@ def get_params():
     parser = argparse.ArgumentParser()
     parser.add_argument("--data_dir", type=str,
                         default='/tmp/tensorflow/mnist/input_data', help="data directory")
-    parser.add_argument("--norm_constraint", type=float,
+    parser.add_argument("--constraints_weights", type=float,
                         default=1, help="dropout rate")
     parser.add_argument("--l2_norm", type=float,
                         default=0.5, help="dropout rate")

@@ -25,8 +25,7 @@ import json
 import matplotlib.pyplot as plt
 
 # pylint:disable=import-error
-from nni.mtsmac_advisor.test.util import PATH
-
+PATH = './examples/experiments'
 
 # pylint:disable=missing-docstring
 # pylint:disable=no-member
@@ -52,30 +51,41 @@ def _get_metric_best(file_name):
     return metric_best[:500]
 
 
-def plot_comparison():
-    metric_best_mtsmac = _get_metric_best('mnist_mtsmac.json')
+def plot_comparison_mnist():
+    metric_best_mtsmac = _get_metric_best('../result/mnist/mnist_mtsmac.json')
     plt.plot(range(len(metric_best_mtsmac)),
              metric_best_mtsmac, label='MTSMAC')
 
-    metric_best_mtsmac = _get_metric_best('mnist_mtsmac2.json')
-    plt.plot(range(len(metric_best_mtsmac)),
-             metric_best_mtsmac, label='MTSMAC2')
-
-    metric_best_tpe = _get_metric_best('mnist_tpe.json')
+    metric_best_tpe = _get_metric_best('../result/mnist/mnist_tpe.json')
     plt.plot(range(len(metric_best_tpe)), metric_best_tpe, label='TPE')
 
-    metric_best_tpe = _get_metric_best('mnist_ftbo.json')
-    plt.plot(range(len(metric_best_tpe)), metric_best_tpe, label='FTBO')
-
-    metric_best_tpe = _get_metric_best('mnist_ftbo2.json')
+    metric_best_tpe = _get_metric_best('../result/mnist/mnist_ftbo.json')
     plt.plot(range(len(metric_best_tpe)), metric_best_tpe, label='FTBO')
 
     plt.xlabel('Epochs')
     plt.ylabel('Default Metric')
     plt.title('MNIST')
     plt.legend()
-    plt.savefig('{}/image/res.png'.format(PATH))
+    plt.savefig('{}/analyse/image/res_mnist.png'.format(PATH))
     plt.close()
 
 
-plot_comparison()
+def plot_comparison_mnist_lr():
+    metric_best_mtsmac = _get_metric_best(
+        '../result/mnist_lr/mnist_mtsmac.json')
+    plt.plot(range(len(metric_best_mtsmac)),
+             metric_best_mtsmac, label='MTSMAC')
+
+    metric_best_tpe = _get_metric_best('../result/mnist_lr/mnist_tpe.json')
+    plt.plot(range(len(metric_best_tpe)), metric_best_tpe, label='TPE')
+
+    plt.xlabel('Epochs')
+    plt.ylabel('Default Metric')
+    plt.title('MNIST')
+    plt.legend()
+    plt.savefig('{}/analyse/image/res_mnist_lr.png'.format(PATH))
+    plt.close()
+
+
+# plot_comparison_mnist()
+plot_comparison_mnist_lr()

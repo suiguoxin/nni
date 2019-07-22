@@ -1,0 +1,21 @@
+authorName: default
+experimentName: example_mnist_MTSMAC
+trialConcurrency: 1
+maxExecDuration: 100h
+maxTrialNum: 500
+#choice: local, remote, pai
+trainingServicePlatform: local
+searchSpacePath: search_space.json
+#choice: true, false
+useAnnotation: false
+logLevel: 'debug'
+advisor:
+  #choice: Hyperband, BOHB, MTSMAC
+  builtinAdvisorName: Hyperband
+  classArgs:
+    #choice: maximize, minimize
+    optimize_mode: maximize
+trial:
+  command: python3 mnist_lr_advisor.py
+  codeDir: .
+  gpuNum: 0
