@@ -5,17 +5,17 @@ maxExecDuration: 100h
 maxTrialNum: 500
 #choice: local, remote, pai
 trainingServicePlatform: local
-searchSpacePath: search_space.json
+searchSpacePath: search_space_lr.json
 #choice: true, false
 useAnnotation: false
 logLevel: 'debug'
 advisor:
   #choice: Hyperband, BOHB, MTSMAC
-  builtinAdvisorName: MTSMAC
+  builtinAdvisorName: Hyperband
   classArgs:
     #choice: maximize, minimize
-    optimize_mode: maximize
+    optimize_mode: minimize
 trial:
-  command: python3 mnist_mtsmac.py
+  command: python3 mnist_lr.py
   codeDir: .
   gpuNum: 0
