@@ -343,7 +343,7 @@ class TargetSpace():
         # Warm up with random points
         x_tries = [self.random_sample()
                    for _ in range(int(num_warmup))]
-        mean, std = predictor.predict(x_tries, final_only=True)
+        mean, std = predictor.predict_asymptote_new(x_tries)
         ys = ei(mean, std, y_max=self._y_max)
 
         x_tries = [x for x, _ in sorted(
@@ -365,7 +365,7 @@ class TargetSpace():
             for _ in range(max_steps):
                 all_neighbours = self._get_one_exchange_neighbourhoods(
                     incumbent)
-                mean, std = predictor.predict(all_neighbours, final_only=True)
+                mean, std = predictor.predict_asymptote_new(all_neighbours)
                 ys_neighbours = ei(mean, std, y_max=self._y_max)
 
                 if max(ys) >= acq_val_incumbent[i]:
@@ -382,7 +382,7 @@ class TargetSpace():
                 ys = np.append(ys, acq_val)
 
         # re-comput mean std for all the 10010 new points
-        mean, std = predictor.predict(x_tries, final_only=True)
+        mean, std = predictor.predict_asymptote_new(x_tries)
 
         basket_new = []
         for i, x_i in enumerate(x_tries):
