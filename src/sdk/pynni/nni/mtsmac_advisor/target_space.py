@@ -269,14 +269,14 @@ class TargetSpace():
             for j in range(n_fant):
                 logger.debug("fantasize round %s", j)
                 if i < num_new:
-                    # fantasize an observation
+                    # fantasize an observation of a new point
                     obs = self.random_state.normal(mean[i][0], std[i][0])
                     # add fantsized point to fake training data
                     X_fant = np.vstack((X, item['param']))
                     y_fant = np.append(y, ['new_serial'])
                     y_fant[-1] = [obs]
                 else:
-                    # fantasize an observation
+                    # fantasize an observation of a old point
                     cur_epoch = len(item['perf'])
                     obs = self.random_state.normal(
                         mean[i][cur_epoch], std[i][cur_epoch])
@@ -306,7 +306,7 @@ class TargetSpace():
                 # average over n_fant
                 a[i] += (H_fant / n_fant)
 
-        param_selected = basket[a.argmax()]
+        param_selected = basket[a.argmin()]
         logger.debug("a %s", a)
         logger.debug("param_selected %s", param_selected)
 

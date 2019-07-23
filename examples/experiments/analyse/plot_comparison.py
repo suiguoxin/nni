@@ -48,7 +48,7 @@ def _get_metric_best(file_name):
                     metric_best.append(val)
                 else:
                     metric_best.append(metric_best[-1])
-    return metric_best[:500]
+    return metric_best[:2500]
 
 
 def plot_comparison_mnist():
@@ -75,6 +75,14 @@ def plot_comparison_mnist_lr():
         '../result/mnist_lr/mnist_mtsmac.json')
     plt.plot(range(len(metric_best_mtsmac)),
              metric_best_mtsmac, label='MTSMAC')
+
+    metric_best_mtsmac = _get_metric_best(
+        '../result/mnist_lr/mnist_mtsmac_revH.json')
+    plt.plot(range(len(metric_best_mtsmac)),
+             metric_best_mtsmac, label='MTSMAC rev')
+
+    metric_best_tpe = _get_metric_best('../result/mnist_lr/mnist_ftbo_revH.json')
+    plt.plot(range(len(metric_best_tpe)), metric_best_tpe, label='FTBO rev')
 
     metric_best_tpe = _get_metric_best('../result/mnist_lr/mnist_tpe.json')
     plt.plot(range(len(metric_best_tpe)), metric_best_tpe, label='TPE')

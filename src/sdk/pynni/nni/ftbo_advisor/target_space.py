@@ -268,9 +268,9 @@ class TargetSpace():
                 mean_new_fant, std_new_fant = [], []
                 mean_old_fant, std_old_fant = [], []
                 if i < num_new:
-                    # fantasize an observation
+                    # fantasize an observation of a old point
                     mean, std = predictor.predict_point_new([item['param']])
-                    obs = self.random_state.normal(mean[0], std[0])
+                    obs = self.random_state.normal(mean[0], abs(std[0]))
                     # add fantsized point to fake training data
                     X_fant = np.vstack((X, item['param']))
                     y_fant = np.append(y, ['new_serial'])
@@ -283,10 +283,11 @@ class TargetSpace():
                     mean_new_fant, std_new_fant = predictor_fant.predict_asymptote_new(
                         params[:num_new])
                 else:
-                    # fantasize an observation
-                    mean, std = predictor.predict_point_new([item['param']])
+                    # fantasize an observation of a old point
+                    cur_epoch = len(item['perf'])
+                    mean, std = predictor.predict_point_old([item['param']])
                     obs = self.random_state.normal(
-                        mean[0], abs(std[0]))
+                        mean[cur_epoch], abs(std[cur_epoch]))
                     # add fantsized point to fake training data
                     X_fant = X.copy()
                     y_fant = y.copy()
