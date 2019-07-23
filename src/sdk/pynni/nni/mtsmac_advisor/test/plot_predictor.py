@@ -39,9 +39,10 @@ from nni.mtsmac_advisor.test.util import create_fake_data_expdacay, create_fake_
 def plot_rfr(final_only=False):
     size_X = 20
     size_y = 100
-    X, y = create_fake_data_mnist(size_X, size_y)
+    #X, y = create_fake_data_mnist(size_X, size_y)
+    X, y = create_fake_data_mnist_diff_length()
 
-    predictor = Predictor(final_only=final_only)
+    predictor = Predictor()
     size_train = 17
     predictor.fit(X[:size_train], y[:size_train])
     mean, std = predictor.predict(X[size_train:])
@@ -79,4 +80,4 @@ def plot_rfr(final_only=False):
     plt.close()
 
 
-plot_rfr(final_only=False)
+plot_rfr()

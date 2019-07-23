@@ -52,14 +52,14 @@ def _get_metric_best(file_name):
 
 
 def plot_comparison_mnist():
-    metric_best_mtsmac = _get_metric_best('../result/mnist/mnist_mtsmac.json')
+    metric_best_mtsmac = _get_metric_best('../result/mnist/mtsmac.json')
     plt.plot(range(len(metric_best_mtsmac)),
              metric_best_mtsmac, label='MTSMAC')
 
-    metric_best_tpe = _get_metric_best('../result/mnist/mnist_tpe.json')
+    metric_best_tpe = _get_metric_best('../result/mnist/tpe.json')
     plt.plot(range(len(metric_best_tpe)), metric_best_tpe, label='TPE')
 
-    metric_best_tpe = _get_metric_best('../result/mnist/mnist_ftbo.json')
+    metric_best_tpe = _get_metric_best('../result/mnist/ftbo.json')
     plt.plot(range(len(metric_best_tpe)), metric_best_tpe, label='FTBO')
 
     plt.xlabel('Epochs')
@@ -72,23 +72,23 @@ def plot_comparison_mnist():
 
 def plot_comparison_mnist_lr():
     metric_best_mtsmac = _get_metric_best(
-        '../result/mnist_lr/mnist_mtsmac.json')
+        '../result/mnist_lr/mtsmac.json')
     plt.plot(range(len(metric_best_mtsmac)),
              metric_best_mtsmac, label='MTSMAC')
 
     metric_best_mtsmac = _get_metric_best(
-        '../result/mnist_lr/mnist_mtsmac_revH.json')
+        '../result/mnist_lr/mtsmac_revH.json')
     plt.plot(range(len(metric_best_mtsmac)),
              metric_best_mtsmac, label='MTSMAC revH')
 
     metric_best_tpe = _get_metric_best(
-        '../result/mnist_lr/mnist_ftbo_revH.json')
+        '../result/mnist_lr/ftbo_revH.json')
     plt.plot(range(len(metric_best_tpe)), metric_best_tpe, label='FTBO rev')
 
-    metric_best_tpe = _get_metric_best('../result/mnist_lr/mnist_tpe.json')
+    metric_best_tpe = _get_metric_best('../result/mnist_lr/tpe.json')
     plt.plot(range(len(metric_best_tpe)), metric_best_tpe, label='TPE')
 
-    metric_best_tpe = _get_metric_best('../result/mnist_lr/mnist_smac.json')
+    metric_best_tpe = _get_metric_best('../result/mnist_lr/smac.json')
     plt.plot(range(len(metric_best_tpe)), metric_best_tpe, label='SMAC')
 
     plt.xlabel('Epochs')

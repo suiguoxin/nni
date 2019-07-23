@@ -268,24 +268,19 @@ class TargetSpace():
                 mean_new_fant, std_new_fant = [], []
                 mean_old_fant, std_old_fant = [], []
                 if i < num_new:
-                    # fantasize an observation of a old point
+                    # fantasize an observation of an old point
                     mean, std = predictor.predict_point_new([item['param']])
                     obs = self.random_state.normal(mean[0], abs(std[0]))
+                    logger.debug("obs: %s", obs)
                     # add fantsized point to fake training data
                     X_fant = np.vstack((X, item['param']))
                     y_fant = np.append(y, ['new_serial'])
                     y_fant[-1] = [obs]
-                    # conditioned on the observation, re-compute P_min and H
-                    # fit a new predictor with fantsized point added in training data
-                    predictor_fant = Predictor()
-                    predictor_fant.fit(X_fant, y_fant)
-                    # re-calculate P_min, H
-                    mean_new_fant, std_new_fant = predictor_fant.predict_asymptote_new(
-                        params[:num_new])
                 else:
                     # fantasize an observation of a old point
                     mean, std = predictor.predict_point_old([item['param']])
                     obs = self.random_state.normal(mean[0], abs(std[0]))
+                    logger.debug("obs: %s", obs)
                     # add fantsized point to fake training data
                     X_fant = X.copy()
                     y_fant = y.copy()
@@ -294,14 +289,15 @@ class TargetSpace():
                             y_fant[k] = y_fant[k].copy()
                             y_fant[k].append(obs)
                             break
-                    # conditioned on the observation, re-compute P_min and H
-                    # fit a new predictor with fantsized point added in training data
-                    predictor_fant = Predictor()
-                    predictor_fant.fit(X_fant, y_fant)
-                    # re-calculate P_min, H
-                    mean_old_fant, std_old_fant = predictor_fant.predict_asymptote_old(
-                        params[num_new:])
-
+                # conditioned on the observation, re-compute P_min and H
+                # fit a new predictor with fantsized point added in training data
+                predictor_fant = Predictor()
+                predictor_fant.fit(X_fant, y_fant)
+                # re-calculate P_min, H
+                mean_new_fant, std_new_fant = predictor_fant.predict_asymptote_new(
+                    params[:num_new])
+                mean_old_fant, std_old_fant = predictor_fant.predict_asymptote_old(
+                    params[num_new:])
                 mean_fant = np.append(mean_new_fant, mean_old_fant)
                 std_fant = np.append(std_new_fant, std_old_fant)
 
@@ -311,12 +307,15 @@ class TargetSpace():
                 H_fant = self._cal_entropy(P_min_fant)
                 logger.debug("P_min_fant %s", P_min_fant)
                 logger.debug("H_fant %s", H_fant)
+                logger.debug("P_min %s", P_min)
+                logger.debug("H %s", H)
                 # average over n_fant
                 a[i] += (H_fant / n_fant)
 
         param_selected = basket[a.argmin()]
         logger.debug("a %s", a)
-        logger.debug("param_selected %s", param_selected)
+        logger.debug("param_selected %s, index %s in the basket",
+                     param_selected, a.argmin())
 
         param = param_selected['param']
         if 'parameter_id' not in param_selected:
@@ -438,8 +437,7 @@ class TargetSpace():
                 raise ValueError(
                     "only choice, uniform suported for the moment")
 
-        logger.debug(
-            "neighbours found for param%s: \n %s", param, neighbours)
+        #logger.debug("neighbours found for param%s: \n %s", param, neighbours)
 
         return neighbours
 
