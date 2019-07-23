@@ -77,6 +77,11 @@ def plot_comparison_mnist_lr():
              metric_best_mtsmac, label='MTSMAC')
 
     metric_best_mtsmac = _get_metric_best(
+        '../result/mnist_lr/mtsmac.json')
+    plt.plot(range(len(metric_best_mtsmac)),
+             metric_best_mtsmac, label='MTSMAC-new')
+
+    metric_best_mtsmac = _get_metric_best(
         '../result/mnist_lr/mnist_mtsmac_revH.json')
     plt.plot(range(len(metric_best_mtsmac)),
              metric_best_mtsmac, label='MTSMAC rev')

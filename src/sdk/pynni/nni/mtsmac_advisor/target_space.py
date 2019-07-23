@@ -229,7 +229,6 @@ class TargetSpace():
 
     def select_config(self, predictor):
         '''
-        Algorithm 1 of Freeze-Thaw
         Step 1: get a basket by 'Expected Improvement'
         Step 2: get a config by 'Information Gain'
         '''
@@ -301,14 +300,15 @@ class TargetSpace():
                 # logger.debug("std fantasize %s", std)
                 P_min_fant = self._get_P_min(mean_fant, std_fant)
                 H_fant = self._cal_entropy(P_min_fant)
-                logger.debug("P_min_fant %s", P_min)
-                logger.debug("H_fant %s", H)
+                logger.debug("P_min_fant %s", P_min_fant)
+                logger.debug("H_fant %s", H_fant)
                 # average over n_fant
                 a[i] += (H_fant / n_fant)
 
         param_selected = basket[a.argmin()]
         logger.debug("a %s", a)
-        logger.debug("param_selected %s", param_selected)
+        logger.debug("param_selected %s, index %s in the basket",
+                     param_selected, a.argmin())
 
         param = param_selected['param']
         if 'parameter_id' not in param_selected:
@@ -349,7 +349,6 @@ class TargetSpace():
         logger.debug("acq_val_incumbent: %s", acq_val_incumbent)
         max_steps = 10
         for i, start_point in enumerate(start_points):
-            logger.debug("start_point : %s", start_point)
             incumbent = start_point
             acq_val = acq_val_incumbent[i]
             changed_inc = False
@@ -368,7 +367,7 @@ class TargetSpace():
                     # stop the local search once none of the neighbours of the start point has larger EI
                     break
             if changed_inc:
-                logger.debug("------------neighbour found: %s", incumbent)
+                logger.debug("For start point : %s, best neighbour found: %s, with ei : %s", start_point, incumbent, acq_val)
                 x_tries.append(incumbent)
                 ys = np.append(ys, acq_val)
 
@@ -430,8 +429,7 @@ class TargetSpace():
                 raise ValueError(
                     "only choice, uniform suported for the moment")
 
-        logger.debug(
-            "neighbours found for param%s: \n %s", param, neighbours)
+        # logger.debug("neighbours found for param%s: \n %s", param, neighbours)
 
         return neighbours
 
