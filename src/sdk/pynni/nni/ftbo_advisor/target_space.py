@@ -284,10 +284,8 @@ class TargetSpace():
                         params[:num_new])
                 else:
                     # fantasize an observation of a old point
-                    cur_epoch = len(item['perf'])
                     mean, std = predictor.predict_point_old([item['param']])
-                    obs = self.random_state.normal(
-                        mean[cur_epoch], abs(std[cur_epoch]))
+                    obs = self.random_state.normal(mean[0], abs(std[0]))
                     # add fantsized point to fake training data
                     X_fant = X.copy()
                     y_fant = y.copy()
@@ -316,7 +314,7 @@ class TargetSpace():
                 # average over n_fant
                 a[i] += (H_fant / n_fant)
 
-        param_selected = basket[a.argmax()]
+        param_selected = basket[a.argmin()]
         logger.debug("a %s", a)
         logger.debug("param_selected %s", param_selected)
 
@@ -377,7 +375,8 @@ class TargetSpace():
                     # stop the local search once none of the neighbours of the start point has larger EI
                     break
             if changed_inc:
-                logger.debug("For start point : %s, best neighbour found: %s, with ei : %s", start_point, incumbent, acq_val)
+                logger.debug(
+                    "For start point : %s, best neighbour found: %s, with ei : %s", start_point, incumbent, acq_val)
                 x_tries.append(incumbent)
                 ys = np.append(ys, acq_val)
 
