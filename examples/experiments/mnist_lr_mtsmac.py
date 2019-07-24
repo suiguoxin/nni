@@ -122,8 +122,8 @@ def main(params):
 
     test_acc = 0.0
     saver = tf.train.Saver()
-    checkpoint_file = '{0}/model_{1}.ckpt'.format(
-        params['model_dir'], params['parameter_id'])
+    checkpoint_file = '{0}/{1}/model_{2}.ckpt'.format(
+        params['model_dir'], params['experiment_id'], params['parameter_id'])
     with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())
         for i in range(params['batch_num']):
@@ -183,6 +183,7 @@ if __name__ == '__main__':
         logger.debug(tuner_params)
         tuner_params['batch_num'] = tuner_params['TRIAL_BUDGET'] * 100
         tuner_params['parameter_id'] = tuner_params['PARAMETER_ID']
+        tuner_params['experiment_id'] = nni.get_experiment_id()
         params = vars(get_params())
         params.update(tuner_params)
         main(params)
