@@ -53,9 +53,6 @@ def plot_progression():
                     else:
                         idx_color = 0
                     colors_next[parameter_id_prev] = (idx_color + 1) % 5
-
-                    print(vals)
-
                     plt.plot(range(counts_param[parameter_id_prev] - len(vals), counts_param[parameter_id_prev]), vals,
                              color=COLORS[idx_color])
                 if parameter_id in perf_last:
@@ -71,8 +68,6 @@ def plot_progression():
                 else:
                     counts_param[parameter_id] += 1
             perf_last[parameter_id] = val
-
-    print(colors_next)
 
     plt.xlabel('Epochs')
     plt.ylabel('Default Metric')
