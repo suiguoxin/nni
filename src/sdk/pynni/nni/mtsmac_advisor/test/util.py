@@ -95,59 +95,41 @@ def create_fake_data_expdacay_diff_length(exp_lambda=0.5, asymp=0.5, gaussian_no
     return X, y
 
 
-def create_fake_data_mnist(size_X=3, len_y=3):
+def create_fake_data_mnist(size_X=100, len_y=21):
     '''
-
     returns
-    X: shape (100,5)
-    y: shape(100,) where element is a list of len 21
+    X: shape (size_X, 5)
+    y: shape(size_X,) where element is a list of len_y
     '''
+    assert size_X <= 100
+    assert len_y <= 21
+
     with open('{}/data/experiment.json'.format(PATH)) as json_file:
         data = json.load(json_file)
         trials = data['trialMessage']
-        X = np.empty([len(trials), len(trials[0]['hyperParameters']['parameters'])])
-        y = np.empty(len(trials), dtype=object)
+        X = np.empty([size_X, 5])
+        y = np.empty(size_X, dtype=object)
 
-        for i, trial in enumerate(trials):
-            # X
-            X[i] = [val for _, val in trial['hyperParameters']['parameters'].items()]
-            # y
+        for i in range(size_X):
+            trial = trials[i]
+            parameters = trial['hyperParameters']['parameters']
+            X[i] = [val for _, val in parameters.items()]
             y[i] = []
             intermediate = trial['intermediate']
             for _, res in enumerate(intermediate):
                 y[i] += [1 - float(res['data'])]
 
-        #X = X[: size_X][:]
-        #y = y[: size_X][: len_y]
-
     return X, y
 
 
-def create_fake_data_mnist_diff_length():
-    MAX = 3
-    length = [7, 5, 9]
-    with open('{}/experiment.json'.format(PATH)) as json_file:
-        data = json.load(json_file)
-        trials = data['trialMessage']
-        X = np.empty([len(trials), 1])
-        y = np.empty(len(trials), dtype=object)
+def get_obs(X, y, size_obs, len_y):
+    assert size_obs == len(len_y)
+    assert all(ele <= len(y[0]) for ele in len_y)
 
-        for i, trial in enumerate(trials):
-            if i >= MAX:
-                break
-            # X
-            X[i] = [trial['hyperParameters']['parameters']['dropout_rate']]
-            # y
-            y[i] = []
-            intermediate = trial['intermediate']
-            for j, res in enumerate(intermediate):
-                if j > length[i]:
-                    break
-                y[i] += [1 - float(res['data'])]
+    X_obs = X[:size_obs][:]
+    y_obs = np.empty(size_obs, dtype=object)
 
-        X = X[: MAX][:]
-        y = y[: MAX][:]
-        print(X)
-        print(y)
+    for i in range(size_obs):
+        y_obs[i] = y[i][:len_y[i]]
 
-    return X, y
+    return X_obs, y_obs

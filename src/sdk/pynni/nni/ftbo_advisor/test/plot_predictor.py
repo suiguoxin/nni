@@ -21,14 +21,14 @@
 plot_predictor.py
 """
 import numpy as np
-
 import matplotlib.pyplot as plt
 
-from sklearn.gaussian_process.kernels import Matern
-
 from nni.ftbo_advisor.predictor import Predictor
-from nni.ftbo_advisor.test.util import PATH, COLORS
-from nni.ftbo_advisor.test.util import create_fake_data_expdacay, create_fake_data_expdacay_diff_length, create_fake_data_mnist_diff_length
+from nni.mtsmac_advisor.test.util import COLORS
+from nni.mtsmac_advisor.test.util import create_fake_data_expdacay, create_fake_data_expdacay_diff_length
+from nni.mtsmac_advisor.test.util import create_fake_data_mnist, get_obs
+
+PATH = './src/sdk/pynni/nni/ftbo_advisor/test'
 
 # pylint:disable=missing-docstring
 # pylint:disable=no-member
@@ -39,40 +39,55 @@ def plot_asymptote():
     '''
     Fig 2(b)， 2(c)
     '''
-    X, y = create_fake_data_expdacay()
-    # X, y = create_fake_data_expdacay_diff_length()
-    #X, y = create_fake_data_mnist_diff_length()
+    X, y = create_fake_data_mnist()
+    size_obs = 13
+    len_y = [21, 21, 21, 19, 17, 15, 13, 11, 9, 7, 5, 3, 1]
+    X_obs, y_obs = get_obs(X, y, size_obs, len_y)
 
     predictor = Predictor()
+    predictor.fit(X_obs, y_obs)
+    mean, std = predictor.predict_asymptote_old(X_obs)
+    # print('mean, std:')
+    # print(mean, std)
 
-    predictor.fit(X, y)
-    mean, std = predictor.predict_asymptote_old(X)
+    mean_points, std_points = predictor.predict_point_old(X_obs)
     print('mean, std:')
     print(mean, std)
 
     # figure 2(b)
-    for i, y_i in enumerate(y):
-        length = len(y[i])
+    for i, y_i in enumerate(y_obs):
+        idx_color = i % 5
+        # plot observed learning curve
+        if i < len(y_obs):
+            plt.plot(range(len(y_obs[i])), y_obs[i], color=COLORS[idx_color], linewidth=5.0,
+                     label='y_obs:{}'.format(i))
 
-        plt.plot(np.arange(length), y_i, color=COLORS[i], )
+        # plot true learning curve
+        N = len(y[i])
+        plt.plot(range(N), y[i], color=COLORS[idx_color],
+                 label='y_true:{}'.format(i))
+
+        # plot next point prediction
+        plt.vlines(x=len(y_obs[i]), ymin=mean_points[i] -
+                   1.96 * std_points[i], ymax=mean_points[i] + 1.96 * std_points[i], label='next point prediction')
+
+        # plot aymptote prediction
         mu = mean[i]
         sigma = std[i]
-        print('mu:')
-        print(mu)
-        print('sigma:')
-        print(sigma)
-        plt.plot(np.arange(length), [mu] * length,
-                 '--', color=COLORS[i], label='Prediction')
-        plt.fill_between(np.arange(length), [
-            mu-1.9600 * sigma * 0.1]*length, [mu + 1.9600 * sigma * 0.1]*length, color=COLORS[i], alpha=0.5, interpolate=True)
+        plt.plot(np.arange(N), [mu] * N,
+                 '--', color=COLORS[i % 5], label='Prediction')
+        plt.fill_between(np.arange(N), [
+            mu-1.9600 * sigma * 0.1]*N, [mu + 1.9600 * sigma * 0.1]*N, color=COLORS[idx_color], alpha=0.5, interpolate=True)
         # TODO: remove * 0.1
 
-    plt.title('Training Curve Predictions')
-    plt.legend()
-    plt.savefig('{}/image/2_b_expdecay.png'.format(PATH))
-    # plt.savefig('{}/image/2_b_mnist.png'.format(PATH))
-    plt.close()
+        plt.title('Training Curve Predictions')
+        plt.ylim(-0.2, 1.2)
+        plt.legend()
+        plt.savefig('{}/image/2_b_{}.png'.format(PATH, i))
+        # plt.savefig('{}/image/2_b_mnist.png'.format(PATH))
+        plt.close()
 
+    '''
     # figure 2(c)
     print('X\n', X)
     print('mean\n', mean)
@@ -86,6 +101,7 @@ def plot_asymptote():
     plt.legend()
     plt.savefig('{}/image/2_c_expdecay.png'.format(PATH))
     plt.close()
+    '''
 
 
 plot_asymptote()

@@ -27,8 +27,8 @@ import matplotlib.pyplot as plt
 # pylint:disable=import-error
 from nni.mtsmac_advisor.test.util import PATH, COLORS
 from nni.mtsmac_advisor.predictor import Predictor
-from nni.mtsmac_advisor.test.util import create_fake_data_simple, create_fake_data_mnist
-from nni.mtsmac_advisor.test.util import create_fake_data_expdacay, create_fake_data_expdacay_diff_length, create_fake_data_mnist_diff_length
+from nni.mtsmac_advisor.test.util import create_fake_data_simple, create_fake_data_mnist, get_obs
+from nni.mtsmac_advisor.test.util import create_fake_data_expdacay, create_fake_data_expdacay_diff_length
 
 
 # pylint:disable=missing-docstring
@@ -37,39 +37,42 @@ from nni.mtsmac_advisor.test.util import create_fake_data_expdacay, create_fake_
 
 
 def plot_rfr():
-    size_X = 50
-    len_y = 10
-    X, y = create_fake_data_mnist(size_X, len_y)
-    #X, y = create_fake_data_mnist_diff_length()
+    X, y = create_fake_data_mnist()
+
+    size_obs = 13
+    len_y = [21, 21, 21, 19, 17, 15, 13, 11, 9, 7, 5, 3, 1]
+    X_obs, y_obs = get_obs(X, y, size_obs, len_y)
 
     predictor = Predictor(multi_task=True)
-    size_train = 48
-    predictor.fit(X[:size_train], y[:size_train])
-    mean, std = predictor.predict(X[size_train:])
+    predictor.fit(X_obs, y_obs)
+    mean, std = predictor.predict(X)
 
-    # plot true learning curve
-    idx_color = 0
-    for i in range(size_train, size_X):
+    for i in range(0, 15):
+        idx_color = i % 5
+        # plot observed learning curve
+        if i < len(y_obs):
+            plt.plot(range(len(y_obs[i])), y_obs[i], color=COLORS[idx_color], linewidth=5.0, 
+                 label='y_obs:{}'.format(i))
+
+        # plot true learning curve
         N = len(y[i])
         plt.plot(range(N), y[i], color=COLORS[idx_color],
-                 label='y_true:{}'.format(i - size_train))
-        idx_color += 1
+                 label='y_true:{}'.format(i))
 
-    # plot prediction
-    size_predict = size_X - size_train
-    for i in range(size_predict):
+        # plot prediction
         mu = mean[i]
         sigma = std[i]
 
-        plt.plot(range(len(y[i])), mu, label='y_predict:{}'.format(i))
-        T = np.arange(len(y[i])).reshape(-1, 1)
+        plt.plot(range(N), mu, label='y_predict:{}'.format(i))
+        T = np.arange(N).reshape(-1, 1)
         plt.fill(np.concatenate([T, T[::-1]]), np.concatenate([mu - 1.9600 * sigma * 0.5, (mu + 1.9600 * sigma * 0.5)[::-1]]),
-                 color=COLORS[i], alpha=.6)
+                 color=COLORS[idx_color], alpha=.6)
 
-    plt.title('Learning curve MNIST')
-    plt.legend()
-    plt.savefig('{}/image/lr_final.png'.format(PATH))
-    plt.close()
+        plt.title('Learning curve MNIST')
+        plt.ylim(-0.2, 1.2)
+        plt.legend()
+        plt.savefig('{}/image/lr_final_{}.png'.format(PATH, i))
+        plt.close()
 
 
 plot_rfr()
