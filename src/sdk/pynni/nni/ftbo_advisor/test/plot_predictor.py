@@ -46,7 +46,7 @@ def plot_asymptote():
     predictor = Predictor()
 
     predictor.fit(X, y)
-    mean, std = predictor.predict_asymptote_old(return_std=True)
+    mean, std = predictor.predict_asymptote_old(X)
     print('mean, std:')
     print(mean, std)
 
@@ -55,7 +55,7 @@ def plot_asymptote():
         length = len(y[i])
 
         plt.plot(np.arange(length), y_i, color=COLORS[i], )
-        mu = mean[i][0]
+        mu = mean[i]
         sigma = std[i]
         print('mu:')
         print(mu)
@@ -74,12 +74,9 @@ def plot_asymptote():
     plt.close()
 
     # figure 2(c)
-    print('X')
-    print(X)
-    print('mean')
-    print(mean)
-    print('std')
-    print(std)
+    print('X\n', X)
+    print('mean\n', mean)
+    print('std\n ', std)
 
     # TODO: remove * 0.1
     plt.plot(X, mean, label='mean')

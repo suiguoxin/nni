@@ -41,12 +41,12 @@ def create_fake_data_simple():
 
 def create_fake_data_expdacay(exp_lambda=0.5, asymp=0.5, gaussian_noise=0.1):
     MAXTIME = 50
-    #asymps = [0.4, 0.3, 0.2, 0.1]
-    asymps = [0.4]
+    asymps = [0.4, 0.3, 0.2, 0.1]
+    #asymps = [0.4]
     # asymps = [0.4]
 
     #X = np.array([1, 2, 3, 4]).reshape(-1, 1)
-    X = np.array([1]).reshape(-1, 1)
+    X = np.array([1, 2, 3, 4]).reshape(-1, 1)
     y = np.empty(len(asymps), dtype=object)
 
     for i, asymp in enumerate(asymps):

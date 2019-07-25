@@ -36,14 +36,14 @@ from nni.mtsmac_advisor.test.util import create_fake_data_expdacay, create_fake_
 # pylint:disable=invalid-name
 
 
-def plot_rfr(final_only=False):
-    size_X = 20
-    size_y = 100
-    #X, y = create_fake_data_mnist(size_X, size_y)
-    X, y = create_fake_data_mnist_diff_length()
+def plot_rfr():
+    size_X = 50
+    len_y = 10
+    X, y = create_fake_data_mnist(size_X, len_y)
+    #X, y = create_fake_data_mnist_diff_length()
 
-    predictor = Predictor()
-    size_train = 17
+    predictor = Predictor(multi_task=True)
+    size_train = 48
     predictor.fit(X[:size_train], y[:size_train])
     mean, std = predictor.predict(X[size_train:])
 
@@ -51,7 +51,8 @@ def plot_rfr(final_only=False):
     idx_color = 0
     for i in range(size_train, size_X):
         N = len(y[i])
-        plt.plot(range(N), y[i], color=COLORS[idx_color], label='y_true')
+        plt.plot(range(N), y[i], color=COLORS[idx_color],
+                 label='y_true:{}'.format(i - size_train))
         idx_color += 1
 
     # plot prediction
@@ -59,24 +60,15 @@ def plot_rfr(final_only=False):
     for i in range(size_predict):
         mu = mean[i]
         sigma = std[i]
-        print('mu:')
-        print(mu)
-        print('sigma:')
-        print(sigma)
-        length = len(y[i])
-        if final_only:
-            plt.plot(range(length), [mu] * length, label='y_predict')
-            plt.fill_between(np.arange(length), [
-                mu-1.9600 * sigma * 0.1]*length, [mu + 1.9600 * sigma * 0.1]*length, color=COLORS[i], alpha=0.5, interpolate=True)
-        else:
-            plt.plot(range(length), mu, label='y_predict')
-            T = np.arange(len(y[i])).reshape(-1, 1)
-            plt.fill(np.concatenate([T, T[::-1]]), np.concatenate([mu - 1.9600 * sigma * 0.1, (mu + 1.9600 * sigma * 0.1)[::-1]]),
-                     color=COLORS[i], alpha=.6)
+
+        plt.plot(range(len(y[i])), mu, label='y_predict:{}'.format(i))
+        T = np.arange(len(y[i])).reshape(-1, 1)
+        plt.fill(np.concatenate([T, T[::-1]]), np.concatenate([mu - 1.9600 * sigma * 0.5, (mu + 1.9600 * sigma * 0.5)[::-1]]),
+                 color=COLORS[i], alpha=.6)
 
     plt.title('Learning curve MNIST')
     plt.legend()
-    plt.savefig('{}/image/lr.png'.format(PATH))
+    plt.savefig('{}/image/lr_final.png'.format(PATH))
     plt.close()
 
 

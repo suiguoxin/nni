@@ -95,7 +95,13 @@ def create_fake_data_expdacay_diff_length(exp_lambda=0.5, asymp=0.5, gaussian_no
     return X, y
 
 
-def create_fake_data_mnist(size_X=3, size_y=3):
+def create_fake_data_mnist(size_X=3, len_y=3):
+    '''
+
+    returns
+    X: shape (100,5)
+    y: shape(100,) where element is a list of len 21
+    '''
     with open('{}/data/experiment.json'.format(PATH)) as json_file:
         data = json.load(json_file)
         trials = data['trialMessage']
@@ -111,8 +117,8 @@ def create_fake_data_mnist(size_X=3, size_y=3):
             for _, res in enumerate(intermediate):
                 y[i] += [1 - float(res['data'])]
 
-        X = X[: size_X][:]
-        y = y[: size_X][: size_y]
+        #X = X[: size_X][:]
+        #y = y[: size_X][: len_y]
 
     return X, y
 
@@ -145,6 +151,3 @@ def create_fake_data_mnist_diff_length():
         print(y)
 
     return X, y
-
-
-create_fake_data_mnist(size_X=3, size_y=3)
