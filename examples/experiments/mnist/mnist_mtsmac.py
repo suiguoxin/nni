@@ -188,6 +188,9 @@ def main(params):
     test_acc = 0.0
     # Add ops to save and restore all the variables.
     saver = tf.train.Saver()
+    if not os.path.isdir('{0}/{1}'.format(params['model_dir'], params['experiment_id'])):
+        os.mkdir(
+            '{0}/{1}'.format(params['model_dir'], params['experiment_id']))
     checkpoint_file = '{0}/{1}/model_{2}.ckpt'.format(
         params['model_dir'], params['experiment_id'], params['parameter_id'])
     with tf.Session() as sess:

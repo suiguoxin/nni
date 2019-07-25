@@ -5,6 +5,7 @@ import logging
 import math
 import tempfile
 import time
+import os
 
 import tensorflow as tf
 from tensorflow.examples.tutorials.mnist import input_data
@@ -123,6 +124,9 @@ def main(params):
 
     test_acc = 0.0
     saver = tf.train.Saver()
+    if not os.path.isdir('{0}/{1}'.format(params['model_dir'], params['experiment_id'])):
+        os.mkdir(
+            '{0}/{1}'.format(params['model_dir'], params['experiment_id']))
     checkpoint_file = '{0}/{1}/model_{2}.ckpt'.format(
         params['model_dir'], params['experiment_id'], params['parameter_id'])
     with tf.Session() as sess:
@@ -134,7 +138,6 @@ def main(params):
                                                     mnist_network.keep_prob: 1 - params['dropout_rate']}
                                          )
 
-            
             if (i+1) % 100 == 0 and (i+1) != params['batch_num']:
                 test_acc = mnist_network.accuracy.eval(
                     feed_dict={mnist_network.images: mnist.test.images,
