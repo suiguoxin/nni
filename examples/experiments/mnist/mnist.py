@@ -5,7 +5,6 @@ import logging
 import math
 import tempfile
 import time
-import os
 
 import tensorflow as tf
 from tensorflow.examples.tutorials.mnist import input_data
@@ -21,7 +20,6 @@ class MnistNetwork(object):
     '''
     MnistNetwork is for initializing and building basic network for mnist.
     '''
-
     def __init__(self,
                  channel_1_num,
                  channel_2_num,
@@ -40,10 +38,8 @@ class MnistNetwork(object):
         self.x_dim = x_dim
         self.y_dim = y_dim
 
-        self.images = tf.placeholder(
-            tf.float32, [None, self.x_dim], name='input_x')
-        self.labels = tf.placeholder(
-            tf.float32, [None, self.y_dim], name='input_y')
+        self.images = tf.placeholder(tf.float32, [None, self.x_dim], name='input_x')
+        self.labels = tf.placeholder(tf.float32, [None, self.y_dim], name='input_y')
         self.keep_prob = tf.placeholder(tf.float32, name='keep_prob')
 
         self.train_step = None
@@ -148,7 +144,6 @@ def bias_variable(shape):
     initial = tf.constant(0.1, shape=shape)
     return tf.Variable(initial)
 
-
 def download_mnist_retry(data_dir, max_num_retries=20):
     """Try to download mnist dataset and avoid errors"""
     for _ in range(max_num_retries):
@@ -157,7 +152,6 @@ def download_mnist_retry(data_dir, max_num_retries=20):
         except tf.errors.AlreadyExistsError:
             time.sleep(1)
     raise Exception("Failed to download MNIST.")
-
 
 def main(params):
     '''
@@ -186,22 +180,14 @@ def main(params):
     train_writer.add_graph(tf.get_default_graph())
 
     test_acc = 0.0
-    # Add ops to save and restore all the variables.
-    saver = tf.train.Saver()
-    checkpoint_file = '{0}/{1}/model_{2}.ckpt'.format(
-        params['model_dir'], params['experiment_id'], params['parameter_id'])
     with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())
-        # if model saved previously, load it
-        if os.path.exists(checkpoint_file + '.index'):
-            saver.restore(
-                sess, '{0}/model_{1}.ckpt'.format(params['model_dir'], params['parameter_id']))
         for i in range(params['batch_num']):
             batch = mnist.train.next_batch(params['batch_size'])
             mnist_network.train_step.run(feed_dict={mnist_network.images: batch[0],
                                                     mnist_network.labels: batch[1],
                                                     mnist_network.keep_prob: 1 - params['dropout_rate']}
-                                         )
+                                        )
 
             if i % 100 == 0:
                 test_acc = mnist_network.accuracy.eval(
@@ -213,8 +199,6 @@ def main(params):
                 logger.debug('test accuracy %g', test_acc)
                 logger.debug('Pipe send intermediate result done.')
 
-        save_path = saver.save(sess, checkpoint_file)
-        print("Model saved in path: %s" % save_path)
         test_acc = mnist_network.accuracy.eval(
             feed_dict={mnist_network.images: mnist.test.images,
                        mnist_network.labels: mnist.test.labels,
@@ -224,28 +208,22 @@ def main(params):
         logger.debug('Final result is %g', test_acc)
         logger.debug('Send final result done.')
 
-
 def get_params():
     ''' Get parameters from command line '''
     parser = argparse.ArgumentParser()
-    parser.add_argument("--data_dir", type=str,
-                        default='/tmp/tensorflow/mnist/input_data', help="data directory")
-    parser.add_argument("--model_dir", type=str,
-                        default='/tmp/tensorflow/mnist/model_data', help="data directory")
-    parser.add_argument("--dropout_rate", type=float,
-                        default=0.5, help="dropout rate")
+    parser.add_argument("--data_dir", type=str, default='/tmp/tensorflow/mnist/input_data', help="data directory")
+    parser.add_argument("--dropout_rate", type=float, default=0.5, help="dropout rate")
     parser.add_argument("--channel_1_num", type=int, default=32)
     parser.add_argument("--channel_2_num", type=int, default=64)
     parser.add_argument("--conv_size", type=int, default=5)
     parser.add_argument("--pool_size", type=int, default=2)
     parser.add_argument("--hidden_size", type=int, default=1024)
     parser.add_argument("--learning_rate", type=float, default=1e-4)
-    parser.add_argument("--batch_num", type=int, default=2500)
+    parser.add_argument("--batch_num", type=int, default=2700)
     parser.add_argument("--batch_size", type=int, default=32)
 
     args, _ = parser.parse_known_args()
     return args
-
 
 if __name__ == '__main__':
     try:
@@ -253,8 +231,6 @@ if __name__ == '__main__':
         tuner_params = nni.get_next_parameter()
         logger.debug(tuner_params)
         tuner_params['batch_num'] = tuner_params['TRIAL_BUDGET'] * 100
-        tuner_params['parameter_id'] = tuner_params['PARAMETER_ID']
-        tuner_params['experiment_id'] = nni.get_experiment_id()
         params = vars(get_params())
         params.update(tuner_params)
         main(params)

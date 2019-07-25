@@ -1,21 +1,21 @@
 authorName: default
-experimentName: FTBO
+experimentName: mnist_lr_sgd SMAC
 trialConcurrency: 1
-maxExecDuration: 100h
-maxTrialNum: 2700
+maxExecDuration: 10h
+maxTrialNum: 100
 #choice: local, remote, pai
 trainingServicePlatform: local
 searchSpacePath: search_space.json
 #choice: true, false
 useAnnotation: false
-logLevel: 'debug'
-advisor:
-  #choice: Hyperband, BOHB, MTSMAC
-  builtinAdvisorName: FTBO
+tuner:
+  #choice: TPE, Random, Anneal, Evolution, BatchTuner, MetisTuner, GPTuner
+  #SMAC (SMAC should be installed through nnictl)
+  builtinTunerName: SMAC
   classArgs:
     #choice: maximize, minimize
     optimize_mode: maximize
 trial:
-  command: python3 mnist_lr_mtsmac.py
+  command: python3 mnist.py
   codeDir: .
   gpuNum: 0

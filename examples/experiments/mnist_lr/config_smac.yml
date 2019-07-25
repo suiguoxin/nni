@@ -1,5 +1,5 @@
 authorName: default
-experimentName: example_mnist
+experimentName: mnist_lr_sgd SMAC
 trialConcurrency: 1
 maxExecDuration: 10h
 maxTrialNum: 100
@@ -16,6 +16,6 @@ tuner:
     #choice: maximize, minimize
     optimize_mode: maximize
 trial:
-  command: python3 mnist_lr_tuner.py
+  command: python3 mnist_lr.py
   codeDir: .
   gpuNum: 0

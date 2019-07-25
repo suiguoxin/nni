@@ -118,4 +118,4 @@ def plot_comparison_mnist_lr_sgd():
 
 
 # plot_comparison_mnist()
-# plot_comparison_mnist_lr_sgd()
+plot_comparison_mnist_lr_sgd()

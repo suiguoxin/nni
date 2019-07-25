@@ -16,6 +16,6 @@ advisor:
     #choice: maximize, minimize
     optimize_mode: maximize
 trial:
-  command: python3 mnist_lr_advisor.py
+  command: python3 mnist_lr.py
   codeDir: .
   gpuNum: 0

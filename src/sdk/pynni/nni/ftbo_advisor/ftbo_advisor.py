@@ -40,7 +40,7 @@ class FreezeThaw(MsgDispatcherBase):
     FreezeThaw Advisor
     """
 
-    def __init__(self, optimize_mode='maximize', cold_start_num=5, max_epochs=26):
+    def __init__(self, optimize_mode='maximize', cold_start_num=5, max_epochs=27):
         """
         Parameters
         ----------

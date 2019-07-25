@@ -1,8 +1,8 @@
 authorName: default
-experimentName: FTBO
+experimentName: Hyperband
 trialConcurrency: 1
 maxExecDuration: 100h
-maxTrialNum: 2700
+maxTrialNum: 500
 #choice: local, remote, pai
 trainingServicePlatform: local
 searchSpacePath: search_space.json
@@ -11,11 +11,11 @@ useAnnotation: false
 logLevel: 'debug'
 advisor:
   #choice: Hyperband, BOHB, MTSMAC
-  builtinAdvisorName: FTBO
+  builtinAdvisorName: Hyperband
   classArgs:
     #choice: maximize, minimize
     optimize_mode: maximize
 trial:
-  command: python3 mnist_lr_mtsmac.py
+  command: python3 mnist.py
   codeDir: .
   gpuNum: 0
