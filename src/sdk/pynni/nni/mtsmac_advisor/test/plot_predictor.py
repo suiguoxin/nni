@@ -51,8 +51,8 @@ def plot_rfr():
         idx_color = i % 5
         # plot observed learning curve
         if i < len(y_obs):
-            plt.plot(range(len(y_obs[i])), y_obs[i], color=COLORS[idx_color], linewidth=5.0, 
-                 label='y_obs:{}'.format(i))
+            plt.plot(range(len(y_obs[i])), y_obs[i], color=COLORS[idx_color], linewidth=5.0,
+                     label='y_obs:{}'.format(i))
 
         # plot true learning curve
         N = len(y[i])
@@ -65,7 +65,7 @@ def plot_rfr():
 
         plt.plot(range(N), mu, label='y_predict:{}'.format(i))
         T = np.arange(N).reshape(-1, 1)
-        plt.fill(np.concatenate([T, T[::-1]]), np.concatenate([mu - 1.9600 * sigma * 0.5, (mu + 1.9600 * sigma * 0.5)[::-1]]),
+        plt.fill(np.concatenate([T, T[::-1]]), np.concatenate([mu - 1.9600 * sigma, (mu + 1.9600 * sigma)[::-1]]),
                  color=COLORS[idx_color], alpha=.6)
 
         plt.title('Learning curve MNIST')

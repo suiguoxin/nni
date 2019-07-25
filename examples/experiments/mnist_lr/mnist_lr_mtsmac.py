@@ -50,7 +50,7 @@ class MnistNetwork(object):
 
         # Dropout
         with tf.name_scope('dropout'):
-            layer_1_out = tf.nn.dropout(self.images, self.keep_prob)
+            dropped = tf.nn.dropout(self.images, self.keep_prob)
 
         # Linear Regression layer
         with tf.name_scope('lr'):
@@ -58,14 +58,15 @@ class MnistNetwork(object):
             b = bias_variable([10])
 
             W_clip = tf.clip_by_norm(W, self.constraints_weights)
-            y = tf.nn.softmax(tf.matmul(layer_1_out, W_clip) + b)
+            y = tf.nn.softmax(tf.matmul(dropped, W_clip) + b)
 
         with tf.name_scope('loss'):
             cross_entropy = tf.reduce_mean(
                 tf.nn.softmax_cross_entropy_with_logits(labels=self.labels, logits=y))
             l2_loss = tf.multiply(self.l2_norm, tf.nn.l2_loss(W))
-        with tf.name_scope('adam_optimizer'):
-            self.train_step = tf.train.AdamOptimizer(
+
+        with tf.name_scope('sgd_optimizer'):
+            self.train_step = tf.train.GradientDescentOptimizer(
                 self.learning_rate).minimize(cross_entropy + l2_loss)
 
         with tf.name_scope('accuracy'):

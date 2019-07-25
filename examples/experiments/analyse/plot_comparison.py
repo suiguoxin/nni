@@ -70,7 +70,7 @@ def plot_comparison_mnist():
     plt.close()
 
 
-def plot_comparison_mnist_lr():
+def plot_comparison_mnist_lr_adam():
     metric_best_mtsmac = _get_metric_best(
         '../result/mnist_lr/mtsmac.json')
     plt.plot(range(len(metric_best_mtsmac)),
@@ -99,5 +99,23 @@ def plot_comparison_mnist_lr():
     plt.close()
 
 
+def plot_comparison_mnist_lr_sgd():
+    metric_best_mtsmac = _get_metric_best(
+        '../result/mnist_lr_sgd/mtsmac.json')
+    plt.plot(range(len(metric_best_mtsmac)),
+             metric_best_mtsmac, label='MTSMAC')
+
+    metric_best_tpe = _get_metric_best('../result/mnist_lr_sgd/tpe.json')
+    plt.plot(range(len(metric_best_tpe)), metric_best_tpe, label='TPE')
+
+    plt.xlabel('Epochs')
+    plt.ylabel('Default Metric')
+    plt.title('MNIST')
+    plt.legend()
+    plt.savefig('{}/analyse/image/res_mnist_lr_sgd.png'.format(PATH))
+    plt.close()
+
+
+
 # plot_comparison_mnist()
-plot_comparison_mnist_lr()
+# plot_comparison_mnist_lr_sgd()

@@ -65,7 +65,7 @@ class MnistNetwork(object):
                 tf.nn.softmax_cross_entropy_with_logits(labels=self.labels, logits=y))
             l2_loss = tf.multiply(self.l2_norm, tf.nn.l2_loss(W))
         with tf.name_scope('adam_optimizer'):
-            self.train_step = tf.train.AdamOptimizer(
+            self.train_step = tf.train.GradientDescentOptimizer(
                 self.learning_rate).minimize(cross_entropy + l2_loss)
 
         with tf.name_scope('accuracy'):
