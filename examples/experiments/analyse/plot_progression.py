@@ -53,8 +53,9 @@ def plot_progression():
                     else:
                         idx_color = 0
                     colors_next[parameter_id_prev] = (idx_color + 1) % 5
-                    plt.plot(range(counts_param[parameter_id_prev] - len(vals), counts_param[parameter_id_prev]), vals,
-                             color=COLORS[idx_color])
+                    if(parameter_id_prev < 30): # draw only first 30 
+                        plt.plot(range(counts_param[parameter_id_prev] - len(
+                            vals), counts_param[parameter_id_prev]), vals, color=COLORS[idx_color])
                 if parameter_id in perf_last:
                     vals = [perf_last[parameter_id]]
                 else:
@@ -72,7 +73,7 @@ def plot_progression():
     plt.xlabel('Epochs')
     plt.ylabel('Default Metric')
     plt.ylim(0, 1)
-    plt.title('MNIST')
+    plt.title('MNIST Progression')
     plt.savefig('{}/analyse/image/progression_mnist_lr.png'.format(PATH))
     plt.close()
 

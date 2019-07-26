@@ -175,7 +175,9 @@ def get_params():
 if __name__ == '__main__':
     try:
         # get parameters form tuner
-        tuner_params = nni.get_next_parameter()
+            tuner_params = nni.get_next_parameter()
+        else: 
+            tuner_params = nni.fake_get_next_parameter()
         logger.debug(tuner_params)
         params = vars(get_params())
         params.update(tuner_params)

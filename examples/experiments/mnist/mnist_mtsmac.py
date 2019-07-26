@@ -196,8 +196,7 @@ def main(params):
         sess.run(tf.global_variables_initializer())
         # if model saved previously, load it
         if os.path.exists(checkpoint_file + '.index'):
-            saver.restore(
-                sess, '{0}/model_{1}.ckpt'.format(params['model_dir'], params['parameter_id']))
+            saver.restore(sess, checkpoint_file)
         for i in range(params['batch_num']):
             batch = mnist.train.next_batch(params['batch_size'])
             mnist_network.train_step.run(feed_dict={mnist_network.images: batch[0],

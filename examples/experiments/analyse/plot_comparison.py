@@ -105,6 +105,14 @@ def plot_comparison_mnist_lr_sgd():
     plt.plot(range(len(metric_best_mtsmac)),
              metric_best_mtsmac, label='MTSMAC')
 
+    metric_best_mtsmac = _get_metric_best(
+        '../result/mnist_lr_sgd/mtsmac1.json')
+    plt.plot(range(len(metric_best_mtsmac)),
+             metric_best_mtsmac, label='MTSMAC')
+
+    metric_best_tpe = _get_metric_best('../result/mnist_lr_sgd/ftbo.json')
+    plt.plot(range(len(metric_best_tpe)), metric_best_tpe, label='FTBO')
+
     metric_best_tpe = _get_metric_best('../result/mnist_lr_sgd/tpe.json')
     plt.plot(range(len(metric_best_tpe)), metric_best_tpe, label='TPE')
 
