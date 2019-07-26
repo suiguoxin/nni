@@ -262,66 +262,66 @@ class TargetSpace():
             logger.debug("P_max %s", P_max)
             logger.debug("H %s", H)
 
-            if P_max.argmax() >= num_new:
-                param_selected = basket[P_max.argmax()]
-                logger.debug(
-                    "param index %s in the basket is selected by P_max", P_max.argmax())
-            else:
-                # get information gain
-                logger.debug("------------fantasize period---------------")
-                a = np.zeros(len(basket))
-                n_fant = 5
-                X, y = self.get_train_data()
-                mean, std = predictor.predict(params)
-                # logger.debug("mean predicted %s", mean)
-                # logger.debug("std predicted %s", std)
-                for i, item in enumerate(basket):
-                    logger.debug("fantasize element %s in the basket", i)
-                    for j in range(n_fant):
-                        logger.debug("fantasize round %s", j)
-                        if i < num_new:
-                            # fantasize an observation of a new point
-                            obs = self.random_state.normal(
-                                mean[i][0], std[i][0])
-                            # add fantsized point to fake training data
-                            X_fant = np.vstack((X, item['param']))
-                            y_fant = np.append(y, ['new_serial'])
-                            y_fant[-1] = [obs]
-                        else:
-                            # fantasize an observation of a old point
-                            cur_epoch = len(item['perf'])
-                            obs = self.random_state.normal(
-                                mean[i][cur_epoch], std[i][cur_epoch])
-                            # add fantsized point to fake training data
-                            X_fant = X.copy()
-                            y_fant = y.copy()
-                            for k in range(X_fant.shape[0]):
-                                if np.array_equal(item['param'], X_fant[k]):
-                                    y_fant[k] = y_fant[k].copy()
-                                    y_fant[k].append(obs)
-                                    break
+            # if P_max.argmax() >= num_new:
+            #     param_selected = basket[P_max.argmax()]
+            #     logger.debug(
+            #         "param index %s in the basket is selected by P_max", P_max.argmax())
+            # else:
+            # get information gain
+            logger.debug("------------fantasize period---------------")
+            a = np.zeros(len(basket))
+            n_fant = 5
+            X, y = self.get_train_data()
+            mean, std = predictor.predict(params)
+            # logger.debug("mean predicted %s", mean)
+            # logger.debug("std predicted %s", std)
+            for i, item in enumerate(basket):
+                logger.debug("fantasize element %s in the basket", i)
+                for j in range(n_fant):
+                    logger.debug("fantasize round %s", j)
+                    if i < num_new:
+                        # fantasize an observation of a new point
+                        obs = self.random_state.normal(
+                            mean[i][0], std[i][0])
+                        # add fantsized point to fake training data
+                        X_fant = np.vstack((X, item['param']))
+                        y_fant = np.append(y, ['new_serial'])
+                        y_fant[-1] = [obs]
+                    else:
+                        # fantasize an observation of a old point
+                        cur_epoch = len(item['perf'])
+                        obs = self.random_state.normal(
+                            mean[i][cur_epoch], std[i][cur_epoch])
+                        # add fantsized point to fake training data
+                        X_fant = X.copy()
+                        y_fant = y.copy()
+                        for k in range(X_fant.shape[0]):
+                            if np.array_equal(item['param'], X_fant[k]):
+                                y_fant[k] = y_fant[k].copy()
+                                y_fant[k].append(obs)
+                                break
 
-                        # conditioned on the observation, re-compute P_max and H
-                        # fit a new predictor with fantsized point added in training data
-                        predictor_fant = Predictor(multi_task=True)
-                        predictor_fant.fit(X_fant, y_fant)
-                        # re-calculate P_max, H
-                        mean_fant, std_fant = predictor_fant.predict(
-                            params, final_only=True)
+                    # conditioned on the observation, re-compute P_max and H
+                    # fit a new predictor with fantsized point added in training data
+                    predictor_fant = Predictor(multi_task=True)
+                    predictor_fant.fit(X_fant, y_fant)
+                    # re-calculate P_max, H
+                    mean_fant, std_fant = predictor_fant.predict(
+                        params, final_only=True)
 
-                        # logger.debug("mean fantasize %s", mean)
-                        # logger.debug("std fantasize %s", std)
-                        P_max_fant = self._get_P_max(mean_fant, std_fant)
-                        H_fant = self._cal_entropy(P_max_fant)
-                        # logger.debug("P_max_fant %s", P_max_fant)
-                        # logger.debug("H_fant %s", H_fant)
-                        # average over n_fant
-                        a[i] += (H_fant / n_fant)
-                param_selected = basket[a.argmin()]
-                logger.debug("P_max %s", P_max)
-                logger.debug("a %s", a)
-                logger.debug(
-                    "param index %s in the basket is selected by H", a.argmin())
+                    # logger.debug("mean fantasize %s", mean)
+                    # logger.debug("std fantasize %s", std)
+                    P_max_fant = self._get_P_max(mean_fant, std_fant)
+                    H_fant = self._cal_entropy(P_max_fant)
+                    # logger.debug("P_max_fant %s", P_max_fant)
+                    # logger.debug("H_fant %s", H_fant)
+                    # average over n_fant
+                    a[i] += (H_fant / n_fant)
+            param_selected = basket[a.argmin()]
+            logger.debug("P_max %s", P_max)
+            logger.debug("a %s", a)
+            logger.debug(
+                "param index %s in the basket is selected by H", a.argmin())
 
         logger.debug("param_selected %s", param_selected)
         param = param_selected['param']
