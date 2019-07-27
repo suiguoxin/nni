@@ -38,7 +38,7 @@ class Predictor():
         ----------
         """
         self.regr = RandomForestRegressor(
-            n_estimators=10, max_depth=3, min_samples_split=2, max_features=5/6, random_state=0)
+            n_estimators=10, max_depth=7, min_samples_split=10, max_features=5/6, random_state=0)
         self.multi_task = multi_task
         self.epochs = None
 
