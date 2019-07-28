@@ -336,7 +336,7 @@ class TargetSpace():
             self._budget[parameter_id] = 1
         else: # old config is selected
             parameter_id = param_selected['parameter_id']
-            if len(self.hyper_configs[parameter_id]['perf']) + self._budget[parameter_id] + 1 >= self.max_epochs:
+            if len(self.hyper_configs[parameter_id]['perf']) + self._budget[parameter_id] * 2 >= self.max_epochs:
                 self._budget[parameter_id] = self.max_epochs - len(self.hyper_configs[parameter_id]['perf'])
             else:
                 self._budget[parameter_id] *= 2
