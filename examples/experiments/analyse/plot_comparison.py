@@ -116,6 +116,9 @@ def plot_comparison_mnist_lr_sgd():
     metric_best_tpe = _get_metric_best('../result/mnist_lr_sgd/tpe.json')
     plt.plot(range(len(metric_best_tpe)), metric_best_tpe, label='TPE')
 
+    metric_best_tpe = _get_metric_best('../result/mnist_lr_sgd/smac.json')
+    plt.plot(range(len(metric_best_tpe)), metric_best_tpe, label='SMAC')
+
     plt.xlabel('Epochs')
     plt.ylabel('Default Metric')
     plt.title('MNIST')

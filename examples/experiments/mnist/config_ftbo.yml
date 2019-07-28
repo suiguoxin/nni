@@ -1,5 +1,5 @@
 authorName: default
-experimentName: FTBO
+experimentName: MNIST FTBO
 trialConcurrency: 1
 maxExecDuration: 100h
 maxTrialNum: 2700

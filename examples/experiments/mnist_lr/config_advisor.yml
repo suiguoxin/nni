@@ -1,5 +1,5 @@
 authorName: default
-experimentName: Hyperband
+experimentName: MNIST_LR Hyperband
 trialConcurrency: 1
 maxExecDuration: 100h
 maxTrialNum: 500

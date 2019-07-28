@@ -32,7 +32,7 @@ def plot_progression():
     '''
     Fig 4
     '''
-    file_name = 'mnist_lr_sgd/mtsmac.json'
+    file_name = 'mnist_lr/mtsmac_710.json'
 
     with open('{}/result/{}'.format(PATH, file_name)) as json_file:
         result = json.load(json_file)
@@ -53,8 +53,8 @@ def plot_progression():
                     else:
                         idx_color = 0
                     colors_next[parameter_id_prev] = (idx_color + 1) % 5
-                    if(parameter_id_prev < 30): # draw only first 30 
-                        plt.plot(range(counts_param[parameter_id_prev] - len(
+                    #if(parameter_id_prev < 00): # draw only first 30 
+                    plt.plot(range(counts_param[parameter_id_prev] - len(
                             vals), counts_param[parameter_id_prev]), vals, color=COLORS[idx_color])
                 if parameter_id in perf_last:
                     vals = [perf_last[parameter_id]]
@@ -74,50 +74,7 @@ def plot_progression():
     plt.ylabel('Default Metric')
     plt.ylim(0, 1)
     plt.title('MNIST Progression')
-    plt.savefig('{}/analyse/image/progression_mnist_lr.png'.format(PATH))
+    plt.savefig('{}/analyse/image/progression_mtsmac710.png'.format(PATH))
     plt.close()
-
-
-def plot_progression_false():
-    '''
-    Fig 4
-    '''
-    file_name = 'mnist_lr_sgd/mtsmac.json'
-
-    with open('{}/result/{}'.format(PATH, file_name)) as json_file:
-        result = json.load(json_file)
-        trials = result['trialMessage']
-
-        epochs_param = {}
-        idx_color = 0
-        parameter_id_prev = 0
-        for trial in trials:
-            parameter_id = trial['hyperParameters']['parameter_id']
-
-            # for color change
-            if parameter_id != parameter_id_prev:
-                idx_color = (idx_color + 1) % 5
-                parameter_id_prev = parameter_id
-
-            vals = []
-            count = 0
-            for inter in trial['intermediate']:
-                val = float(inter['data'])
-                vals.append(val)
-                count += 1
-            if parameter_id in epochs_param:
-                plt.plot(
-                    range(epochs_param[parameter_id], epochs_param[parameter_id] + count), vals, color=COLORS[idx_color])
-                epochs_param[parameter_id] += count
-            else:
-                plt.plot(range(count), vals, color=COLORS[idx_color])
-                epochs_param[parameter_id] = count
-
-    plt.xlabel('Epochs')
-    plt.ylabel('Default Metric')
-    plt.title('MNIST')
-    plt.savefig('{}/analyse/image/progression_mnist_lr.png'.format(PATH))
-    plt.close()
-
 
 plot_progression()
