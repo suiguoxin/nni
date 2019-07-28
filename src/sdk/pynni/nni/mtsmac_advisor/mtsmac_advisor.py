@@ -104,13 +104,13 @@ class MTSMAC(MsgDispatcherBase):
                     self._space.len_completed)
         if self._space.len < self._cold_start_num:  # TODO: support parallisim
             parameter_id, parameters = self._space.select_config_warmup()
-            parameters['TRIAL_BUDGET'] = self._max_epochs
+            # parameters['TRIAL_BUDGET'] = self._max_epochs
             parameters['PARAMETER_ID'] = parameter_id
         else:
             # generate one trial
             parameter_id, parameters = self._space.select_config(
                 self._predictor)
-            parameters['TRIAL_BUDGET'] = 1
+            # parameters['TRIAL_BUDGET'] = 1
             parameters['PARAMETER_ID'] = parameter_id
         res = {
             'parameter_id': parameter_id,

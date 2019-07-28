@@ -38,7 +38,7 @@ class TargetSpace():
     Holds the param-space coordinates (X) and target values (Y)
     """
 
-    def __init__(self, search_space, max_epochs=20, random_state=None):
+    def __init__(self, search_space, max_epochs, random_state=None):
         """
         Parameters
         ----------
@@ -72,6 +72,8 @@ class TargetSpace():
 
         self._len_completed = 0
         self._y_max = 0
+
+        self._budget = {}
 
     @property
     def dim(self):
@@ -225,6 +227,8 @@ class TargetSpace():
         parameter_json = self.array_to_params(params)
         logger.info("Generate paramageter for warm up :\n %s", parameter_json)
 
+        parameter_json['TRIAL_BUDGET'] = self.max_epochs
+
         return parameter_id, parameter_json
 
     def select_config(self, predictor):
@@ -329,10 +333,13 @@ class TargetSpace():
             parameter_id = self.next_param_id
             self.next_param_id += 1
             self.register_new_config(parameter_id, param)
+            self._budget[parameter_id] = 1
         else: # old config is selected
             parameter_id = param_selected['parameter_id']
+            self._budget[parameter_id] += 1
 
         parameter_json = self.array_to_params(param)
+        parameter_json['TRIAL_BUDGET'] = self._budget[parameter_id]
         logger.info("Generate paramageter :\n %s", parameter_json)
 
         return parameter_id, parameter_json
