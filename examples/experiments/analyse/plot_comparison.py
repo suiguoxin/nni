@@ -101,9 +101,14 @@ def plot_comparison_mnist_lr_adam():
 
 def plot_comparison_mnist_lr_sgd():
     metric_best_mtsmac = _get_metric_best(
-        '../result/mnist_lr_sgd/mtsmac.json')
+        '../result/mnist_lr_sgd/mtsmac_32.json')
     plt.plot(range(len(metric_best_mtsmac)),
-             metric_best_mtsmac, label='MTSMAC')
+             metric_best_mtsmac, label='MTSMAC 32')
+
+    metric_best_mtsmac = _get_metric_best(
+        '../result/mnist_lr_sgd/mtsmac_710.json')
+    plt.plot(range(len(metric_best_mtsmac)),
+             metric_best_mtsmac, label='MTSMAC 710')
 
     metric_best_tpe = _get_metric_best('../result/mnist_lr_sgd/ftbo.json')
     plt.plot(range(len(metric_best_tpe)), metric_best_tpe, label='FTBO')
