@@ -67,4 +67,4 @@ def plot_comparison(experiment, tuners):
 
 
 # plot_comparison(experiment='mnist', tuners=['mtsmac','ftbo', 'tpe'])
-plot_comparison(experiment='mnist_lr', tuners=['mtsmac_32', 'mtsmac_710', 'mtsmac_1002', 'ftbo', 'smac', 'smac2', 'tpe'])
+plot_comparison(experiment='mnist_lr', tuners=['mtsmac_1002', 'mtsmac_plus', 'mtsmac_mult', 'ftbo', 'smac', 'smac2', 'tpe'])
