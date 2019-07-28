@@ -22,19 +22,20 @@ plot_progression.py
 """
 
 import json
+import numpy as np
 import matplotlib.pyplot as plt
+import imageio
+
 from nni.mtsmac_advisor.test.util import COLORS
 
 PATH = './examples/experiments'
 
 
-def plot_progression():
+def plot_progression_png(experiment, tuner):
     '''
     Fig 4
     '''
-    file_name = 'mnist_lr/mtsmac_710.json'
-
-    with open('{}/result/{}'.format(PATH, file_name)) as json_file:
+    with open('{}/result/{}/{}.json'.format(PATH, experiment, tuner)) as json_file:
         result = json.load(json_file)
         trials = result['trialMessage']
 
@@ -74,7 +75,66 @@ def plot_progression():
     plt.ylabel('Default Metric')
     plt.ylim(0, 1)
     plt.title('MNIST Progression')
-    plt.savefig('{}/analyse/image/progression_mtsmac710.png'.format(PATH))
+    plt.savefig('{}/analyse/image/{}/progression_{}.png'.format(PATH, experiment, tuner))
     plt.close()
 
-plot_progression()
+
+def _plot_progression_limit(experiment, tuner, num_trials):
+    '''
+    Fig 4
+    '''
+    fig, ax = plt.subplots(figsize=(10,5))
+    ax.set(xlabel='Epochs', ylabel='Default Metric', title='MNIST Progression', ylim=(0,1))
+
+    with open('{}/result/{}/{}.json'.format(PATH, experiment, tuner)) as json_file:
+        result = json.load(json_file)
+        trials = result['trialMessage']
+
+        perf_last = {}
+        colors_next = {}
+        counts_param = {}
+
+        parameter_id_prev = -1
+        vals = []
+        for trial in trials[:num_trials]:
+            parameter_id = trial['hyperParameters']['parameter_id']
+            if parameter_id != parameter_id_prev:
+                if vals:
+                    if parameter_id_prev in colors_next:
+                        idx_color = colors_next[parameter_id_prev]
+                    else:
+                        idx_color = 0
+                    colors_next[parameter_id_prev] = (idx_color + 1) % 5
+                    ax.plot(range(counts_param[parameter_id_prev] - len(
+                            vals), counts_param[parameter_id_prev]), vals, color=COLORS[idx_color])
+                if parameter_id in perf_last:
+                    vals = [perf_last[parameter_id]]
+                else:
+                    vals = [0]
+                parameter_id_prev = parameter_id
+            for inter in trial['intermediate']:
+                val = float(inter['data'])
+                vals.append(val)
+                if parameter_id not in counts_param:
+                    counts_param[parameter_id] = 1
+                else:
+                    counts_param[parameter_id] += 1
+            perf_last[parameter_id] = val
+
+    # Used to return the plot as an image rray
+    fig.canvas.draw()       # draw the canvas, cache the renderer
+    image = np.frombuffer(fig.canvas.tostring_rgb(), dtype='uint8')
+    image  = image.reshape(fig.canvas.get_width_height()[::-1] + (3,))
+
+    return image
+
+
+def plot_progression_gif(experiment, tuner, num_trials):
+    imageio.mimsave('{}/analyse/image/{}/progression_{}.gif'.format(PATH, experiment, tuner), 
+        [_plot_progression_limit(experiment, tuner, i) for i in range(1, num_trials)], fps=1)
+
+    plt.savefig('{}/analyse/image/{}/progression_{}.png'.format(PATH, experiment, tuner))
+
+# plot_progression_png('mnist_lr', 'mtsmac_1002')
+plot_progression_gif('mnist_lr', 'mtsmac_1002', 50)
+
