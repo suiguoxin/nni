@@ -339,7 +339,7 @@ class TargetSpace():
             if len(self.hyper_configs[parameter_id]['perf']) + self._budget[parameter_id] + 1 >= self.max_epochs:
                 self._budget[parameter_id] = self.max_epochs - len(self.hyper_configs[parameter_id]['perf'])
             else:
-                self._budget[parameter_id] += 1
+                self._budget[parameter_id] *= 2
 
         parameter_json = self.array_to_params(param)
         parameter_json['TRIAL_BUDGET'] = self._budget[parameter_id]
