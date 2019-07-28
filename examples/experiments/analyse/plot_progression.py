@@ -54,9 +54,8 @@ def plot_progression_png(experiment, tuner):
                     else:
                         idx_color = 0
                     colors_next[parameter_id_prev] = (idx_color + 1) % 5
-                    #if(parameter_id_prev < 00): # draw only first 30 
                     plt.plot(range(counts_param[parameter_id_prev] - len(
-                            vals), counts_param[parameter_id_prev]), vals, color=COLORS[idx_color])
+                        vals), counts_param[parameter_id_prev]), vals, color=COLORS[idx_color])
                 if parameter_id in perf_last:
                     vals = [perf_last[parameter_id]]
                 else:
@@ -83,7 +82,7 @@ def _plot_progression_limit(experiment, tuner, num_trials):
     '''
     Fig 4
     '''
-    fig, ax = plt.subplots(figsize=(10,5))
+    fig, ax = plt.subplots(figsize=(10, 5))
     ax.set(xlabel='Epochs', ylabel='Default Metric', title='MNIST Progression', ylim=(0,1))
 
     with open('{}/result/{}/{}.json'.format(PATH, experiment, tuner)) as json_file:
@@ -125,16 +124,16 @@ def _plot_progression_limit(experiment, tuner, num_trials):
     fig.canvas.draw()       # draw the canvas, cache the renderer
     image = np.frombuffer(fig.canvas.tostring_rgb(), dtype='uint8')
     image  = image.reshape(fig.canvas.get_width_height()[::-1] + (3,))
+    plt.close()
 
     return image
 
 
 def plot_progression_gif(experiment, tuner, num_trials):
-    imageio.mimsave('{}/analyse/image/{}/progression_{}.gif'.format(PATH, experiment, tuner), 
-        [_plot_progression_limit(experiment, tuner, i) for i in range(1, num_trials)], fps=1)
+    '''plot gif'''
+    imageio.mimsave('{}/analyse/image/{}/progression_{}.gif'.format(PATH, experiment, tuner),
+        [_plot_progression_limit(experiment, tuner, i) for i in range(1, num_trials)], fps=10)
 
-    plt.savefig('{}/analyse/image/{}/progression_{}.png'.format(PATH, experiment, tuner))
-
-# plot_progression_png('mnist_lr', 'mtsmac_1002')
-plot_progression_gif('mnist_lr', 'mtsmac_1002', 50)
+plot_progression_png('mnist_lr', 'mtsmac_1002')
+plot_progression_gif('mnist_lr', 'mtsmac_1002', 600)
 
