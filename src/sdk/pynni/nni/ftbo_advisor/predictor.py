@@ -394,6 +394,10 @@ class Predictor():
         K_x = kernel_as(self.X_train_)
         K_t = block_diag(*[kernel_tc(np.arange(1, len(self.y_train_[i])+1).reshape(-1, 1))
                            for i in range(self.y_train_.shape[0])])
+        
+        # ------------------------------------------------------------------------------------
+        # TODO: risk of rasing singular matrix err here
+        # ------------------------------------------------------------------------------------
         K_x_inv = np.linalg.inv(K_x)
         K_t_inv = np.linalg.inv(K_t)
 
@@ -410,6 +414,9 @@ class Predictor():
                 y_flatten_demean), K_t_inv, y_flatten_demean])
         #print('log_likelihood step 1:', log_likelihood)
 
+        # ------------------------------------------------------------------------------------
+        # TODO: when using pinv, risk of rasing SVD did not converge(numpy.linalg.LinAlgError) err here
+        # ------------------------------------------------------------------------------------
         log_likelihood += 0.5 * \
             reduce(np.matmul, [np.transpose(gamma),
                                np.linalg.inv(K_x_inv+Lambda), gamma])

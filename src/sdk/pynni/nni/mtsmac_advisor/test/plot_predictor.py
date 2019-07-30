@@ -39,14 +39,16 @@ from nni.mtsmac_advisor.test.util import create_fake_data_expdacay, create_fake_
 def plot_rfr():
     X, y = create_fake_data_mnist()
 
-    size_obs = 13
-    len_y = [21, 21, 21, 19, 17, 15, 13, 11, 9, 7, 5, 3, 1]
+    len_completed = [21, 21, 21] # size 3
+    len_half = [19, 17, 15, 13, 11, 9, 7, 5, 3, 1] # size 10
+    len_y = len_completed + len_half
+
+    size_obs = len(len_y)
     X_obs, y_obs = get_obs(X, y, size_obs, len_y)
 
     predictor = Predictor(multi_task=True)
     predictor.fit(X_obs, y_obs)
     mean, std = predictor.predict(X)
-
     for i in range(0, 15):
         idx_color = i % 5
         # plot observed learning curve
@@ -73,6 +75,5 @@ def plot_rfr():
         plt.legend()
         plt.savefig('{}/image/lr_final_{}.png'.format(PATH, i))
         plt.close()
-
 
 plot_rfr()

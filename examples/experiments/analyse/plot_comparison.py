@@ -22,9 +22,9 @@ plot_predictor.py
 """
 
 import json
+# pylint:disable=import-error
 import matplotlib.pyplot as plt
 
-# pylint:disable=import-error
 PATH = './examples/experiments'
 
 # pylint:disable=missing-docstring
@@ -65,6 +65,7 @@ def plot_comparison(experiment, tuners):
     plt.close()
 
 
-
 # plot_comparison(experiment='mnist', tuners=['mtsmac','ftbo', 'tpe'])
-plot_comparison(experiment='mnist_lr', tuners=['mtsmac_095xi', 'mtsmac_095xi2', 'mtsmac_1002', 'mtsmac_plus', 'mtsmac_plus2', 'mtsmac_mult', 'ftbo', 'smac', 'smac2', 'tpe'])
+plot_comparison(
+    experiment='mnist_lr',
+    tuners=['mtsmac_095xi', 'mtsmac_095xi2', 'mtsmac_095xi3', 'mtsmac_1002', 'mtsmac_plus', 'mtsmac_mult', 'ftbo', 'smac', 'smac2', 'tpe'])

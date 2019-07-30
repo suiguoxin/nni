@@ -23,15 +23,16 @@ plot_progression.py
 
 import json
 import numpy as np
+
+# pylint:disable=import-error
 import matplotlib.pyplot as plt
 import imageio
-
 from nni.mtsmac_advisor.test.util import COLORS
 
 PATH = './examples/experiments'
 
 
-def plot_progression_png(experiment, tuner):
+def plot_progression_png(experiment, tuner, num_trials):
     '''
     Fig 4
     '''
@@ -45,7 +46,7 @@ def plot_progression_png(experiment, tuner):
 
         parameter_id_prev = -1
         vals = []
-        for trial in trials:
+        for trial in trials[:num_trials]:
             parameter_id = trial['hyperParameters']['parameter_id']
             if parameter_id != parameter_id_prev:
                 if vals:
@@ -83,7 +84,7 @@ def _plot_progression_limit(experiment, tuner, num_trials):
     Fig 4
     '''
     fig, ax = plt.subplots(figsize=(10, 5))
-    ax.set(xlabel='Epochs', ylabel='Default Metric', title='MNIST Progression', ylim=(0,1))
+    ax.set(xlabel='Epochs', ylabel='Default Metric', title='MNIST Progression', ylim=(0, 1))
 
     with open('{}/result/{}/{}.json'.format(PATH, experiment, tuner)) as json_file:
         result = json.load(json_file)
@@ -104,8 +105,10 @@ def _plot_progression_limit(experiment, tuner, num_trials):
                     else:
                         idx_color = 0
                     colors_next[parameter_id_prev] = (idx_color + 1) % 5
-                    ax.plot(range(counts_param[parameter_id_prev] - len(
-                            vals), counts_param[parameter_id_prev]), vals, color=COLORS[idx_color])
+                    ax.plot(range(counts_param[parameter_id_prev] - len(vals),
+                            counts_param[parameter_id_prev]),
+                            vals,
+                            color=COLORS[idx_color])
                 if parameter_id in perf_last:
                     vals = [perf_last[parameter_id]]
                 else:
@@ -123,7 +126,7 @@ def _plot_progression_limit(experiment, tuner, num_trials):
     # Used to return the plot as an image rray
     fig.canvas.draw()       # draw the canvas, cache the renderer
     image = np.frombuffer(fig.canvas.tostring_rgb(), dtype='uint8')
-    image  = image.reshape(fig.canvas.get_width_height()[::-1] + (3,))
+    image = image.reshape(fig.canvas.get_width_height()[::-1] + (3,))
     plt.close()
 
     return image
@@ -131,9 +134,10 @@ def _plot_progression_limit(experiment, tuner, num_trials):
 
 def plot_progression_gif(experiment, tuner, num_trials):
     '''plot gif'''
-    imageio.mimsave('{}/analyse/image/{}/progression_{}.gif'.format(PATH, experiment, tuner),
-        [_plot_progression_limit(experiment, tuner, i) for i in range(1, num_trials)], fps=10)
+    imageio.mimsave(
+        '{}/analyse/image/{}/progression_{}.gif'.format(PATH, experiment, tuner),
+        [_plot_progression_limit(experiment, tuner, i) for i in range(1, num_trials)],
+        fps=10)
 
-plot_progression_png('mnist_lr', 'mtsmac_095xi2')
-plot_progression_gif('mnist_lr', 'mtsmac_095xi2', 600)
-
+plot_progression_png('mnist_lr', 'mtsmac_095xi2', 300)
+plot_progression_gif('mnist_lr', 'mtsmac_095xi2', 300)
