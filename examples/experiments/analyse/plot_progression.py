@@ -134,6 +134,6 @@ def plot_progression_gif(experiment, tuner, num_trials):
     imageio.mimsave('{}/analyse/image/{}/progression_{}.gif'.format(PATH, experiment, tuner),
         [_plot_progression_limit(experiment, tuner, i) for i in range(1, num_trials)], fps=10)
 
-plot_progression_png('mnist_lr', 'mtsmac_plus2')
-plot_progression_gif('mnist_lr', 'mtsmac_plus2', 600)
+plot_progression_png('mnist_lr', 'mtsmac_095xi2')
+plot_progression_gif('mnist_lr', 'mtsmac_095xi2', 600)
 

@@ -48,7 +48,7 @@ def _get_metric_best(experiment, tuner):
                     metric_best.append(val)
                 else:
                     metric_best.append(metric_best[-1])
-    return metric_best[:2000]
+    return metric_best[200:2000]
 
 
 def plot_comparison(experiment, tuners):
@@ -67,4 +67,4 @@ def plot_comparison(experiment, tuners):
 
 
 # plot_comparison(experiment='mnist', tuners=['mtsmac','ftbo', 'tpe'])
-plot_comparison(experiment='mnist_lr', tuners=['mtsmac_1002', 'mtsmac_plus', 'mtsmac_plus2', 'mtsmac_mult', 'ftbo', 'smac', 'smac2', 'tpe'])
+plot_comparison(experiment='mnist_lr', tuners=['mtsmac_095xi', 'mtsmac_095xi2', 'mtsmac_1002', 'mtsmac_plus', 'mtsmac_plus2', 'mtsmac_mult', 'ftbo', 'smac', 'smac2', 'tpe'])

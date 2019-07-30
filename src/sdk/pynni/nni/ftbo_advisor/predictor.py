@@ -186,7 +186,7 @@ class Predictor():
         # Precompute quantities required for predictions which are independent of actual query points
         # Posterior distribution : P(f|y, X) = N(f;mu, C)
         # C， Equation 13(18)
-        self.C = np.linalg.pinv(self.K_x_inv + self.Lambda)
+        self.C = np.linalg.inv(self.K_x_inv + self.Lambda)
         # Check if any of the variances is negative because of numerical issues. If yes: set the variance to 0.
         C_negative = self.C <= 0
         if np.any(C_negative):
@@ -213,8 +213,8 @@ class Predictor():
         self.K_x[np.diag_indices_from(self.K_x)] += self.alpha  # TODO
         self.K_t = block_diag(*[self.kernel_tc_(np.arange(1, len(self.y_train_[i])+1).reshape(-1, 1))
                                 for i in range(self.y_train_.shape[0])])
-        self.K_x_inv = np.linalg.pinv(self.K_x)
-        self.K_t_inv = np.linalg.pinv(self.K_t)
+        self.K_x_inv = np.linalg.inv(self.K_x)
+        self.K_t_inv = np.linalg.inv(self.K_t)
 
         # gamma, Lambda
         self.gamma = reduce(np.matmul, [
@@ -276,8 +276,8 @@ class Predictor():
         tmp = np.matmul(K_x_s_trans, self.K_x_inv)
         f_mean = np.matmul(tmp, self.mu - self.mean_prior)
 
-        tmp = np.matmul(np.transpose(K_x_s), np.linalg.pinv(
-            self.K_x + np.linalg.pinv(self.Lambda)))
+        tmp = np.matmul(np.transpose(K_x_s), np.linalg.inv(
+            self.K_x + np.linalg.inv(self.Lambda)))
         f_var = np.matmul(tmp, K_x_s)
 
         # Check if any of the variances is negative because of numerical issues. If yes: set the variance to 0.
@@ -308,7 +308,7 @@ class Predictor():
         K_t_n = self.kernel_tc_(T_arr)
         K_t_n_s = self.kernel_tc_(T_arr, np.array([T+1]))
 
-        tmp = np.matmul(np.transpose(K_t_n_s), np.linalg.pinv(K_t_n))
+        tmp = np.matmul(np.transpose(K_t_n_s), np.linalg.inv(K_t_n))
         Omega = np.matmul(tmp, np.ones(T).reshape(-1, 1))
         Omega = 1 - Omega
 
@@ -316,12 +316,12 @@ class Predictor():
         C_n_n = self.C[np.ix_([idx], [idx])]
         y_n = self.y_train_[idx]
 
-        tmp = np.matmul(np.transpose(K_t_n_s), np.linalg.pinv(K_t_n))
+        tmp = np.matmul(np.transpose(K_t_n_s), np.linalg.inv(K_t_n))
         mean = np.matmul(tmp, y_n) + np.matmul(Omega, mu_n)
 
         K_t_n_s_s = self.kernel_tc_(np.array([T+1]), np.array([T+1]))
 
-        tmp = np.matmul(np.transpose(K_t_n_s), np.linalg.pinv(K_t_n))
+        tmp = np.matmul(np.transpose(K_t_n_s), np.linalg.inv(K_t_n))
         var = K_t_n_s_s - np.matmul(tmp, K_t_n_s) + \
             np.matmul(np.matmul(Omega, C_n_n), np.transpose(Omega))
 
@@ -394,8 +394,8 @@ class Predictor():
         K_x = kernel_as(self.X_train_)
         K_t = block_diag(*[kernel_tc(np.arange(1, len(self.y_train_[i])+1).reshape(-1, 1))
                            for i in range(self.y_train_.shape[0])])
-        K_x_inv = np.linalg.pinv(K_x)
-        K_t_inv = np.linalg.pinv(K_t)
+        K_x_inv = np.linalg.inv(K_x)
+        K_t_inv = np.linalg.inv(K_t)
 
         # gamma, Lambda
         gamma = reduce(np.matmul, [
@@ -412,10 +412,10 @@ class Predictor():
 
         log_likelihood += 0.5 * \
             reduce(np.matmul, [np.transpose(gamma),
-                               np.linalg.pinv(K_x_inv+Lambda), gamma])
+                               np.linalg.inv(K_x_inv+Lambda), gamma])
         #print('log_likelihood step 2:', log_likelihood)
 
-        _, tmp_0 = np.linalg.slogdet(np.linalg.pinv(K_x)+Lambda)
+        _, tmp_0 = np.linalg.slogdet(np.linalg.inv(K_x)+Lambda)
         _, tmp_1 = np.linalg.slogdet(K_x)
         _, tmp_2 = np.linalg.slogdet(K_t)
         log_likelihood -= 0.5 * (tmp_0 + tmp_1 + tmp_2)
