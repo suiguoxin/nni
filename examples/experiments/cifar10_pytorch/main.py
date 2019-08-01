@@ -52,7 +52,7 @@ def prepare(args):
     ])
 
     trainset = torchvision.datasets.CIFAR10(root='./data', train=True, download=True, transform=transform_train)
-    trainloader = torch.utils.data.DataLoader(trainset, batch_size=128, shuffle=True, num_workers=2)
+    trainloader = torch.utils.data.DataLoader(trainset, batch_size=args['batch_size'], shuffle=True, num_workers=2)
 
     testset = torchvision.datasets.CIFAR10(root='./data', train=False, download=True, transform=transform_test)
     testloader = torch.utils.data.DataLoader(testset, batch_size=100, shuffle=False, num_workers=2)
@@ -61,7 +61,11 @@ def prepare(args):
 
     # Model
     print('==> Building model..')
-    net = ResNet18()
+    net = ResNet18(
+        channel_size=args['channel_size'],
+        kernel_size=args['kernel_size'],
+        pooling_size=args['pooling_size']
+        )
 
     net = net.to(device)
     if device == 'cuda':
@@ -72,15 +76,15 @@ def prepare(args):
     #optimizer = optim.SGD(net.parameters(), lr=args['lr'], momentum=0.9, weight_decay=5e-4)
 
     if args['optimizer'] == 'SGD':
-        optimizer = optim.SGD(net.parameters(), lr=args['lr'], momentum=0.9, weight_decay=5e-4)
+        optimizer = optim.SGD(net.parameters(), lr=args['learning_rate'], momentum=0.9, weight_decay=args['weight_decay'])
     if args['optimizer'] == 'Adadelta':
-        optimizer = optim.Adadelta(net.parameters(), lr=args['lr'])
+        optimizer = optim.Adadelta(net.parameters(), lr=args['learning_rate'], weight_decay=args['weight_decay'])
     if args['optimizer'] == 'Adagrad':
-        optimizer = optim.Adagrad(net.parameters(), lr=args['lr'])
+        optimizer = optim.Adagrad(net.parameters(), lr=args['learning_rate'], weight_decay=args['weight_decay'])
     if args['optimizer'] == 'Adam':
-        optimizer = optim.Adam(net.parameters(), lr=args['lr'])
+        optimizer = optim.Adam(net.parameters(), lr=args['learning_rate'], weight_decay=args['weight_decay'])
     if args['optimizer'] == 'Adamax':
-        optimizer = optim.Adam(net.parameters(), lr=args['lr'])
+        optimizer = optim.Adamax(net.parameters(), lr=args['learning_rate'], weight_decay=args['weight_decay'])
 
 
 def train(epoch):
@@ -158,20 +162,42 @@ def test(epoch):
     return acc, best_acc
 
 
-if __name__ == '__main__':
+def get_params():
+    ''' Get parameters from command line '''
     parser = argparse.ArgumentParser()
     parser.add_argument("--epochs", type=int, default=200)
+    # search space arguments
+    parser.add_argument("--optimizer", type=str, default="Adam")
+    parser.add_argument("--learning_rate", type=float, default=1e-4)
+    parser.add_argument("--batch_size", type=int, default=128)
+    parser.add_argument("--kernel_size", type=int, default=3, help='kernel_size of the first conv layer')
+    parser.add_argument("--channel_size", type=int, default=64, help='out_channels of the first conv layer')
+    parser.add_argument("--pooling_size", type=int, default=4)
+    parser.add_argument("--weight_decay", type=float, default=5e-4)
+
+    # parser.add_argument("--dropout_rate", type=float, default=1)
+    
+    # TO consider
+    # parser.add_argument("--expansion_size", type=int, default=1)
+    # parser.add_argument("--hidden_size", type=int, default=4)
+    # parser.add_argument("--filter_size", type=int, default=4)
+    # "expansion_size":{"_type":"choice","_value":[1,2,3,4]},
+    # "dropout_rate":{"_type":"uniform","_value":[0, 1]}
     args, _ = parser.parse_known_args()
+    return args
 
+
+if __name__ == '__main__':
     try:
-        RCV_CONFIG = nni.get_next_parameter()
-        #RCV_CONFIG = {'lr': 0.1, 'optimizer': 'Adam', 'model':'senet18'}
-        _logger.debug(RCV_CONFIG)
+        tuner_params = nni.get_next_parameter()
+        _logger.debug(tuner_params)
+        params = vars(get_params())
+        params.update(tuner_params)
+        prepare(params)
 
-        prepare(RCV_CONFIG)
         acc = 0.0
         best_acc = 0.0
-        for epoch in range(start_epoch, start_epoch+args.epochs):
+        for epoch in range(start_epoch, start_epoch + params.epochs):
             train(epoch)
             acc, best_acc = test(epoch)
             nni.report_intermediate_result(acc)

@@ -155,9 +155,6 @@ def get_params():
     parser = argparse.ArgumentParser()
     parser.add_argument("--data_dir", type=str,
                         default='/tmp/tensorflow/mnist/input_data', help="data directory")
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--data_dir", type=str,
-                        default='/tmp/tensorflow/mnist/input_data', help="data directory")
     parser.add_argument("--constraints_weights", type=float,
                         default=1, help="dropout rate")
     parser.add_argument("--l2_norm", type=float,
