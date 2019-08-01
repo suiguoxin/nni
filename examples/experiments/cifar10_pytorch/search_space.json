@@ -1,5 +1,5 @@
 {
-    "optimizer":{"_type":"choice", "_value":["SGD", "Adadelta", "Adagrad", "Adam", "Adamax"],
+    "optimizer":{"_type":"choice", "_value":["SGD", "Adadelta", "Adagrad", "Adam", "Adamax"]},
     "learning_rate":{"_type":"choice", "_value":[0.1, 0.01, 0.001, 0.0001]},
     "batch_size": {"_type":"choice","_value":[32, 64, 128, 256]},
     "kernel_size":{"_type":"choice","_value":[2,3,5,7]},
