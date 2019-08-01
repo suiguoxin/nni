@@ -130,7 +130,7 @@ def main(params):
                                                     mnist_network.keep_prob: 1 - params['dropout_rate']}
                                          )
 
-            if i % 100 == 0:
+            if (i+1) % 100 == 0 and (i+1) != params['batch_num']:
                 test_acc = mnist_network.accuracy.eval(
                     feed_dict={mnist_network.images: mnist.test.images,
                                mnist_network.labels: mnist.test.labels,

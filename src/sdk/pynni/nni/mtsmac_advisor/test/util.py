@@ -95,11 +95,12 @@ def create_fake_data_expdacay_diff_length(exp_lambda=0.5, asymp=0.5, gaussian_no
     return X, y
 
 
-def create_fake_data_mnist(size_X=100, len_y=21):
+def create_fake_data_mnist(size_X=100, len_y=21, metric="accuracy"):
     '''
     returns
     X: shape (size_X, 5)
     y: shape(size_X,) where element is a list of len_y
+    metric: "accuray" or "err_rate"
     '''
     assert size_X <= 100
     assert len_y <= 21
@@ -117,15 +118,19 @@ def create_fake_data_mnist(size_X=100, len_y=21):
             y[i] = []
             intermediate = trial['intermediate']
             for _, res in enumerate(intermediate):
-                y[i] += [1 - float(res['data'])]
-
+                if metric == 'accuracy':
+                    y[i] += [float(res['data'])]
+                elif metric == 'err_rate':
+                    y[i] += [1 - float(res['data'])]
+                else:
+                    raise ValueError("metric should be 'accuray' or 'err_rate'")
     return X, y
 
 
-def get_obs(X, y, size_obs, len_y):
-    assert size_obs == len(len_y)
+def get_obs(X, y, len_y):
     assert all(ele <= len(y[0]) for ele in len_y)
-
+    
+    size_obs = len(len_y)
     X_obs = X[:size_obs][:]
     y_obs = np.empty(size_obs, dtype=object)
 
