@@ -6,5 +6,4 @@
     "channel_size":{"_type":"choice","_value":[64, 128]}, 
     "pooling_size":{"_type":"choice","_value":[2,4,8]},
     "weight_decay":{"_type":"choice","_value":[0.5, 0.05, 0.005, 0.0005]}
-    }
 }

@@ -43,7 +43,7 @@ class ResNet(nn.Module):
 
         self.conv1 = nn.Conv2d(3, out_channels=channel_size, kernel_size=kernel_size, stride=1, padding=1, bias=False)
         self.bn1 = nn.BatchNorm2d(channel_size)
-        self.layer1 = self._make_layer(block, channel_size, num_blocks[0], stride=1) # TODO
+        self.layer1 = self._make_layer(block, channel_size, num_blocks[0], stride=1)
         self.layer2 = self._make_layer(block, 128, num_blocks[1], stride=2)
         self.layer3 = self._make_layer(block, 256, num_blocks[2], stride=2)
         self.layer4 = self._make_layer(block, 512, num_blocks[3], stride=2)
@@ -79,4 +79,4 @@ def test():
     y = net(torch.randn(1,3,32,32))
     print(y.size())
 
-# test()
+test()
