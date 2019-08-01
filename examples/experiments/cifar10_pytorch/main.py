@@ -83,7 +83,6 @@ def prepare(args):
         optimizer = optim.Adam(net.parameters(), lr=args['lr'])
 
 
-# Training
 def train(epoch):
     global trainloader
     global testloader
@@ -113,6 +112,7 @@ def train(epoch):
 
         progress_bar(batch_idx, len(trainloader), 'Loss: %.3f | Acc: %.3f%% (%d/%d)'
             % (train_loss/(batch_idx+1), 100.*correct/total, correct, total))
+
 
 def test(epoch):
     global best_acc

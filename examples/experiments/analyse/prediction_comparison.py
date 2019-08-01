@@ -96,12 +96,12 @@ def test():
     predict_y = curvemodel.predict(trial_history=y_obs[3])
     print("predict_y: ", predict_y)
     '''
-    for _ in range(10):
+    for i in range(10):
+        np.random.seed(i)
         t = 8
         y_obs = [0.11349999904632568, 0.09799999743700027, 0.11349999904632568, 0.11349999904632568, 0.10100000351667404, 0.10320000350475311, 0.09740000218153]
-        curvemodel = CurveModel(target_pos=t)
-        predict_y = curvemodel.predict(trial_history=y_obs)
-        del curvemodel
+        predict_y = CurveModel(target_pos=t).predict(trial_history=y_obs)
+        # del curvemodel
         print("predict_y: ", predict_y)
 
 
