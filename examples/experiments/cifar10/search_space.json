@@ -1,9 +1,10 @@
 {
     "optimizer":{"_type":"choice", "_value":["SGD", "Adadelta", "Adagrad", "Adam", "Adamax"]},
     "learning_rate":{"_type":"choice", "_value":[0.1, 0.01, 0.001, 0.0001]},
+    "weight_decay":{"_type":"choice","_value":[10, 1, 0.1, 0.001, 0.0001, 0.0001]},
     "batch_size": {"_type":"choice","_value":[32, 64, 128, 256]},
     "kernel_size":{"_type":"choice","_value":[2,3,5,7]},
     "channel_size":{"_type":"choice","_value":[64, 128]}, 
     "pooling_size":{"_type":"choice","_value":[4]},
-    "weight_decay":{"_type":"choice","_value":[0.5, 0.05, 0.005, 0.0005]}
+    "dropout_rate":{"_type":"uniform","_value":[0, 1]}
 }

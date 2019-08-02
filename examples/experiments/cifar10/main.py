@@ -165,7 +165,7 @@ def test(epoch):
 def get_params():
     ''' Get parameters from command line '''
     parser = argparse.ArgumentParser()
-    parser.add_argument("--epochs", type=int, default=200)
+    parser.add_argument("--epochs", type=int, default=10)
     # search space arguments
     parser.add_argument("--optimizer", type=str, default="Adam")
     parser.add_argument("--learning_rate", type=float, default=1e-4)
@@ -173,16 +173,9 @@ def get_params():
     parser.add_argument("--kernel_size", type=int, default=3, help='kernel_size of the first conv layer')
     parser.add_argument("--channel_size", type=int, default=64, help='out_channels of the first conv layer')
     parser.add_argument("--pooling_size", type=int, default=4)
-    parser.add_argument("--weight_decay", type=float, default=5e-4)
-
-    # parser.add_argument("--dropout_rate", type=float, default=1)
+    parser.add_argument("--weight_decay", type=float, default=1e-4)
+    parser.add_argument("--dropout_rate", type=float, default=0)
     
-    # TO consider
-    # parser.add_argument("--expansion_size", type=int, default=1)
-    # parser.add_argument("--hidden_size", type=int, default=4)
-    # parser.add_argument("--filter_size", type=int, default=4)
-    # "expansion_size":{"_type":"choice","_value":[1,2,3,4]},
-    # "dropout_rate":{"_type":"uniform","_value":[0, 1]}
     args, _ = parser.parse_known_args()
     return args
 

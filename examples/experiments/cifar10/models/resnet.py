@@ -40,7 +40,7 @@ class BasicBlock(nn.Module):
 
 
 class ResNet(nn.Module):
-    def __init__(self, block, num_blocks, channel_size, kernel_size, pooling_size, num_classes=10):
+    def __init__(self, block, num_blocks, channel_size, kernel_size, pooling_size, dropout_rate, num_classes=10):
         super(ResNet, self).__init__()
         self.in_planes = channel_size
 
@@ -53,6 +53,7 @@ class ResNet(nn.Module):
         self.layer4 = self._make_layer(block, 512, num_blocks[3], stride=2)
         self.linear = nn.Linear(512*block.expansion, num_classes)
         self.pooling_size = pooling_size
+        self.dropout = nn.Dropout(p=dropout_rate)
 
     def _make_layer(self, block, planes, num_blocks, stride):
         strides = [stride] + [1]*(num_blocks-1)
@@ -78,13 +79,15 @@ class ResNet(nn.Module):
         print('6: ', out.size())
         out = out.view(out.size(0), -1)
         print('7: ', out.size())
-        out = self.linear(out)
+        out = self.dropout(out)
         print('8: ', out.size())
+        out = self.linear(out)
+        print('9: ', out.size())
         return out
 
 
-def ResNet18(channel_size=128, kernel_size=3, pooling_size=4):
-    return ResNet(BasicBlock, [2, 2, 2, 2], channel_size, kernel_size, pooling_size)
+def ResNet18(channel_size=128, kernel_size=3, pooling_size=4, dropout_rate=0.5):
+    return ResNet(BasicBlock, [2, 2, 2, 2], channel_size, kernel_size, pooling_size, dropout_rate)
 
 
 def test():
