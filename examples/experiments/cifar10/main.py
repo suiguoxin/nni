@@ -197,7 +197,7 @@ if __name__ == '__main__':
 
         acc = 0.0
         best_acc = 0.0
-        for epoch in range(start_epoch, start_epoch + params.epochs):
+        for epoch in range(start_epoch, start_epoch + params['epochs']):
             train(epoch)
             acc, best_acc = test(epoch)
             nni.report_intermediate_result(acc)
