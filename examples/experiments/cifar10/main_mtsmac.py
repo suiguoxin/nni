@@ -30,6 +30,7 @@ device = 'cuda' if torch.cuda.is_available() else 'cpu'
 best_acc = 0.0  # best test accuracy
 start_epoch = 0  # start from epoch 0 or last checkpoint epoch
 
+
 def prepare(args):
     global trainloader
     global testloader
@@ -43,19 +44,25 @@ def prepare(args):
         transforms.RandomCrop(32, padding=4),
         transforms.RandomHorizontalFlip(),
         transforms.ToTensor(),
-        transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
+        transforms.Normalize((0.4914, 0.4822, 0.4465),
+                             (0.2023, 0.1994, 0.2010)),
     ])
 
     transform_test = transforms.Compose([
         transforms.ToTensor(),
-        transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
+        transforms.Normalize((0.4914, 0.4822, 0.4465),
+                             (0.2023, 0.1994, 0.2010)),
     ])
 
-    trainset = torchvision.datasets.CIFAR10(root='./data', train=True, download=True, transform=transform_train)
-    trainloader = torch.utils.data.DataLoader(trainset, batch_size=args['batch_size'], shuffle=True, num_workers=2)
+    trainset = torchvision.datasets.CIFAR10(
+        root='./data', train=True, download=True, transform=transform_train)
+    trainloader = torch.utils.data.DataLoader(
+        trainset, batch_size=args['batch_size'], shuffle=True, num_workers=2)
 
-    testset = torchvision.datasets.CIFAR10(root='./data', train=False, download=True, transform=transform_test)
-    testloader = torch.utils.data.DataLoader(testset, batch_size=100, shuffle=False, num_workers=2)
+    testset = torchvision.datasets.CIFAR10(
+        root='./data', train=False, download=True, transform=transform_test)
+    testloader = torch.utils.data.DataLoader(
+        testset, batch_size=100, shuffle=False, num_workers=2)
 
     # Model
     print('==> Building model..')
@@ -63,25 +70,39 @@ def prepare(args):
         channel_size=args['channel_size'],
         kernel_size=args['kernel_size'],
         pooling_size=args['pooling_size']
-        )
+    )
 
     net = net.to(device)
     if device == 'cuda':
         net = torch.nn.DataParallel(net)
         cudnn.benchmark = True
 
+    # checkpoint dir
+    if not os.path.isdir(params['experiment_id']):
+        os.mkdir(params['experiment_id'])
+    checkpoint_file = '{0}/model_{1}.ckpt.t7'.format(
+        params['experiment_id'], params['parameter_id'])
+
+    if os.path.exists(checkpoint_file):
+        net.load_state_dict(torch.load(checkpoint_file))
+
     criterion = nn.CrossEntropyLoss()
 
     if args['optimizer'] == 'SGD':
-        optimizer = optim.SGD(net.parameters(), lr=args['learning_rate'], momentum=0.9, weight_decay=args['weight_decay'])
+        optimizer = optim.SGD(net.parameters(
+        ), lr=args['learning_rate'], momentum=0.9, weight_decay=args['weight_decay'])
     if args['optimizer'] == 'Adadelta':
-        optimizer = optim.Adadelta(net.parameters(), lr=args['learning_rate'], weight_decay=args['weight_decay'])
+        optimizer = optim.Adadelta(
+            net.parameters(), lr=args['learning_rate'], weight_decay=args['weight_decay'])
     if args['optimizer'] == 'Adagrad':
-        optimizer = optim.Adagrad(net.parameters(), lr=args['learning_rate'], weight_decay=args['weight_decay'])
+        optimizer = optim.Adagrad(
+            net.parameters(), lr=args['learning_rate'], weight_decay=args['weight_decay'])
     if args['optimizer'] == 'Adam':
-        optimizer = optim.Adam(net.parameters(), lr=args['learning_rate'], weight_decay=args['weight_decay'])
+        optimizer = optim.Adam(
+            net.parameters(), lr=args['learning_rate'], weight_decay=args['weight_decay'])
     if args['optimizer'] == 'Adamax':
-        optimizer = optim.Adamax(net.parameters(), lr=args['learning_rate'], weight_decay=args['weight_decay'])
+        optimizer = optim.Adamax(
+            net.parameters(), lr=args['learning_rate'], weight_decay=args['weight_decay'])
 
 
 def train(epoch):
@@ -112,7 +133,7 @@ def train(epoch):
         acc = 100.*correct/total
 
         progress_bar(batch_idx, len(trainloader), 'Loss: %.3f | Acc: %.3f%% (%d/%d)'
-            % (train_loss/(batch_idx+1), 100.*correct/total, correct, total))
+                     % (train_loss/(batch_idx+1), 100.*correct/total, correct, total))
 
 
 def test(epoch):
@@ -141,20 +162,10 @@ def test(epoch):
             acc = 100.*correct/total
 
             progress_bar(batch_idx, len(testloader), 'Loss: %.3f | Acc: %.3f%% (%d/%d)'
-                % (test_loss/(batch_idx+1), 100.*correct/total, correct, total))
+                         % (test_loss/(batch_idx+1), 100.*correct/total, correct, total))
 
-    # Save checkpoint.
     acc = 100.*correct/total
     if acc > best_acc:
-        print('Saving..')
-        state = {
-            'net': net.state_dict(),
-            'acc': acc,
-            'epoch': epoch,
-        }
-        if not os.path.isdir('checkpoint'):
-            os.mkdir('checkpoint')
-        torch.save(state, './checkpoint/ckpt.t7')
         best_acc = acc
     return acc, best_acc
 
@@ -168,11 +179,13 @@ def get_params():
     parser.add_argument("--learning_rate", type=float, default=1e-4)
     parser.add_argument("--weight_decay", type=float, default=1e-4)
     parser.add_argument("--batch_size", type=int, default=128)
-    parser.add_argument("--kernel_size", type=int, default=3, help='kernel_size of the first conv layer')
-    parser.add_argument("--channel_size", type=int, default=64, help='out_channels of the first conv layer')
+    parser.add_argument("--kernel_size", type=int, default=3,
+                        help='kernel_size of the first conv layer')
+    parser.add_argument("--channel_size", type=int, default=64,
+                        help='out_channels of the first conv layer')
     parser.add_argument("--pooling_size", type=int, default=4)
     parser.add_argument("--dropout_rate", type=float, default=0)
-    
+
     args, _ = parser.parse_known_args()
     return args
 
@@ -181,18 +194,25 @@ if __name__ == '__main__':
     try:
         tuner_params = nni.get_next_parameter()
         _logger.debug(tuner_params)
+
+        tuner_params['epochs'] = tuner_params['TRIAL_BUDGET']
+        tuner_params['parameter_id'] = tuner_params['PARAMETER_ID']
+        tuner_params['experiment_id'] = nni.get_experiment_id()
         params = vars(get_params())
         params.update(tuner_params)
         prepare(params)
 
         acc = 0.0
-        best_acc = 0.0
         for epoch in range(start_epoch, start_epoch + params['epochs']):
             train(epoch)
-            acc, best_acc = test(epoch)
-            nni.report_intermediate_result(acc)
+            acc, _ = test(epoch)
 
-        nni.report_final_result(best_acc)
+            if epoch == (start_epoch + params['epochs'] - 1):
+                torch.save(net.state_dict(), checkpoint_file)
+                nni.report_final_result(acc)
+            else:
+                nni.report_intermediate_result(acc)
+
     except Exception as exception:
         _logger.exception(exception)
         raise

@@ -40,7 +40,7 @@ class MTSMAC(MsgDispatcherBase):
     Multi-Task SMAC
     '''
 
-    def __init__(self, optimize_mode='maximize', cold_start_num=8, max_epochs=27):
+    def __init__(self, optimize_mode='maximize', max_budget=30, cold_start_num=5):
         """
         Parameters
         ----------
@@ -53,7 +53,7 @@ class MTSMAC(MsgDispatcherBase):
         self._predictor = Predictor(multi_task=True)
         # num of random evaluations before GPR
         self._cold_start_num = cold_start_num
-        self._max_epochs = max_epochs
+        self._max_epochs = max_budget
 
         # target space
         self._space = None

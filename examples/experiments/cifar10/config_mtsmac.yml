@@ -8,13 +8,14 @@ trainingServicePlatform: local
 searchSpacePath: search_space.json
 #choice: true, false
 useAnnotation: false
-tuner:
-  #choice: TPE, Random, Anneal, Evolution, BatchTuner, MetisTuner
-  #SMAC (SMAC should be installed through nnictl)
-  builtinTunerName: MTSMAC
+advisor:
+  #choice: Hyperband, BOHB, MTSMAC
+  builtinAdvisorName: MTSMAC
   classArgs:
     #choice: maximize, minimize
     optimize_mode: maximize
+    max_budget: 3
+    cold_start_num: 3
 trial:
   command: python3 main_mtsmac.py
   codeDir: .

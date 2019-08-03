@@ -191,7 +191,7 @@ class TargetSpace():
         """
         Creates a random point within the bounds of the space.
         """
-        params = np.empty(self.dim)
+        params = np.empty(self.dim, dtype=object)
         for col, _bound in enumerate(self._bounds):
             if _bound['_type'] == 'choice':
                 params[col] = parameter_expressions.choice(

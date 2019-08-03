@@ -15,6 +15,8 @@ advisor:
   classArgs:
     #choice: maximize, minimize
     optimize_mode: maximize
+    max_budget: 27
+    cold_start_num: 8
 trial:
   command: python3 mnist_lr_mtsmac.py
   codeDir: .
