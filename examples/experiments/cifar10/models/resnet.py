@@ -51,9 +51,10 @@ class ResNet(nn.Module):
         self.layer2 = self._make_layer(block, 128, num_blocks[1], stride=2)
         self.layer3 = self._make_layer(block, 256, num_blocks[2], stride=2)
         self.layer4 = self._make_layer(block, 512, num_blocks[3], stride=2)
-        self.linear = nn.Linear(512*block.expansion, num_classes)
         self.pooling_size = pooling_size
         self.dropout = nn.Dropout(p=dropout_rate)
+        tmp = int((4/pooling_size)**2)
+        self.linear = nn.Linear(512*block.expansion*tmp, num_classes)
 
     def _make_layer(self, block, planes, num_blocks, stride):
         strides = [stride] + [1]*(num_blocks-1)
@@ -64,15 +65,15 @@ class ResNet(nn.Module):
         return nn.Sequential(*layers)
 
     def forward(self, x):
-        print('0: ', x.size())
+        #print('0: ', x.size())
         out = F.relu(self.bn1(self.conv1(x)))
-        print('1: ', out.size())
+        #print('1: ', out.size())
         out = self.layer1(out)
-        print('2: ', out.size())
+        #print('2: ', out.size())
         out = self.layer2(out)
-        print('3: ', out.size())
+        #print('3: ', out.size())
         out = self.layer3(out)
-        print('4: ', out.size())
+        #print('4: ', out.size())
         out = self.layer4(out)
         print('5: ', out.size())
         out = F.avg_pool2d(out, self.pooling_size)  # TODO
