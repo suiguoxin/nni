@@ -196,7 +196,7 @@ if __name__ == '__main__':
         params.update(tuner_params)
         params['experiment_id'] = nni.get_experiment_id()
         params['checkpoint'] = '{0}/model_{1}.ckpt.t7'.format(
-            params['experiment_id'], params['PARAMETER_ID'])        
+            params['experiment_id'], params['PARAMETER_ID'])
         _logger.info(params)
 
         prepare(params)
