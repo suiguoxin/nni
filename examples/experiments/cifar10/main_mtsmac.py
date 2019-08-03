@@ -80,10 +80,10 @@ def prepare(args):
     # checkpoint dir
     if not os.path.isdir(params['experiment_id']):
         os.mkdir(params['experiment_id'])
-    checkpoint_file = args['checkpoint_file']
+    checkpoint = args['checkpoint']
 
-    if os.path.exists(checkpoint_file):
-        net.load_state_dict(torch.load(checkpoint_file))
+    if os.path.exists(checkpoint):
+        net.load_state_dict(torch.load(checkpoint))
 
     criterion = nn.CrossEntropyLoss()
 
@@ -172,7 +172,7 @@ def test(epoch):
 def get_params():
     ''' Get parameters from command line '''
     parser = argparse.ArgumentParser()
-    parser.add_argument("--epochs", type=int, default=200)
+    parser.add_argument("--TRIAL_BUDGET", type=int, default=200)
     # search space arguments
     parser.add_argument("--optimizer", type=str, default="Adam")
     parser.add_argument("--learning_rate", type=float, default=1e-4)
@@ -192,24 +192,22 @@ def get_params():
 if __name__ == '__main__':
     try:
         tuner_params = nni.get_next_parameter()
-        _logger.debug(tuner_params)
-
-        tuner_params['epochs'] = tuner_params['TRIAL_BUDGET']
-        tuner_params['parameter_id'] = tuner_params['PARAMETER_ID']
-        tuner_params['experiment_id'] = nni.get_experiment_id()
-        tuner_params['checkpoint_file'] = '{0}/model_{1}.ckpt.t7'.format(
-            params['experiment_id'], params['parameter_id'])
         params = vars(get_params())
         params.update(tuner_params)
+        params['experiment_id'] = nni.get_experiment_id()
+        params['checkpoint'] = '{0}/model_{1}.ckpt.t7'.format(
+            params['experiment_id'], params['PARAMETER_ID'])        
+        _logger.info(params)
+
         prepare(params)
 
         acc = 0.0
-        for epoch in range(start_epoch, start_epoch + params['epochs']):
+        for epoch in range(start_epoch, start_epoch + params['TRIAL_BUDGET']):
             train(epoch)
             acc, _ = test(epoch)
 
-            if epoch == (start_epoch + params['epochs'] - 1):
-                torch.save(net.state_dict(), params['checkpoint_file'])
+            if epoch == (start_epoch + params['TRIAL_BUDGET'] - 1):
+                torch.save(net.state_dict(), params['checkpoint'])
                 nni.report_final_result(acc)
             else:
                 nni.report_intermediate_result(acc)
