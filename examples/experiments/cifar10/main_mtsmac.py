@@ -80,8 +80,7 @@ def prepare(args):
     # checkpoint dir
     if not os.path.isdir(params['experiment_id']):
         os.mkdir(params['experiment_id'])
-    checkpoint_file = '{0}/model_{1}.ckpt.t7'.format(
-        params['experiment_id'], params['parameter_id'])
+    checkpoint_file = args['checkpoint_file']
 
     if os.path.exists(checkpoint_file):
         net.load_state_dict(torch.load(checkpoint_file))
@@ -198,6 +197,8 @@ if __name__ == '__main__':
         tuner_params['epochs'] = tuner_params['TRIAL_BUDGET']
         tuner_params['parameter_id'] = tuner_params['PARAMETER_ID']
         tuner_params['experiment_id'] = nni.get_experiment_id()
+        tuner_params['checkpoint_file'] = '{0}/model_{1}.ckpt.t7'.format(
+            params['experiment_id'], params['parameter_id'])
         params = vars(get_params())
         params.update(tuner_params)
         prepare(params)
@@ -208,7 +209,7 @@ if __name__ == '__main__':
             acc, _ = test(epoch)
 
             if epoch == (start_epoch + params['epochs'] - 1):
-                torch.save(net.state_dict(), checkpoint_file)
+                torch.save(net.state_dict(), params['checkpoint_file'])
                 nni.report_final_result(acc)
             else:
                 nni.report_intermediate_result(acc)
