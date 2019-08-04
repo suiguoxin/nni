@@ -72,7 +72,7 @@ class Predictor():
         N_features = X[0].shape[0]
 
         if not self.multi_task:
-            X_new = np.empty([0, N_features], dtype=object)
+            X_new = np.empty([0, N_features])
             y_new = np.empty(0)
 
             # select from completed trials
@@ -81,7 +81,7 @@ class Predictor():
                     X_new = np.vstack((X_new, X_i))
                     y_new = np.append(y_new, y_i[-1])
         else:
-            X_new = np.empty([0, N_features+1], dtype=object)
+            X_new = np.empty([0, N_features+1])
             y_new = np.empty(0)
             for i in range(N):
                 for t in range(len(y[i])):

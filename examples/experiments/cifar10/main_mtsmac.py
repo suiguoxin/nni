@@ -86,22 +86,7 @@ def prepare(args):
         net.load_state_dict(torch.load(checkpoint))
 
     criterion = nn.CrossEntropyLoss()
-
-    if args['optimizer'] == 'SGD':
-        optimizer = optim.SGD(net.parameters(
-        ), lr=args['learning_rate'], momentum=0.9, weight_decay=args['weight_decay'])
-    if args['optimizer'] == 'Adadelta':
-        optimizer = optim.Adadelta(
-            net.parameters(), lr=args['learning_rate'], weight_decay=args['weight_decay'])
-    if args['optimizer'] == 'Adagrad':
-        optimizer = optim.Adagrad(
-            net.parameters(), lr=args['learning_rate'], weight_decay=args['weight_decay'])
-    if args['optimizer'] == 'Adam':
-        optimizer = optim.Adam(
-            net.parameters(), lr=args['learning_rate'], weight_decay=args['weight_decay'])
-    if args['optimizer'] == 'Adamax':
-        optimizer = optim.Adamax(
-            net.parameters(), lr=args['learning_rate'], weight_decay=args['weight_decay'])
+    optimizer = optim.SGD(net.parameters(), lr=args['learning_rate'], momentum=args['momentum'], weight_decay=args['weight_decay'])
 
 
 def train(epoch):
@@ -174,8 +159,8 @@ def get_params():
     parser = argparse.ArgumentParser()
     parser.add_argument("--TRIAL_BUDGET", type=int, default=200)
     # search space arguments
-    parser.add_argument("--optimizer", type=str, default="Adam")
     parser.add_argument("--learning_rate", type=float, default=1e-4)
+    parser.add_argument("--momentum", type=float, default=0)
     parser.add_argument("--weight_decay", type=float, default=1e-4)
     parser.add_argument("--batch_size", type=int, default=128)
     parser.add_argument("--kernel_size", type=int, default=3,

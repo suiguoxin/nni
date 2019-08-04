@@ -329,15 +329,16 @@ class TargetSpace():
 
         logger.debug("param_selected %s", param_selected)
         param = param_selected['param']
-        if 'parameter_id' not in param_selected: # new config is selected
+        if 'parameter_id' not in param_selected:  # new config is selected
             parameter_id = self.next_param_id
             self.next_param_id += 1
             self.register_new_config(parameter_id, param)
             self._budget[parameter_id] = 1
-        else: # old config is selected
+        else:  # old config is selected
             parameter_id = param_selected['parameter_id']
             if len(self.hyper_configs[parameter_id]['perf']) + self._budget[parameter_id] + 1 >= self.max_epochs:
-                self._budget[parameter_id] = self.max_epochs - len(self.hyper_configs[parameter_id]['perf'])
+                self._budget[parameter_id] = self.max_epochs - \
+                    len(self.hyper_configs[parameter_id]['perf'])
             else:
                 self._budget[parameter_id] += 1
 
