@@ -38,12 +38,12 @@ class Predictor():
         ----------
         """
         self.regr = RandomForestRegressor(
-            n_estimators=10, max_depth=7, min_samples_split=10, max_features=5/6, random_state=0)
+            n_estimators=10, max_depth=100, min_samples_split=2, max_features=5/6, random_state=0)
         self.multi_task = multi_task
         self.epochs = None
 
     def fit(self, X, y):
-        """Fit Freeze-Thaw Two Step Gaussian process regression model.
+        """Fit MTSMAC regression model.
 
         Parameters
         ----------
@@ -72,7 +72,7 @@ class Predictor():
         N_features = X[0].shape[0]
 
         if not self.multi_task:
-            X_new = np.empty([0, N_features])
+            X_new = np.empty([0, N_features], dtype=object)
             y_new = np.empty(0)
 
             # select from completed trials
@@ -81,16 +81,12 @@ class Predictor():
                     X_new = np.vstack((X_new, X_i))
                     y_new = np.append(y_new, y_i[-1])
         else:
-            X_new = np.empty([0, N_features+1])
+            X_new = np.empty([0, N_features+1], dtype=object)
             y_new = np.empty(0)
             for i in range(N):
                 for t in range(len(y[i])):
                     X_new = np.vstack((X_new, np.append(X[i], [t])))
                     y_new = np.append(y_new, y[i][t])
-
-        # print('shape of new X, y:')
-        # print(X_new.shape)
-        # print(y_new.shape)
 
         return X_new, y_new
 
@@ -137,15 +133,5 @@ class Predictor():
                     std_t = np.std(res, axis=0)
                     mean = np.hstack((mean, mean_t.reshape(-1, 1)))
                     std = np.hstack((std, std_t.reshape(-1, 1)))
-
-        # print('shape of mean, std:')
-        # print(mean.shape)
-        # print(std.shape)
-        # print('res')
-        # print(res)
-        # print('mean')
-        # print(mean)
-        # print('std')
-        # print(std)
 
         return mean, std
