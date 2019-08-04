@@ -85,6 +85,7 @@ def get_err_abs_cf(X, y, len_y):
 
     return err_abs
 
+
 def test():
     '''
     X, y = create_fake_data_mnist(metric="err_rate")
