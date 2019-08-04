@@ -32,8 +32,6 @@ from nni.mtsmac_advisor.test.util import create_fake_data_simple, create_fake_da
 from nni.mtsmac_advisor.test.util import create_fake_data_expdacay, create_fake_data_expdacay_diff_length
 
 
-
-
 PATH = './examples/experiments'
 
 # pylint:disable=missing-docstring
@@ -54,7 +52,7 @@ def get_err_abs_mtsmac(X, y, len_y):
         count_t = 0
         for j, len_y_j in enumerate(len_y):
             if len_y_j <= t:
-                err_abs[t] += abs(y[j][t]  - mean[j][t])
+                err_abs[t] += abs(y[j][t] - mean[j][t])
                 count_t += 1
         if count_t:
             err_abs[t] /= count_t
@@ -72,38 +70,19 @@ def get_err_abs_cf(X, y, len_y):
             if len_y_j <= t:
                 print("t:", t)
                 print("y_obs[{}]:\n".format(j), y_obs[j])
+                np.random.seed(0)
                 curvemodel = CurveModel(target_pos=t)
                 predict_y = curvemodel.predict(trial_history=y_obs[j])
 
                 del curvemodel
                 print("predict_y: ", predict_y)
-                err_abs[t] += abs(y[j][t]  - predict_y)
+                err_abs[t] += abs(y[j][t] - predict_y)
                 count_t += 1
         if count_t:
             err_abs[t] /= count_t
         print("err_abs", err_abs[t])
-
+    
     return err_abs
-
-
-def test():
-    '''
-    X, y = create_fake_data_mnist(metric="err_rate")
-    len_y = [21,21,21,6]
-    _, y_obs = get_obs(X, y, len_y)
-    print("y_obs[3]:\n", y_obs[3])
-
-    curvemodel = CurveModel(target_pos=6)
-    predict_y = curvemodel.predict(trial_history=y_obs[3])
-    print("predict_y: ", predict_y)
-    '''
-    for i in range(10):
-        np.random.seed(i)
-        t = 8
-        y_obs = [0.11349999904632568, 0.09799999743700027, 0.11349999904632568, 0.11349999904632568, 0.10100000351667404, 0.10320000350475311, 0.09740000218153]
-        predict_y = CurveModel(target_pos=t).predict(trial_history=y_obs)
-        # del curvemodel
-        print("predict_y: ", predict_y)
 
 
 def plot_prediction_comp():
@@ -124,19 +103,33 @@ def plot_prediction_comp():
     plt.close()
 
 
+def test():
+    for i in range(5):
+        np.random.seed(0)
+        t = 8
+        y_obs = [0.11349999904632568, 0.09799999743700027, 0.11349999904632568,
+                 0.11349999904632568, 0.10100000351667404, 0.10320000350475311, 0.09740000218153]
+        print("t:", t)
+        print("y_obs:\n", y_obs)
+        curvemodel = CurveModel(target_pos=t)
+        predict_y = curvemodel.predict(trial_history=y_obs)
+        # del curvemodel
+        print("predict_y: ", predict_y)
+
+
 def test_CF():
     X, y = create_fake_data_mnist(metric="accuracy")
 
-    len_completed = [21] * 10
+    len_completed = [21] * 11
 
     # len_half = [np.random.randint(5, 21) for _ in range(3)]
-    len_half = [10, 13, 15]
+    len_half = [13]
     len_y = len_completed + len_half
 
     _, y_obs = get_obs(X, y, len_y)
 
     mean = np.empty(len(len_y), dtype=object)
-    for i in range(len(len_y)):
+    for i in range(len(len_completed), len(len_y)):
         mean[i] = []
         trial_history = y_obs[i]
         for pos in range(len(trial_history), 21):
@@ -153,6 +146,7 @@ def test_CF():
     plt.savefig('{}/analyse/image/LC.png'.format(PATH))
     plt.close()
 
+
 test()
-#test_CF()
-#plot_prediction_comp()
+# test_CF()
+plot_prediction_comp()
