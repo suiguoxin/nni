@@ -9,6 +9,7 @@ searchSpacePath: search_space.json
 #choice: true, false
 useAnnotation: false
 nniManagerIp: 10.94.117.214
+versionCheck: false
 tuner:
   #choice: TPE, Random, Anneal, Evolution, BatchTuner, MetisTuner
   #SMAC (SMAC should be installed through nnictl)
