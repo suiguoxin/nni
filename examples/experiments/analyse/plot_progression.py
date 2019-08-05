@@ -73,7 +73,7 @@ def plot_progression_png(experiment, tuner, num_trials):
 
     plt.xlabel('Epochs')
     plt.ylabel('Default Metric')
-    plt.ylim(0, 1)
+    plt.ylim(0, 100)
     plt.title('MNIST Progression')
     plt.savefig('{}/analyse/image/{}/progression_{}.png'.format(PATH, experiment, tuner))
     plt.close()
@@ -84,7 +84,7 @@ def _plot_progression_limit(experiment, tuner, num_trials):
     Fig 4
     '''
     fig, ax = plt.subplots(figsize=(10, 5))
-    ax.set(xlabel='Epochs', ylabel='Default Metric', title='MNIST Progression', ylim=(0, 1))
+    ax.set(xlabel='Epochs', ylabel='Default Metric', title='MNIST Progression', ylim=(0, 100))
 
     with open('{}/result/{}/{}.json'.format(PATH, experiment, tuner)) as json_file:
         result = json.load(json_file)
@@ -139,5 +139,5 @@ def plot_progression_gif(experiment, tuner, num_trials):
         [_plot_progression_limit(experiment, tuner, i) for i in range(1, num_trials)],
         fps=10)
 
-plot_progression_png('mnist_lr', 'mtsmac_095xi2', 300)
-plot_progression_gif('mnist_lr', 'mtsmac_095xi2', 300)
+plot_progression_png('cifar10', 'mtsmac', 70)
+plot_progression_gif('cifar10', 'mtsmac', 70)
