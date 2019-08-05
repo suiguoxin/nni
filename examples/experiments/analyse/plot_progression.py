@@ -139,5 +139,5 @@ def plot_progression_gif(experiment, tuner, num_trials):
         [_plot_progression_limit(experiment, tuner, i) for i in range(1, num_trials)],
         fps=10)
 
-plot_progression_png('cifar10', 'mtsmac', 70)
-plot_progression_gif('cifar10', 'mtsmac', 70)
+plot_progression_png('cifar10', 'mtsmac', 500)
+plot_progression_gif('cifar10', 'mtsmac', 500)
