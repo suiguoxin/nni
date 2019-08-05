@@ -50,7 +50,6 @@ class CurveModel(object):
         self.effective_model = []
         self.effective_model_num = 0
         self.weight_samples = []
-        np.random.seed(0)
 
     def fit_theta(self):
         """use least squares to fit all default curves parameter seperately
