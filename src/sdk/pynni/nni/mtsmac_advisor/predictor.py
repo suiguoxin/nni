@@ -32,13 +32,13 @@ class Predictor():
     Freeze-Thaw Bayesian Optimization: Two Step Gaussian Process Predictor
     """
 
-    def __init__(self, multi_task=False):
+    def __init__(self, multi_task=False, random_state=0):
         """
         Parameters
         ----------
         """
         self.regr = RandomForestRegressor(
-            n_estimators=10, max_depth=100, min_samples_split=2, max_features=5/6, random_state=0)
+            n_estimators=10, max_depth=100, min_samples_split=2, max_features=5/6, random_state=random_state)
         self.multi_task = multi_task
         self.epochs = None
 
