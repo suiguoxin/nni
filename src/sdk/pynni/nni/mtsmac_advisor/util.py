@@ -30,5 +30,5 @@ def ei(mean, std, y_max, xi=0):
     '''
     calculate ei of one configuration
     '''
-    z = (mean - 0.95*y_max - xi)/std
+    z = (mean - y_max - xi)/std
     return (mean - y_max - xi) * norm.cdf(z) + std * norm.pdf(z)

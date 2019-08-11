@@ -116,9 +116,9 @@ class TargetSpace():
                 params = np.vstack((params, item['params']))
                 target = np.append(target, ['new_serial'])
                 target[-1] = item['perf']  # TODO: more pythonic
-        logger.debug("get_train_data:")
-        logger.debug("params:%s", params)
-        logger.debug("target:%s", target)
+        # logger.debug("get_train_data:")
+        # logger.debug("params:%s", params)
+        # logger.debug("target:%s", target)
         return params, target
 
     def params_to_array(self, params):
@@ -231,10 +231,18 @@ class TargetSpace():
 
         return parameter_id, parameter_json
 
-    def select_config(self, predictor):
+    def select_config(self, predictor, strategy=3):
         '''
         Step 1: get a basket by 'Expected Improvement'
         Step 2: get a config by 'Information Gain'
+
+        Parameters
+        ----------
+        stragety : int
+        0: plus1 for old configs, lookahead 1 epoch at fantasize step
+        1: plus1 for old configs, lookahead several epochs at fantasize step
+        2: plus1 for old configs, use poi simply
+        2: use ei only, different for different stages
         '''
         # construct the basket of all configs
         num_new = 3
@@ -247,12 +255,33 @@ class TargetSpace():
         logger.debug("basket_old %s", basket_old)
         logger.debug("basket %s", basket)
 
+        if strategy == 3:
+            if basket_old and basket_old[0]['ei'] >= basket_new[0]['ei']:
+                param_selected = basket_old[0]
+                logger.debug(
+                    "param index %s in the basket_old is selected by ei", 0)
+            else:
+                param_selected = basket_new[0]
+                logger.debug(
+                    "param index %s in the basket_new is selected by ei", 0)
         # if an old config has largest ei, select it directly
-        if basket_old and basket_old[0]['ei'] > basket_new[0]['ei']:
+        elif basket_old and basket_old[0]['ei'] >= basket_new[0]['ei']:
             param_selected = basket_old[0]
             logger.debug(
                 "param index %s in the basket_old is selected by ei", 0)
         # if an old config has largest P_max, select it directly # TODO:check
+        # else:
+        #     # vector format of params in the basket
+        #     params = np.empty((0, len(basket[0]['param'])))
+        #     for i, item in enumerate(basket):
+        #         params = np.vstack((params, item['param']))
+        #     logger.debug("params %s", params)
+
+        #     # get P_max and current entropy
+        #     P_max = self._get_P_max_basket(basket)
+        #     param_selected = basket[P_max.argmax()]
+        #     logger.debug(
+        #         "param index %s in the basket_old is selected by P_max", P_max.argmax())
         else:
             # vector format of params in the basket
             params = np.empty((0, len(basket[0]['param'])))
@@ -280,13 +309,13 @@ class TargetSpace():
             # logger.debug("mean predicted %s", mean)
             # logger.debug("std predicted %s", std)
             for i, item in enumerate(basket):
-                logger.debug("fantasize element %s in the basket", i)
+                # logger.debug("fantasize element %s in the basket", i)
                 for j in range(n_fant):
-                    logger.debug("fantasize round %s", j)
+                    # logger.debug("fantasize round %s", j)
                     if i < num_new:
                         # fantasize an observation of a new point
-                        obs = self.random_state.normal(
-                            mean[i][0], std[i][0])
+                        obs = [self.random_state.normal(
+                            mean[i][0], std[i][0])]
                         # add fantsized point to fake training data
                         X_fant = np.vstack((X, item['param']))
                         y_fant = np.append(y, ['new_serial'])
@@ -294,15 +323,26 @@ class TargetSpace():
                     else:
                         # fantasize an observation of a old point
                         cur_epoch = len(item['perf'])
-                        obs = self.random_state.normal(
-                            mean[i][cur_epoch], std[i][cur_epoch])
+                        if strategy == 0:
+                            obs = [self.random_state.normal(
+                                mean[i][cur_epoch], std[i][cur_epoch])]
+                        # fantasize multiple observation of a old point
+                        elif strategy == 1:
+                            parameter_id = item['parameter_id']
+                            if len(item['perf']) + self._budget[parameter_id] + 1 >= self.max_epochs:
+                                budget = self.max_epochs - len(item['perf'])
+                            else:
+                                budget = self._budget[parameter_id] + 1
+                            obs = [self.random_state.normal(
+                                mean[i][cur_epoch+k], std[i][cur_epoch+k]) for k in range(budget)]
+
                         # add fantsized point to fake training data
                         X_fant = X.copy()
                         y_fant = y.copy()
                         for k in range(X_fant.shape[0]):
                             if np.array_equal(item['param'], X_fant[k]):
                                 y_fant[k] = y_fant[k].copy()
-                                y_fant[k].append(obs)
+                                y_fant[k].extend(obs)
                                 break
 
                     # conditioned on the observation, re-compute P_max and H
@@ -473,7 +513,9 @@ class TargetSpace():
             if item['status'] == 'RUNNING':
                 mean, std = predictor.predict(
                     [item['params']], final_only=True)
-                ys = ei(mean, std, y_max=self._y_max)
+                discount = 1-0.2*(self.max_epochs -
+                                  len(item['perf']))/self.max_epochs
+                ys = ei(mean, std, y_max=self._y_max*discount)
                 basket_old.append(
                     {'parameter_id': item['parameter_id'], 'param': item['params'],
                      'perf': item['perf'], 'mean': mean[0], 'std': std[0], 'ei': ys[0]})
