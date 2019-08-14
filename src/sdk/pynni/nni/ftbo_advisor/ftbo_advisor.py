@@ -40,7 +40,7 @@ class FreezeThaw(MsgDispatcherBase):
     FreezeThaw Advisor
     """
 
-    def __init__(self, optimize_mode='maximize', cold_start_num=5, max_epochs=27):
+    def __init__(self, optimize_mode='maximize', max_budget=30, cold_start_num=5):
         """
         Parameters
         ----------
@@ -53,7 +53,7 @@ class FreezeThaw(MsgDispatcherBase):
         self._predictor = Predictor()
         # num of random evaluations before GPR
         self._cold_start_num = cold_start_num
-        self._max_epochs = max_epochs
+        self._max_epochs = max_budget
 
         # target space
         self._space = None
