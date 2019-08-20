@@ -29,7 +29,7 @@ from sklearn.ensemble import RandomForestRegressor
 
 class Predictor():
     """
-    Freeze-Thaw Bayesian Optimization: Two Step Gaussian Process Predictor
+    Random Forest Predictor
     """
 
     def __init__(self, multi_task=False, random_state=0):
@@ -38,7 +38,7 @@ class Predictor():
         ----------
         """
         self.regr = RandomForestRegressor(
-            n_estimators=10, max_depth=100, min_samples_split=2, max_features=5/6, random_state=random_state)
+            n_estimators=10, max_depth=100, min_samples_split=2, max_features=5/6, bootstrap=True, random_state=random_state)
         self.multi_task = multi_task
         self.epochs = None
 
