@@ -242,13 +242,13 @@ class TargetSpace():
         0: plus1 for old configs, lookahead 1 epoch at fantasize step
         1: plus1 for old configs, lookahead several epochs at fantasize step
         2: plus1 for old configs, use poi simply
-        2: use ei only, different for different stages
+        3: use ei only, different 'xi' for different stages
         '''
         # construct the basket of all configs
         num_new = 3
         num_old = 10
-        basket_new = self._get_basket_new(predictor, num_new)
-        basket_old = self._get_basket_old(predictor, num_old)
+        basket_new = self._get_basket_new(predictor, num_new, average_ei=True)
+        basket_old = self._get_basket_old(predictor, num_old, average_ei=True)
         basket = np.append(basket_new, basket_old)
 
         logger.debug("basket_new %s", basket_new)
@@ -388,7 +388,8 @@ class TargetSpace():
 
         return parameter_id, parameter_json
 
-    def _get_basket_new(self, predictor, num, num_warmup=10000):
+ 
+    def _get_basket_new(self, predictor, num, num_warmup=10000, average_ei=False):
         '''
         select a basket from new configs
 
@@ -399,8 +400,19 @@ class TargetSpace():
         # Warm up with random points
         x_tries = [self.random_sample()
                    for _ in range(int(num_warmup))]
-        mean, std = predictor.predict(x_tries, final_only=True)
-        ys = ei(mean, std, y_max=self._y_max)
+        if not average_ei:
+            mean, std = predictor.predict(x_tries, final_only=True)
+            ys = ei(mean, std, y_max=self._y_max)
+        else:
+            mean, std = predictor.predict(x_tries, final_only=False)
+            ys = np.zeros(num_warmup)
+            for t in range(self.max_epochs):
+                ys += ei(mean[:, t], std[:, t], y_max=self._y_max *0.95)
+            ys /= self.max_epochs
+            ys.tolist()
+            logger.info("_get_basket_new")
+            logger.info("mean.shape:", mean.shape)
+            logger.info("ys :", len(ys))
 
         x_tries = [x for x, _ in sorted(
             zip(x_tries, ys), key=lambda pair: pair[1], reverse=True)]
@@ -420,9 +432,19 @@ class TargetSpace():
             for _ in range(max_steps):
                 all_neighbours = self._get_one_exchange_neighbourhoods(
                     incumbent)
-                mean, std = predictor.predict(all_neighbours, final_only=True)
-                ys_neighbours = ei(mean, std, y_max=self._y_max)
-
+                if not average_ei:
+                    mean, std = predictor.predict(all_neighbours, final_only=True)
+                    ys_neighbours = ei(mean, std, y_max=self._y_max)
+                else:
+                    mean, std = predictor.predict(all_neighbours, final_only=False)
+                    ys_neighbours = np.zeros(len(all_neighbours))
+                    for t in range(self.max_epochs):
+                        ys_neighbours += ei(mean[:, t], std[:, t], y_max=self._y_max *0.95)
+                    ys_neighbours /= self.max_epochs
+                    ys_neighbours.tolist()
+                    #logger.info("_get_basket_new")
+                    #logger.info("mean.shape:", mean.shape)
+                    #logger.info("ys_neighbours :", len(ys_neighbours))
                 if max(ys) >= acq_val_incumbent[i]:
                     # restart from the better neigobour next step
                     incumbent = all_neighbours[ys_neighbours.argmax()]
@@ -439,7 +461,6 @@ class TargetSpace():
 
         # re-comput mean std for all the 10010 new points
         mean, std = predictor.predict(x_tries, final_only=True)
-
         basket_new = []
         for i, x_i in enumerate(x_tries):
             basket_new.append(
@@ -450,6 +471,7 @@ class TargetSpace():
 
         return basket_new[:num]
 
+    
     def _get_one_exchange_neighbourhoods(self, param):
         '''get neighbours of a parameter_id
         Parameters
@@ -500,7 +522,8 @@ class TargetSpace():
 
         return neighbours
 
-    def _get_basket_old(self, predictor, num):
+    
+    def _get_basket_old(self, predictor, num, average_ei=False):
         '''
         select a basket from running configs
 
@@ -509,16 +532,28 @@ class TargetSpace():
         basket_old: [{'parameter_id': ,'param':[], 'perf': , 'mean':, 'std': , 'ei'}, {...}]
         '''
         basket_old = []
-        for item in self.hyper_configs:
-            if item['status'] == 'RUNNING':
-                mean, std = predictor.predict(
-                    [item['params']], final_only=True)
-                discount = 1-0.2*(self.max_epochs -
-                                  len(item['perf']))/self.max_epochs
-                ys = ei(mean, std, y_max=self._y_max*discount)
-                basket_old.append(
-                    {'parameter_id': item['parameter_id'], 'param': item['params'],
-                     'perf': item['perf'], 'mean': mean[0], 'std': std[0], 'ei': ys[0]})
+        if not average_ei:
+            for item in self.hyper_configs:
+                if item['status'] == 'RUNNING':
+                    mean, std = predictor.predict(
+                        [item['params']], final_only=True)
+                    discount = 1-0.2*(self.max_epochs -
+                                      len(item['perf']))/self.max_epochs
+                    ys = ei(mean, std, y_max=self._y_max*discount)
+                    basket_old.append(
+                        {'parameter_id': item['parameter_id'], 'param': item['params'],
+                         'perf': item['perf'], 'mean': mean[0], 'std': std[0], 'ei': ys[0]})
+        else:
+            for item in self.hyper_configs:
+                if item['status'] == 'RUNNING':
+                    mean, std = predictor.predict(
+                        [item['params']], final_only=False)
+                    ys = []
+                    for t in range(len(item['perf']), self.max_epochs):
+                        ys.append(ei(mean[:, t], std[:, t], y_max=self._y_max*0.95)[0])
+                    basket_old.append(
+                        {'parameter_id': item['parameter_id'], 'param': item['params'],
+                         'perf': item['perf'], 'mean': mean[0], 'std': std[0], 'ei': np.mean(ys)})
 
         # sort basket by ei, from big to small
         basket_old = sorted(

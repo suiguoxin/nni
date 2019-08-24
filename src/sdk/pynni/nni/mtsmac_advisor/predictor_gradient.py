@@ -27,19 +27,18 @@ from sklearn.ensemble import RandomForestRegressor
 # pylint:disable=invalid-name
 
 
-class Predictor():
+class PredictorGradient():
     """
     Random Forest Predictor
     """
 
-    def __init__(self, multi_task=True, random_state=0):
+    def __init__(self, random_state=0):
         """
         Parameters
         ----------
         """
         self.regr = RandomForestRegressor(
-            n_estimators=10, max_depth=100, min_samples_split=10, max_features=5/6, bootstrap=True, random_state=random_state)
-        self.multi_task = multi_task
+            n_estimators=10, max_depth=100, min_samples_split=2, max_features=5/6, bootstrap=True, random_state=random_state)
         self.epochs = None
 
     def fit(self, X, y):
@@ -58,6 +57,8 @@ class Predictor():
         self: returns an instance of self.
         """
         # max epochs in training data
+        self.X = X
+        self.y = y
         self.epochs = max([len(y_i) for y_i in y])
         X, y = self.transform_data(X, y)
         self.regr.fit(X, y)
@@ -71,22 +72,15 @@ class Predictor():
         N = X.shape[0]
         N_features = X[0].shape[0]
 
-        if not self.multi_task:
-            X_new = np.empty([0, N_features])
-            y_new = np.empty(0)
-
-            # select from completed trials
-            for X_i, y_i in zip(X, y):
-                if len(y_i) == self.epochs:
-                    X_new = np.vstack((X_new, X_i))
-                    y_new = np.append(y_new, y_i[-1])
-        else:
-            X_new = np.empty([0, N_features+1])
-            y_new = np.empty(0)
-            for i in range(N):
-                for t in range(len(y[i])):
-                    X_new = np.vstack((X_new, np.append(X[i], [t])))
+        X_new = np.empty([0, N_features+1])
+        y_new = np.empty(0)
+        for i in range(N):
+            for t in range(len(y[i])):
+                X_new = np.vstack((X_new, np.append(X[i], [t])))
+                if t == 0:
                     y_new = np.append(y_new, y[i][t])
+                else: 
+                    y_new = np.append(y_new, y[i][t]-y[i][t-1])
 
         return X_new, y_new
 
@@ -99,39 +93,29 @@ class Predictor():
 
         Returns
         -------
-        result : numpy array,  if multi_task && !final_only, mean, std of shape(len(X), len(epochs)) ; else shape(len(X),)
+        result : numpy array,  if final_only, mean, std of shape(len(X), len(epochs)) ; else shape(len(X),)
         """
-        if not self.multi_task:
+
+        # check if X_i is a old point
+        mean = np.empty([len(X), self.epochs])
+        var = np.empty([len(X), self.epochs])
+        
+        for t in range(self.epochs):
+            X_t = np.hstack((X, np.ones([len(X), 1])*t))
             res = np.empty([0, len(X)])
             for _, estimator in enumerate(self.regr.estimators_):
-                tmp = estimator.predict(X)
+                tmp = estimator.predict(X_t)
                 res = np.vstack((res, tmp))
-            mean = np.mean(res, axis=0)
-            std = np.std(res, axis=0)
-            assert (mean == self.regr.predict(X)).all()
-        else:
-            mean = np.empty([len(X), 0])
-            std = np.empty([len(X), 0])
-            if final_only:
-                X = np.hstack((X, np.ones([len(X), 1])*self.epochs))
-                res = np.empty([0, len(X)])
-                for _, estimator in enumerate(self.regr.estimators_):
-                    tmp = estimator.predict(X)
-                    res = np.vstack((res, tmp))
-                mean = np.mean(res, axis=0)
-                std = np.std(res, axis=0)
+            if t == 0:
+                mean[:, t] = np.clip(np.mean(res, axis=0), 0, 1)
+                var[:, t] = np.var(res, axis=0)
             else:
-                for t in range(self.epochs):
-                    X_t = np.hstack((X, np.ones([len(X), 1])*t))
-                    # print('X_t')
-                    # print(X_t)
-                    res = np.empty([0, len(X)])
-                    for _, estimator in enumerate(self.regr.estimators_):
-                        tmp = estimator.predict(X_t)
-                        res = np.vstack((res, tmp))
-                    mean_t = np.mean(res, axis=0)
-                    std_t = np.std(res, axis=0)
-                    mean = np.hstack((mean, mean_t.reshape(-1, 1)))
-                    std = np.hstack((std, std_t.reshape(-1, 1)))
+                mean[:, t] = np.clip(mean[:, t-1] + np.mean(res, axis=0), 0, 1)
+                var[:, t] = var[:, t-1] + np.var(res, axis=0)
+        std = np.sqrt(var)
+        if final_only:
+            return mean[:, self.epochs-1], std[:, self.epochs-1]
+        else:
+            return mean, std
 
         return mean, std
