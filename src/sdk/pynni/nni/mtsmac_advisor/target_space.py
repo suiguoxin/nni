@@ -221,8 +221,8 @@ class TargetSpace():
         params = self.random_sample()
         parameter_id = self.next_param_id
         self.next_param_id += 1
-
         self.register_new_config(parameter_id, params)
+        self._budget[parameter_id] = 1
 
         parameter_json = self.array_to_params(params)
         logger.info("Generate paramageter for warm up :\n %s", parameter_json)
