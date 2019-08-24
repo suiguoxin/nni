@@ -32,7 +32,7 @@ class Predictor():
     Random Forest Predictor
     """
 
-    def __init__(self, multi_task=True, random_state=0):
+    def __init__(self, max_epochs, multi_task=True, random_state=0):
         """
         Parameters
         ----------
@@ -40,7 +40,7 @@ class Predictor():
         self.regr = RandomForestRegressor(
             n_estimators=10, max_depth=100, min_samples_split=2, max_features=5/6, bootstrap=True, random_state=random_state)
         self.multi_task = multi_task
-        self.epochs = None
+        self.epochs = max_epochs
 
     def fit(self, X, y):
         """Fit MTSMAC regression model.
@@ -58,7 +58,7 @@ class Predictor():
         self: returns an instance of self.
         """
         # max epochs in training data
-        self.epochs = max([len(y_i) for y_i in y])
+        # self.epochs = max([len(y_i) for y_i in y])
         X, y = self.transform_data(X, y)
         self.regr.fit(X, y)
 

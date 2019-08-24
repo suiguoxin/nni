@@ -50,7 +50,7 @@ class MTSMAC(MsgDispatcherBase):
         super(MTSMAC, self).__init__()
         self.optimize_mode = OptimizeMode(optimize_mode)
 
-        self._predictor = Predictor(multi_task=True)
+        self._predictor = Predictor(multi_task=True, max_epochs=max_budget)
         # num of random evaluations before GPR
         self._cold_start_num = cold_start_num
         self._max_epochs = max_budget
