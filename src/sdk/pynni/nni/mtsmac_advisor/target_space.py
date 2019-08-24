@@ -227,7 +227,7 @@ class TargetSpace():
         parameter_json = self.array_to_params(params)
         logger.info("Generate paramageter for warm up :\n %s", parameter_json)
 
-        parameter_json['TRIAL_BUDGET'] = self.max_epochs
+        parameter_json['TRIAL_BUDGET'] = 2 # self.max_epochs
 
         return parameter_id, parameter_json
 
@@ -388,7 +388,7 @@ class TargetSpace():
 
         return parameter_id, parameter_json
 
- 
+
     def _get_basket_new(self, predictor, num, num_warmup=10000, average_ei=False):
         '''
         select a basket from new configs
