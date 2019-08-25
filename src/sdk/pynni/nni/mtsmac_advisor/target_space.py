@@ -222,12 +222,12 @@ class TargetSpace():
         parameter_id = self.next_param_id
         self.next_param_id += 1
         self.register_new_config(parameter_id, params)
-        self._budget[parameter_id] = 1
+        self._budget[parameter_id] = 2 # self.max_epochs
 
         parameter_json = self.array_to_params(params)
         logger.info("Generate paramageter for warm up :\n %s", parameter_json)
 
-        parameter_json['TRIAL_BUDGET'] = 2 # self.max_epochs
+        parameter_json['TRIAL_BUDGET'] = self._budget[parameter_id]
 
         return parameter_id, parameter_json
 
