@@ -30,7 +30,7 @@ def ei(mean, std, y_max, xi=0, ylim=1):
     '''
     calculate ei of one configuration
     '''
-    return _ei(mean, std, y_max, xi) - _ei(mean, std, ylim, xi)
+    return _ei(mean, std, y_max, xi) - _ei(mean, std, ylim, xi=0)
 
 
 def _ei(mean, std, y_max, xi):
