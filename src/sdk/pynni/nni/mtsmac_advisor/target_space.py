@@ -222,7 +222,8 @@ class TargetSpace():
         parameter_id = self.next_param_id
         self.next_param_id += 1
         self.register_new_config(parameter_id, params)
-        self._budget[parameter_id] = 2 # self.max_epochs
+        # self._budget[parameter_id] = 2 # self.max_epochs
+        self._budget[parameter_id] = round(self.max_epochs/10)
 
         parameter_json = self.array_to_params(params)
         logger.info("Generate paramageter for warm up :\n %s", parameter_json)
@@ -373,14 +374,20 @@ class TargetSpace():
             parameter_id = self.next_param_id
             self.next_param_id += 1
             self.register_new_config(parameter_id, param)
-            self._budget[parameter_id] = 1
+            # self._budget[parameter_id] = 1
+            self._budget[parameter_id] = round(self.max_epochs/10)
         else:  # old config is selected
             parameter_id = param_selected['parameter_id']
-            if len(self.hyper_configs[parameter_id]['perf']) + self._budget[parameter_id] + 1 >= self.max_epochs:
+            # if len(self.hyper_configs[parameter_id]['perf']) + self._budget[parameter_id] + 1 >= self.max_epochs:
+            #     self._budget[parameter_id] = self.max_epochs - \
+            #         len(self.hyper_configs[parameter_id]['perf'])
+            # else:
+            #     self._budget[parameter_id] += 1
+            if len(self.hyper_configs[parameter_id]['perf']) + round(self.max_epochs/10) >= self.max_epochs:
                 self._budget[parameter_id] = self.max_epochs - \
                     len(self.hyper_configs[parameter_id]['perf'])
             else:
-                self._budget[parameter_id] += 1
+                self._budget[parameter_id] = round(self.max_epochs/10)
 
         parameter_json = self.array_to_params(param)
         parameter_json['TRIAL_BUDGET'] = self._budget[parameter_id]
