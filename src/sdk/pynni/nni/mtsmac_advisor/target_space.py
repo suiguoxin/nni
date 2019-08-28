@@ -257,6 +257,8 @@ class TargetSpace():
         logger.debug("basket %s", basket)
 
         if strategy == 3:
+            logger.debug("basket_new[0] %s", basket_new[0])
+            logger.debug("basket_old[0] %s", basket_old[0])
             if basket_old and basket_old[0]['ei'] >= basket_new[0]['ei']:
                 param_selected = basket_old[0]
                 logger.debug(
@@ -571,10 +573,7 @@ class TargetSpace():
         basket_old = sorted(
             basket_old, key=lambda item: item['ei'], reverse=True)
 
-        if len(basket_old) >= num:
-            return basket_old[:num]
-        else:
-            return basket_old
+        return basket_old[:num]
 
     def _get_P_max_basket(self, basket):
         '''
