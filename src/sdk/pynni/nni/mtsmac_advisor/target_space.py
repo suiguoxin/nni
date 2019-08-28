@@ -562,6 +562,7 @@ class TargetSpace():
                     for t in range(len(item['perf']), self.max_epochs):
                         ys.append(ei(mean[:, t], std[:, t], y_max=self._y_max*0.95)[0])
                     logger.debug("ys: %s", ys)
+                    logger.debug("ei: %s", np.mean(ys))
                     basket_old.append(
                         {'parameter_id': item['parameter_id'], 'param': item['params'],
                          'perf': item['perf'], 'mean': mean[0], 'std': std[0], 'ei': np.mean(ys)})
