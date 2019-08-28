@@ -417,9 +417,9 @@ class TargetSpace():
                 ys += ei(mean[:, t], std[:, t], y_max=self._y_max *0.95)
             ys /= self.max_epochs
             ys.tolist()
-            logger.info("_get_basket_new")
-            logger.info("mean.shape:", mean.shape)
-            logger.info("ys :", len(ys))
+            logger.debug("_get_basket_new")
+            logger.debug("mean.shape:", mean.shape)
+            logger.debug("ys :", len(ys))
 
         x_tries = [x for x, _ in sorted(
             zip(x_tries, ys), key=lambda pair: pair[1], reverse=True)]
@@ -556,8 +556,12 @@ class TargetSpace():
                     mean, std = predictor.predict(
                         [item['params']], final_only=False)
                     ys = []
+                    logger.debug("get_basket_old")
+                    logger.debug("mean: %s", mean)
+                    logger.debug("std: %s", std)
                     for t in range(len(item['perf']), self.max_epochs):
                         ys.append(ei(mean[:, t], std[:, t], y_max=self._y_max*0.95)[0])
+                    logger.debug("ys: %s", ys)
                     basket_old.append(
                         {'parameter_id': item['parameter_id'], 'param': item['params'],
                          'perf': item['perf'], 'mean': mean[0], 'std': std[0], 'ei': np.mean(ys)})
