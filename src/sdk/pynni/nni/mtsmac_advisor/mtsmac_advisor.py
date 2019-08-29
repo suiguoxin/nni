@@ -51,7 +51,8 @@ class MTSMAC(MsgDispatcherBase):
         self.optimize_mode = OptimizeMode(optimize_mode)
 
         self._predictor = Predictor(max_epochs=max_budget, multi_task=True)
-        # num of random evaluations before GPR
+        
+        # num of random evaluations
         self._cold_start_num = cold_start_num
         self._max_epochs = max_budget
 
@@ -86,15 +87,15 @@ class MTSMAC(MsgDispatcherBase):
         if target.shape[0] > 0:
             logger.info("target shape:%s", target.shape[0])
             self._predictor.fit(params, target)
-        for _ in range(data):
+        for _ in range(data):   # TODO: support parallisim
             self._request_one_trial_job()
 
     def _request_one_trial_job(self):
         """
         get one trial job, i.e., one hyperparameter configuration.
         If the number of trial result is lower than cold start number,
-        gp will first randomly generate some parameters.
-        Otherwise, choose the parameters by the Gussian Process Model
+        the advisor will first randomly generate some parameters.
+        Otherwise, choose the parameters by the Model
 
         Returns
         -------
@@ -102,20 +103,18 @@ class MTSMAC(MsgDispatcherBase):
         """
         logger.info("requst_one_trial_job called, len_completed: %s",
                     self._space.len_completed)
-        if self._space.len < self._cold_start_num:  # TODO: support parallisim
+        if self._space.len < self._cold_start_num:
             parameter_id, parameters = self._space.select_config_warmup()
-            parameters['PARAMETER_ID'] = parameter_id
         else:
-            # generate one trial
-            parameter_id, parameters = self._space.select_config(
-                self._predictor)
-            parameters['PARAMETER_ID'] = parameter_id
+            parameter_id, parameters = self._space.select_config(self._predictor)
+        parameters['PARAMETER_ID'] = parameter_id
         res = {
             'parameter_id': parameter_id,
             'parameter_source': 'algorithm',
             'parameters': parameters
         }
-        logger.info("Generate paramageters for trial job:\n %s", res)
+        logger.info("Generated one hyperparamageter configuration:\n %s", res)
+
         send(CommandType.NewTrialJob, json_tricks.dumps(res))
 
     def handle_update_search_space(self, data):

@@ -480,7 +480,7 @@ class TargetSpace():
 
         return basket_new[:num]
 
-    
+   
     def _get_one_exchange_neighbourhoods(self, param):
         '''get neighbours of a parameter_id
         Parameters
@@ -531,7 +531,7 @@ class TargetSpace():
 
         return neighbours
 
-    
+  
     def _get_basket_old(self, predictor, num, average_ei=False):
         '''
         select a basket from running configs
