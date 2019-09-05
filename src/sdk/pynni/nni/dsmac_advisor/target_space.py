@@ -55,6 +55,7 @@ class TargetSpace():
 
         # Get the name of the parameters
         self._keys = sorted(search_space)
+
         # Create an array with parameters types/bounds
         self._bounds = np.array([item[1] for item in sorted(
             search_space.items(), key=lambda x: x[0])])
@@ -63,14 +64,14 @@ class TargetSpace():
         # [{id: 0, params:[], perf: []}, {...}]
         self.hyper_configs = []
 
-        # used for fitting predictor
+        # params/target used for fitting predictor
         self._params = np.empty(shape=(0, self.dim))
         self._target = np.empty(shape=(0), dtype=object)
 
         self.next_param_id = 0
         self.max_epochs = max_epochs
 
-        self._len_completed = 0
+        # self._len_completed = 0
         self._y_max = 0
 
         self._budget = {}
@@ -100,21 +101,23 @@ class TargetSpace():
         '''length of generated parameters'''
         return len(self.hyper_configs)
 
-    @property
-    def len_completed(self):
-        '''length of completed trials'''
-        return self._len_completed
+    # @property
+    # def len_completed(self):
+    #     '''length of completed trials'''
+    #     return self._len_completed
 
     def get_train_data(self):
         '''
-        params, target: numpy array
+        Returns
+        -------
+        params, target : numpy array
         '''
         params = np.empty(shape=(0, self.dim))
         target = np.empty(shape=(0), dtype=object)
         for item in self.hyper_configs:
             if len(item['perf']) >= 0:
                 params = np.vstack((params, item['params']))
-                target = np.append(target, ['new_serial'])
+                target = np.append(target, ['placeholder'])
                 target[-1] = item['perf']  # TODO: more pythonic
         # logger.debug("get_train_data:")
         # logger.debug("params:%s", params)
@@ -173,7 +176,6 @@ class TargetSpace():
         insert a result into target space
         '''
         self.hyper_configs[parameter_id]['perf'].append(value)
-        # TODO: check
         if value > self._y_max:
             self._y_max = value
 
@@ -185,7 +187,7 @@ class TargetSpace():
         if len(self.hyper_configs[parameter_id]['perf']) >= self.max_epochs:
             self.hyper_configs[parameter_id]['status'] = 'FINISH'
             # update internal flag variables
-            self._len_completed += 1
+            # self._len_completed += 1
 
     def random_sample(self):
         """
