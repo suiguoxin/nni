@@ -42,7 +42,7 @@ class PredictorGradient():
         self.epochs = None
 
     def fit(self, X, y):
-        """Fit MTSMAC regression model.
+        """Fit DSMAC regression model.
 
         Parameters
         ----------

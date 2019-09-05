@@ -18,7 +18,7 @@
 # DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 """
-mtsmac_advisor.py
+dsmac_advisor.py
 """
 
 import logging
@@ -29,13 +29,13 @@ from nni.protocol import CommandType, send
 from nni.msg_dispatcher_base import MsgDispatcherBase
 from nni.utils import OptimizeMode, extract_scalar_reward
 
-from nni.mtsmac_advisor.predictor import Predictor
-from nni.mtsmac_advisor.target_space import TargetSpace
+from nni.dsmac_advisor.predictor import Predictor
+from nni.dsmac_advisor.target_space import TargetSpace
 
-logger = logging.getLogger("MTSMAC_Advisor_AutoML")
+logger = logging.getLogger("DSMAC_Advisor_AutoML")
 
 
-class MTSMAC(MsgDispatcherBase):
+class DSMAC(MsgDispatcherBase):
     '''
     Multi-Task SMAC
     '''
@@ -47,7 +47,7 @@ class MTSMAC(MsgDispatcherBase):
         optimize_mode: str
             optimize mode, 'maximize' or 'minimize'
         """
-        super(MTSMAC, self).__init__()
+        super(DSMAC, self).__init__()
         self.optimize_mode = OptimizeMode(optimize_mode)
 
         self._predictor = Predictor(max_epochs=max_budget, multi_task=True)

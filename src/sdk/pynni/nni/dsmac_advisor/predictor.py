@@ -43,7 +43,7 @@ class Predictor():
         self.epochs = max_epochs
 
     def fit(self, X, y):
-        """Fit MTSMAC regression model.
+        """Fit DSMAC regression model.
 
         Parameters
         ----------

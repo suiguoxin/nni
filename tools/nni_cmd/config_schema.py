@@ -178,8 +178,8 @@ advisor_schema_dict = {
         },
         Optional('gpuNum'): setNumberRange('gpuNum', int, 0, 99999),
     },
-    'MTSMAC':{
-        'builtinAdvisorName': Or('MTSMAC'),
+    'DSMAC':{
+        'builtinAdvisorName': Or('DSMAC'),
         'classArgs': {
             'optimize_mode': setChoice('optimize_mode', 'maximize', 'minimize'),
             'max_budget': setType('max_budget', int),

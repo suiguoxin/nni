@@ -25,10 +25,10 @@ import logging
 import numpy as np
 import nni.parameter_expressions as parameter_expressions
 
-from nni.mtsmac_advisor.util import ei
-from nni.mtsmac_advisor.predictor import Predictor
+from nni.dsmac_advisor.util import ei
+from nni.dsmac_advisor.predictor import Predictor
 
-logger = logging.getLogger("MTSMAC_Advisor_AutoML")
+logger = logging.getLogger("DSMAC_Advisor_AutoML")
 
 # pylint:disable=invalid-name
 

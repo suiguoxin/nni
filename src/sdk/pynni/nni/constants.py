@@ -64,13 +64,13 @@ ClassArgs = {
 AdvisorModuleName = {
     'Hyperband': 'nni.hyperband_advisor.hyperband_advisor',
     'BOHB': 'nni.bohb_advisor.bohb_advisor',
-    'MTSMAC': 'nni.mtsmac_advisor.mtsmac_advisor',
+    'DSMAC': 'nni.dsmac_advisor.dsmac_advisor',
     'FTBO': 'nni.ftbo_advisor.ftbo_advisor'
 }
 
 AdvisorClassName = {
     'Hyperband': 'Hyperband',
     'BOHB': 'BOHB',
-    'MTSMAC': 'MTSMAC',
+    'DSMAC': 'DSMAC',
     'FTBO': 'FreezeThaw'
 }
