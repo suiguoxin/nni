@@ -187,7 +187,7 @@ class TargetSpace():
         if len(self.hyper_configs[parameter_id]['perf']) >= self.max_epochs:
             self.hyper_configs[parameter_id]['status'] = 'FINISH'
             # update internal flag variables
-            # self._len_completed += 1
+            # self._len_completed += 1 # TODO:remove
 
     def random_sample(self):
         """
@@ -224,8 +224,7 @@ class TargetSpace():
         parameter_id = self.next_param_id
         self.next_param_id += 1
         self.register_new_config(parameter_id, params)
-        # self._budget[parameter_id] = 2 # self.max_epochs
-        self._budget[parameter_id] = round(self.max_epochs/10)
+        self._budget[parameter_id] = max(round(self.max_epochs/10), 1)
 
         parameter_json = self.array_to_params(params)
         logger.info("Generate paramageter for warm up :\n %s", parameter_json)
@@ -399,7 +398,6 @@ class TargetSpace():
 
         return parameter_id, parameter_json
 
-
     def _get_basket_new(self, predictor, num, num_warmup=10000, average_ei=False):
         '''
         select a basket from new configs
@@ -418,7 +416,7 @@ class TargetSpace():
             mean, std = predictor.predict(x_tries, final_only=False)
             ys = np.zeros(num_warmup)
             for t in range(self.max_epochs):
-                ys += ei(mean[:, t], std[:, t], y_max=self._y_max *0.95)
+                ys += ei(mean[:, t], std[:, t], y_max=self._y_max * 0.95)
             ys /= self.max_epochs
             ys.tolist()
             logger.debug("_get_basket_new")
@@ -444,18 +442,21 @@ class TargetSpace():
                 all_neighbours = self._get_one_exchange_neighbourhoods(
                     incumbent)
                 if not average_ei:
-                    mean, std = predictor.predict(all_neighbours, final_only=True)
+                    mean, std = predictor.predict(
+                        all_neighbours, final_only=True)
                     ys_neighbours = ei(mean, std, y_max=self._y_max)
                 else:
-                    mean, std = predictor.predict(all_neighbours, final_only=False)
+                    mean, std = predictor.predict(
+                        all_neighbours, final_only=False)
                     ys_neighbours = np.zeros(len(all_neighbours))
                     for t in range(self.max_epochs):
-                        ys_neighbours += ei(mean[:, t], std[:, t], y_max=self._y_max *0.95)
+                        ys_neighbours += ei(mean[:, t],
+                                            std[:, t], y_max=self._y_max * 0.95)
                     ys_neighbours /= self.max_epochs
                     ys_neighbours.tolist()
-                    #logger.info("_get_basket_new")
-                    #logger.info("mean.shape:", mean.shape)
-                    #logger.info("ys_neighbours :", len(ys_neighbours))
+                    # logger.info("_get_basket_new")
+                    # logger.info("mean.shape:", mean.shape)
+                    # logger.info("ys_neighbours :", len(ys_neighbours))
                 if max(ys) >= acq_val_incumbent[i]:
                     # restart from the better neigobour next step
                     incumbent = all_neighbours[ys_neighbours.argmax()]
@@ -482,7 +483,6 @@ class TargetSpace():
 
         return basket_new[:num]
 
-   
     def _get_one_exchange_neighbourhoods(self, param):
         '''get neighbours of a parameter_id
         Parameters
@@ -533,7 +533,6 @@ class TargetSpace():
 
         return neighbours
 
-  
     def _get_basket_old(self, predictor, num, average_ei=False):
         '''
         select a basket from running configs
@@ -564,7 +563,8 @@ class TargetSpace():
                     logger.debug("mean: %s", mean)
                     logger.debug("std: %s", std)
                     for t in range(len(item['perf']), self.max_epochs):
-                        ys.append(ei(mean[:, t], std[:, t], y_max=self._y_max*0.95)[0])
+                        ys.append(ei(mean[:, t], std[:, t],
+                                     y_max=self._y_max*0.95)[0])
                     logger.debug("ys: %s", ys)
                     logger.debug("ei: %s", np.mean(ys))
                     basket_old.append(
