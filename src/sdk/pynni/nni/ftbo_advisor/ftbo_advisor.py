@@ -117,7 +117,7 @@ class FreezeThaw(MsgDispatcherBase):
             'parameter_source': 'algorithm',
             'parameters': parameters
         }
-        logger.info("Generate paramageters for trial job:\n %s", res)
+        logger.info("Generated paramageters for trial job:\n %s", res)
         send(CommandType.NewTrialJob, json_tricks.dumps(res))
 
     def handle_update_search_space(self, data):
@@ -145,7 +145,7 @@ class FreezeThaw(MsgDispatcherBase):
         parameter_id = hyper_params['parameter_id']
         self._space.trial_end(parameter_id)
 
-    def handle_report_metric_data(self, data):
+    def handle_report_metric_data(self, data)
         """
         Parameters
         ----------

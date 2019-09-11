@@ -394,7 +394,7 @@ class Predictor():
         K_x = kernel_as(self.X_train_)
         K_t = block_diag(*[kernel_tc(np.arange(1, len(self.y_train_[i])+1).reshape(-1, 1))
                            for i in range(self.y_train_.shape[0])])
-        
+       
         # ------------------------------------------------------------------------------------
         # TODO: risk of rasing singular matrix err here
         # ------------------------------------------------------------------------------------
