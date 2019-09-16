@@ -249,8 +249,8 @@ class TargetSpace():
         # construct the basket of all configs
         num_new = 3
         num_old = 10
-        basket_new = self._get_basket_new(predictor, num_new, ei_rate=True)
-        basket_old = self._get_basket_old(predictor, num_old, ei_rate=True)
+        basket_new = self._get_basket_new(predictor, num_new, average_ei=True)
+        basket_old = self._get_basket_old(predictor, num_old, average_ei=True)
         basket = np.append(basket_new, basket_old)
 
         logger.debug("basket_new %s", basket_new)
