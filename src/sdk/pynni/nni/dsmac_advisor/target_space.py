@@ -187,7 +187,7 @@ class TargetSpace():
         if len(self.hyper_configs[parameter_id]['perf']) >= self.max_epochs:
             self.hyper_configs[parameter_id]['status'] = 'FINISH'
             # update internal flag variables
-            self._len_completed += 1 # TODO:remove
+            self._len_completed += 1  # TODO:remove
 
     def random_sample(self):
         """
@@ -249,8 +249,8 @@ class TargetSpace():
         # construct the basket of all configs
         num_new = 3
         num_old = 10
-        basket_new = self._get_basket_new(predictor, num_new, average_ei=True)
-        basket_old = self._get_basket_old(predictor, num_old, average_ei=True)
+        basket_new = self._get_basket_new(predictor, num_new, ei_rate=True)
+        basket_old = self._get_basket_old(predictor, num_old, ei_rate=True)
         basket = np.append(basket_new, basket_old)
 
         logger.debug("basket_new %s", basket_new)
@@ -398,7 +398,7 @@ class TargetSpace():
 
         return parameter_id, parameter_json
 
-    def _get_basket_new(self, predictor, num, num_warmup=10000, average_ei=False, max_ei=False):
+    def _get_basket_new(self, predictor, num, num_warmup=10000, average_ei=False, max_ei=False, ei_rate=False):
         '''
         select a basket from new configs
 
@@ -425,6 +425,20 @@ class TargetSpace():
             for i in range(num_warmup):
                 ei_i = ei(mean[i, :], std[i, :], y_max=self._y_max*0.98)
                 ys[i] = np.max(ei_i)/(np.argmax(ei_i) + 1)
+                logger.debug("ei_i: %s", ei_i)
+                logger.debug("ys[i]: %s", ys[i])
+            ys.tolist()
+            logger.debug("_get_basket_new")
+            logger.debug("mean.shape:", mean.shape)
+            logger.debug("ys length:", len(ys))
+        elif ei_rate:
+            mean, std = predictor.predict(x_tries, final_only=False)
+            ys = np.zeros(num_warmup)
+            for i in range(num_warmup):
+                ei_i = ei(mean[i, :], std[i, :], y_max=self._y_max*0.98)
+                for j in range(self.max_epochs):
+                    ei_i[j] /= (j+1)
+                ys[i] = np.max(ei_i)
                 logger.debug("ei_i: %s", ei_i)
                 logger.debug("ys[i]: %s", ys[i])
             ys.tolist()
@@ -472,6 +486,21 @@ class TargetSpace():
                     for j in range(len(all_neighbours)):
                         tmp = ei(mean[j, :], std[j, :], y_max=self._y_max*0.98)
                         ys_neighbours[j] = np.max(tmp)/(np.argmax(tmp) + 1)
+                        logger.debug("tmp %s:", tmp)
+                        logger.debug("ys_neighbours[j]: %s", ys_neighbours[j])
+                    ys_neighbours.tolist()
+                    # logger.info("_get_basket_new")
+                    # logger.info("mean.shape:", mean.shape)
+                    # logger.info("ys_neighbours :", len(ys_neighbours))
+                elif ei_rate:
+                    mean, std = predictor.predict(
+                        all_neighbours, final_only=False)
+                    ys_neighbours = np.zeros(len(all_neighbours))
+                    for j in range(len(all_neighbours)):
+                        tmp = ei(mean[j, :], std[j, :], y_max=self._y_max*0.98)
+                        for k in range(self.max_epochs):
+                            tmp[k] /= (k+1)
+                        ys_neighbours[j] = np.max(tmp)
                         logger.debug("tmp %s:", tmp)
                         logger.debug("ys_neighbours[j]: %s", ys_neighbours[j])
                     ys_neighbours.tolist()
@@ -559,7 +588,7 @@ class TargetSpace():
 
         return neighbours
 
-    def _get_basket_old(self, predictor, num, average_ei=False, max_ei=False):
+    def _get_basket_old(self, predictor, num, average_ei=False, max_ei=False, ei_rate=False):
         '''
         select a basket from running configs
 
@@ -602,6 +631,23 @@ class TargetSpace():
                     basket_old.append(
                         {'parameter_id': item['parameter_id'], 'param': item['params'],
                          'perf': item['perf'], 'mean': mean[0], 'std': std[0], 'ei': max(ys)/(ys.index(max(ys)) + 1)})
+        elif ei_rate:
+            for item in self.hyper_configs:
+                if item['status'] == 'RUNNING':
+                    mean, std = predictor.predict(
+                        [item['params']], final_only=False)
+                    ys = []
+                    logger.debug("get_basket_old")
+                    logger.debug("mean: %s", mean)
+                    logger.debug("std: %s", std)
+                    for t in range(len(item['perf']), self.max_epochs):
+                        ys.append(ei(mean[:, t], std[:, t],
+                                     y_max=self._y_max*0.98)[0] / (t-len(item['perf'])+1))
+                    logger.debug("ys: %s", ys)
+                    logger.debug("ei: %s", max(ys))
+                    basket_old.append(
+                        {'parameter_id': item['parameter_id'], 'param': item['params'],
+                         'perf': item['perf'], 'mean': mean[0], 'std': std[0], 'ei': max(ys)})
         else:
             for item in self.hyper_configs:
                 if item['status'] == 'RUNNING':
