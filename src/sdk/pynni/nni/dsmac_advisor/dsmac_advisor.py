@@ -102,7 +102,7 @@ class DSMAC(MsgDispatcherBase):
 
         Returns
         -------
-        result : dict
+        result : dictf
         """
         logger.info("requst_one_trial_job called, len_completed: %s",
                     self._space.len_completed)
