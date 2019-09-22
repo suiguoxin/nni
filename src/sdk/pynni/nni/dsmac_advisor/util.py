@@ -22,6 +22,7 @@ util.py
 """
 
 from scipy.stats import norm
+import numpy as np
 
 # pylint:disable=invalid-name
 
@@ -39,3 +40,10 @@ def _ei(mean, std, y_max, xi):
     '''
     z = (mean - y_max - xi)/std
     return (mean - y_max - xi) * norm.cdf(z) + std * norm.pdf(z)
+
+
+def ts(mean, std):
+    '''
+    Thompson Sampling
+    '''
+    return np.random.normal(mean, std)
