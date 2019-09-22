@@ -545,7 +545,7 @@ class TargetSpace():
 
         Returns
         -------
-        basket_old: [{'parameter_id': ,'param':[], 'perf': , 'mean':, 'std': , 'acq}, {...}]
+        basket_old: [{'parameter_id': ,'param':[], 'perf': , 'mean':, 'std': , 'acq'}, {...}]
         '''
         basket_old = []
         if metric == 'AEI':
