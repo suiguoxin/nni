@@ -399,7 +399,7 @@ class TargetSpace():
             for t in range(self.max_epochs):
                 ys += ei(mean[:, t], std[:, t], y_max=self._y_max * 0.98)
             ys /= self.max_epochs
-            ys.tolist()
+            ys = ys.tolist()
             logger.debug("_get_basket_new")
             logger.debug("mean.shape: %s", mean.shape)
             logger.debug("ys : %s", len(ys))
