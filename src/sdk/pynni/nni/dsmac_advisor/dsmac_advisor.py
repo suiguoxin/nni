@@ -51,7 +51,7 @@ class DSMAC(MsgDispatcherBase):
         self.optimize_mode = OptimizeMode(optimize_mode)
 
         self._predictor = Predictor(max_epochs=max_budget, multi_task=True)
-        
+
         # num of random evaluations
         self._cold_start_num = cold_start_num
         self._max_epochs = max_budget

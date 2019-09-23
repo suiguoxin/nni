@@ -614,11 +614,14 @@ class TargetSpace():
         n_params = len(mean)
         P_max = np.zeros(n_params)
         for _ in range(n_monte_carlo):
-            vals = np.empty(n_params)
-            for i in range(n_params):
-                k = self.random_state.randint(len(mean[i]))
-                vals[i] = self.random_state.normal(mean[i][k], std[i][k])
-            P_max[vals.argmax()] += 1
+            while True:
+                vals = np.empty(n_params)
+                for i in range(n_params):
+                    k = self.random_state.randint(len(mean[i]))
+                    vals[i] = self.random_state.normal(mean[i][k], std[i][k])
+                if np.max(vals) >= self._y_max * 0.95:
+                    P_max[vals.argmax()] += 1
+                    break
 
         P_max /= n_monte_carlo
         return P_max
