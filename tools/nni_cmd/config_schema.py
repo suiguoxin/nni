@@ -183,6 +183,7 @@ advisor_schema_dict = {
         'classArgs': {
             'optimize_mode': setChoice('optimize_mode', 'maximize', 'minimize'),
             'max_budget': setType('max_budget', int),
+            Optional('utility'): setChoice('utility', 'AEI', 'TS', 'ES'),
             Optional('cold_start_num'): setType('cold_start_num', int)
         },
         Optional('gpuNum'): setNumberRange('gpuNum', int, 0, 99999),

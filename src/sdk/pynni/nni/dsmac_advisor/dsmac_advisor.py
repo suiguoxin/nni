@@ -40,7 +40,7 @@ class DSMAC(MsgDispatcherBase):
     Multi-Task SMAC
     '''
 
-    def __init__(self, optimize_mode='maximize', max_budget=30, cold_start_num=5):
+    def __init__(self, optimize_mode='maximize', max_budget=30, cold_start_num=5, utility='AEI'):
         """
         Parameters
         ----------
@@ -51,7 +51,7 @@ class DSMAC(MsgDispatcherBase):
         self.optimize_mode = OptimizeMode(optimize_mode)
 
         self._predictor = Predictor(max_epochs=max_budget, multi_task=True)
-        
+
         # num of random evaluations
         self._cold_start_num = cold_start_num
         self._max_epochs = max_budget
@@ -59,6 +59,9 @@ class DSMAC(MsgDispatcherBase):
         # target space
         self._space = None
         self._random_state = np.random.RandomState()  # pylint: disable=no-member
+
+        # acquisition function
+        self._utility = utility
 
     def load_checkpoint(self):
         pass
@@ -99,7 +102,7 @@ class DSMAC(MsgDispatcherBase):
 
         Returns
         -------
-        result : dict
+        result : dictf
         """
         logger.info("requst_one_trial_job called, len_completed: %s",
                     self._space.len_completed)
@@ -125,7 +128,7 @@ class DSMAC(MsgDispatcherBase):
             search space
         """
         self._space = TargetSpace(
-            data, random_state=self._random_state, max_epochs=self._max_epochs)
+            data, random_state=self._random_state, max_epochs=self._max_epochs, utility=self._utility)
 
     def handle_trial_end(self, data):
         """
