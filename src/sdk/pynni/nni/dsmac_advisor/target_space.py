@@ -238,6 +238,7 @@ class TargetSpace():
         parameter_json = self.array_to_params(params)
         logger.info("Generate paramageter for warm up :\n %s", parameter_json)
 
+        parameter_json['START_EPOCH'] = 0
         parameter_json['TRIAL_BUDGET'] = self._budget[parameter_id]
 
         return parameter_id, parameter_json
@@ -372,6 +373,7 @@ class TargetSpace():
         self._budget[parameter_id] = budget
 
         parameter_json = self.array_to_params(param)
+        parameter_json['START_EPOCH'] = len(self.hyper_configs[parameter_id]['perf'])
         parameter_json['TRIAL_BUDGET'] = self._budget[parameter_id]
         logger.info("Generate paramageter :\n %s", parameter_json)
 
