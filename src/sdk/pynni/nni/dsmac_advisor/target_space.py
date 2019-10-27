@@ -38,7 +38,7 @@ class TargetSpace():
     Holds the param-space coordinates (X) and target values (Y)
     """
 
-    def __init__(self, search_space, max_epochs, random_state=None, utility='AEI'):
+    def __init__(self, search_space, max_epochs, random_state=None, utility='AEI', ylim=1):
         """
         Parameters
         ----------
@@ -53,6 +53,7 @@ class TargetSpace():
         """
         self.random_state = random_state
         self.utility = utility
+        self.ylim = ylim
 
         # Get the name of the parameters
         self._keys = sorted(search_space)
@@ -399,7 +400,7 @@ class TargetSpace():
             mean, std = predictor.predict(X, final_only=False)
             ys = np.zeros(len(X))
             for t in range(self.max_epochs):
-                ys += ei(mean[:, t], std[:, t], y_max=self._y_max * 0.98)
+                ys += ei(mean[:, t], std[:, t], y_max=self._y_max * 0.98, ylim=self.ylim)
             ys /= self.max_epochs
             ys = ys.tolist()
             logger.debug("_get_basket_new")
@@ -410,11 +411,11 @@ class TargetSpace():
             ys = []
             for i in range(len(X)):
                 # np.max(ei_i)/(np.argmax(ei_i) + 1)
-                ei_i = ei(mean[i, :], std[i, :], y_max=self._y_max*0.98)
+                ei_i = ei(mean[i, :], std[i, :], y_max=self._y_max*0.98, ylim=self.ylim))
                 ys.append(np.max(ei_i))
         elif metric == 'FEI':
             mean, std = predictor.predict(X, final_only=True)
-            ys = ei(mean, std, y_max=self._y_max)
+            ys = ei(mean, std, y_max=self._y_max, ylim=self.ylim))
 
         return ys
 
@@ -561,7 +562,7 @@ class TargetSpace():
                     logger.debug("std: %s", std)
                     for t in range(len(item['perf']), self.max_epochs):
                         ys.append(ei(mean[:, t], std[:, t],
-                                     y_max=self._y_max*0.98)[0])
+                                     y_max=self._y_max*0.98)[0], ylim=self.ylim))
                     logger.debug("ys: %s", ys)
                     logger.debug("ei: %s", np.mean(ys))
                     basket_old.append(
@@ -575,7 +576,7 @@ class TargetSpace():
                     ys = []
                     for t in range(len(item['perf']), self.max_epochs):
                         ys.append(ei(mean[:, t], std[:, t],
-                                     y_max=self._y_max*0.98)[0])
+                                     y_max=self._y_max*0.98)[0], ylim=self.ylim))
                     logger.debug("ys: %s", ys)
                     logger.debug("ei: %s", max(ys))
                     basket_old.append(
@@ -588,7 +589,7 @@ class TargetSpace():
                         [item['params']], final_only=True)
                     # discount = 1-0.2*(self.max_epochs -
                     #                 len(item['perf']))/self.max_epochs
-                    ys = ei(mean, std, y_max=self._y_max*0.98)
+                    ys = ei(mean, std, y_max=self._y_max*0.98, ylim=self.ylim))
                     basket_old.append(
                         {'parameter_id': item['parameter_id'], 'param': item['params'],
                          'perf': item['perf'], 'mean': mean[0], 'std': std[0], 'acq': ys[0]})

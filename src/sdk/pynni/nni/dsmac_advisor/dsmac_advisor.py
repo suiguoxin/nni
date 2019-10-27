@@ -40,7 +40,7 @@ class DSMAC(MsgDispatcherBase):
     Multi-Task SMAC
     '''
 
-    def __init__(self, optimize_mode='maximize', max_budget=30, cold_start_num=5, utility='AEI'):
+    def __init__(self, optimize_mode='maximize', max_budget=30, cold_start_num=5, utility='AEI', ylim=1):
         """
         Parameters
         ----------
@@ -62,6 +62,7 @@ class DSMAC(MsgDispatcherBase):
 
         # acquisition function
         self._utility = utility
+        self._ylim = ylim
 
     def load_checkpoint(self):
         pass
@@ -127,8 +128,10 @@ class DSMAC(MsgDispatcherBase):
         data: JSON object
             search space
         """
+        if self.optimize_mode == OptimizeMode.Minimize:
+                self._ylim *= -1
         self._space = TargetSpace(
-            data, random_state=self._random_state, max_epochs=self._max_epochs, utility=self._utility)
+            data, random_state=self._random_state, max_epochs=self._max_epochs, utility=self._utility, ylim= self._ylim)
 
     def handle_trial_end(self, data):
         """
