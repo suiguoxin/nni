@@ -562,7 +562,7 @@ class TargetSpace():
                     logger.debug("std: %s", std)
                     for t in range(len(item['perf']), self.max_epochs):
                         ys.append(ei(mean[:, t], std[:, t],
-                                     y_max=self._y_max*0.98)[0], ylim=self.ylim)
+                                     y_max=self._y_max*0.98, ylim=self.ylim)[0])
                     logger.debug("ys: %s", ys)
                     logger.debug("ei: %s", np.mean(ys))
                     basket_old.append(
@@ -576,7 +576,7 @@ class TargetSpace():
                     ys = []
                     for t in range(len(item['perf']), self.max_epochs):
                         ys.append(ei(mean[:, t], std[:, t],
-                                     y_max=self._y_max*0.98)[0], ylim=self.ylim)
+                                     y_max=self._y_max*0.98, ylim=self.ylim)[0])
                     logger.debug("ys: %s", ys)
                     logger.debug("ei: %s", max(ys))
                     basket_old.append(
