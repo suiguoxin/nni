@@ -75,8 +75,7 @@ class TargetSpace():
 
         self._len_completed = 0
         self._len_running = 0
-        self._y_max = 0
-
+        self._y_max = float('-inf')
         self._budget = {}
 
     @property
