@@ -23,11 +23,13 @@ predictor.py
 
 import numpy as np
 from sklearn.ensemble import RandomForestRegressor
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.model_selection import KFold
 
 # pylint:disable=invalid-name
 
 
-class Predictor():
+class PredictorSubsample():
     """
     Random Forest Predictor
     """
@@ -37,8 +39,10 @@ class Predictor():
         Parameters
         ----------
         """
-        self.regr = RandomForestRegressor(
-            n_estimators=10, max_depth=100, min_samples_split=2, max_features=5/6, bootstrap=True, random_state=random_state)
+        self.regr = [DecisionTreeRegressor(
+            max_depth=100, min_samples_split=2, max_features=5/6) for _ in range(10)]
+        # self.regr = RandomForestRegressor(
+        #     n_estimators=10, max_depth=100, min_samples_split=2, max_features=5/6, bootstrap=True, random_state=random_state)
         self.multi_task = multi_task
         self.epochs = max_epochs
 
@@ -60,7 +64,13 @@ class Predictor():
         # max epochs in training data
         # self.epochs = max([len(y_i) for y_i in y])
         X, y = self.transform_data(X, y)
-        self.regr.fit(X, y)
+        kf = KFold(n_splits=10, shuffle=True)
+
+        idx = 0
+        for train_index, _ in kf.split(X):
+            X_train, y_train = X[train_index], y[train_index]
+            self.regr[idx].fit(X_train, y_train)
+            idx += 1
 
         return self
 
@@ -103,19 +113,18 @@ class Predictor():
         """
         if not self.multi_task:
             res = np.empty([0, len(X)])
-            for estimator in self.regr.estimators_:
+            for estimator in self.regr:
                 tmp = estimator.predict(X)
                 res = np.vstack((res, tmp))
             mean = np.mean(res, axis=0)
             std = np.std(res, axis=0)
-            assert (mean == self.regr.predict(X)).all()
         else:
             mean = np.empty([len(X), 0])
             std = np.empty([len(X), 0])
             if final_only:
                 X = np.hstack((X, np.ones([len(X), 1])*self.epochs))
                 res = np.empty([0, len(X)])
-                for estimator in self.regr.estimators_:
+                for estimator in self.regr:
                     tmp = estimator.predict(X)
                     res = np.vstack((res, tmp))
                 mean = np.mean(res, axis=0)
@@ -126,7 +135,7 @@ class Predictor():
                     # print('X_t')
                     # print(X_t)
                     res = np.empty([0, len(X)])
-                    for estimator in self.regr.estimators_:
+                    for estimator in self.regr:
                         tmp = estimator.predict(X_t)
                         res = np.vstack((res, tmp))
                     mean_t = np.mean(res, axis=0)

@@ -171,6 +171,11 @@ class TargetSpace():
     def register_new_config(self, parameter_id, params):
         '''
         register new config without performance
+
+        possible status of trials:
+        1, RUNNING: being evaluated or waiting to be evaluated
+        2, PENDING: early stopped, may be resumed at any time
+        3, FINISH: already been evaluated for maximum iterations
         '''
         self.hyper_configs.append({
             'parameter_id': parameter_id,
@@ -180,7 +185,7 @@ class TargetSpace():
         })
         self._len_running += 1
 
-    def register(self, parameter_id, value):
+    def register_result(self, parameter_id, value):
         '''
         insert a result into target space
         '''
@@ -198,6 +203,8 @@ class TargetSpace():
             # update internal flag variables
             self._len_completed += 1
             self._len_running -= 1
+        else:
+            self.hyper_configs[parameter_id]['status'] = 'PENDING'
 
     def random_sample(self):
         """
@@ -370,6 +377,7 @@ class TargetSpace():
             parameter_id = param_selected['parameter_id']
             budget = min(budget, self.max_epochs -
                          len(self.hyper_configs[parameter_id]['perf']))
+            self.hyper_configs[parameter_id]['status'] = 'RUNNING'
 
         self._budget[parameter_id] = budget
 
@@ -478,9 +486,9 @@ class TargetSpace():
         # re-comput mean std for all the 10010(max) new points
         mean, std = predictor.predict(x_tries, final_only=False)
         basket_new = []
-        for i, x_i in enumerate(x_tries):
+        for i, x in enumerate(x_tries):
             basket_new.append(
-                {'param': x_i, 'mean': mean[i], 'std': std[i], 'acq': ys[i]})
+                {'param': x, 'mean': mean[i], 'std': std[i], 'acq': ys[i]})
         # sort basket by acquisition value, from big to small
         basket_new = sorted(
             basket_new, key=lambda item: item['acq'], reverse=True)
@@ -553,7 +561,7 @@ class TargetSpace():
         basket_old = []
         if metric == 'AEI':
             for item in self.hyper_configs:
-                if item['status'] == 'RUNNING':
+                if item['status'] == 'PENDING':
                     mean, std = predictor.predict(
                         [item['params']], final_only=False)
                     ys = []
@@ -570,7 +578,7 @@ class TargetSpace():
                          'perf': item['perf'], 'mean': mean[0], 'std': std[0], 'acq': np.mean(ys)})
         elif metric == 'MEI':
             for item in self.hyper_configs:
-                if item['status'] == 'RUNNING':
+                if item['status'] == 'PENDING':
                     mean, std = predictor.predict(
                         [item['params']], final_only=False)
                     ys = []
@@ -584,7 +592,7 @@ class TargetSpace():
                          'perf': item['perf'], 'mean': mean[0], 'std': std[0], 'acq': max(ys)})
         elif metric == 'FEI':
             for item in self.hyper_configs:
-                if item['status'] == 'RUNNING':
+                if item['status'] == 'PENDING':
                     mean, std = predictor.predict(
                         [item['params']], final_only=True)
                     # discount = 1-0.2*(self.max_epochs -

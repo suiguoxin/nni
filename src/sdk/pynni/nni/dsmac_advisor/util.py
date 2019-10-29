@@ -22,7 +22,6 @@ util.py
 """
 
 from scipy.stats import norm
-import numpy as np
 
 # pylint:disable=invalid-name
 

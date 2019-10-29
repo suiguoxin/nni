@@ -91,7 +91,7 @@ class DSMAC(MsgDispatcherBase):
         if target.shape[0] > 0:
             logger.info("target shape:%s", target.shape[0])
             self._predictor.fit(params, target)
-        for _ in range(data):   # TODO: support parallisim
+        for _ in range(data):
             self._request_one_trial_job()
 
     def _request_one_trial_job(self):
@@ -129,9 +129,9 @@ class DSMAC(MsgDispatcherBase):
             search space
         """
         if self.optimize_mode == OptimizeMode.Minimize:
-                self._ylim *= -1
+            self._ylim *= -1
         self._space = TargetSpace(
-            data, random_state=self._random_state, max_epochs=self._max_epochs, utility=self._utility, ylim= self._ylim)
+            data, random_state=self._random_state, max_epochs=self._max_epochs, utility=self._utility, ylim=self._ylim)
 
     def handle_trial_end(self, data):
         """
@@ -165,7 +165,7 @@ class DSMAC(MsgDispatcherBase):
         if self.optimize_mode == OptimizeMode.Minimize:
             value = -value
         if data['type'] == 'FINAL' or data['type'] == 'PERIODICAL':
-            self._space.register(data['parameter_id'], value)
+            self._space.register_result(data['parameter_id'], value)
         else:
             raise ValueError(
                 'Data type not supported: {}'.format(data['type']))
