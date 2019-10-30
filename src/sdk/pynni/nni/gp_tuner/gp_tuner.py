@@ -83,7 +83,7 @@ class GPTuner(Tuner):
         """
         self._space = TargetSpace(search_space, self._random_state)
 
-    def generate_parameters(self, parameter_id):
+    def generate_parameters(self, parameter_id, **kwargs):
         """Generate next parameter for trial
         If the number of trial result is lower than cold start number,
         gp will first randomly generate some parameters.
@@ -123,7 +123,7 @@ class GPTuner(Tuner):
         logger.info("Generate paramageters:\n %s", results)
         return results
 
-    def receive_trial_result(self, parameter_id, parameters, value):
+    def receive_trial_result(self, parameter_id, parameters, value, **kwargs):
         """Tuner receive result from trial.
 
         Parameters
@@ -151,16 +151,14 @@ class GPTuner(Tuner):
         """
         _completed_num = 0
         for trial_info in data:
-            logger.info("Importing data, current processing progress %s / %s" %
-                        (_completed_num, len(data)))
+            logger.info("Importing data, current processing progress %s / %s", _completed_num, len(data))
             _completed_num += 1
             assert "parameter" in trial_info
             _params = trial_info["parameter"]
             assert "value" in trial_info
             _value = trial_info['value']
             if not _value:
-                logger.info(
-                    "Useless trial data, value is %s, skip this trial data." % _value)
+                logger.info("Useless trial data, value is %s, skip this trial data.", _value)
                 continue
             self.supplement_data_num += 1
             _parameter_id = '_'.join(
