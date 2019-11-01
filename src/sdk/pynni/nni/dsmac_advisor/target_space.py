@@ -240,7 +240,7 @@ class TargetSpace():
         parameter_id = self.next_param_id
         self.next_param_id += 1
         self.register_new_config(parameter_id, params)
-        self._budget[parameter_id] = max(round(self.max_epochs/10), 1)
+        self._budget[parameter_id] = max(round(self.max_epochs/5), 1)
 
         parameter_json = self.array_to_params(params)
         logger.info("Generate paramageter for warm up :\n %s", parameter_json)
@@ -367,7 +367,7 @@ class TargetSpace():
 
         logger.debug("param_selected %s", param_selected)
         param = param_selected['param']
-        budget = max(round(self.max_epochs/10), 1)
+        budget = max(round(self.max_epochs/5), 1)
         if 'parameter_id' not in param_selected:  # new config is selected
             parameter_id = self.next_param_id
             self.next_param_id += 1
